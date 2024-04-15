@@ -7,7 +7,7 @@ spring:
   #数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/javaweb_temprh
+    url: jdbc:mysql://localhost:3306/youshanxunche
     username: root
     password: 18898bbb
   #档案上传限制
@@ -23,4 +23,7 @@ mybatis:
 
 logging:
   level:
-    org.springframework.jdbc.support.JdbcTransactionManager: debug
+    cc.llcon: debug
+
+#    org.springframework.jdbc.support.JdbcTransactionManager: debug
+

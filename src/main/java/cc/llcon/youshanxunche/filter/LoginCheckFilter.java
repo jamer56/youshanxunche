@@ -40,7 +40,7 @@ public class LoginCheckFilter implements Filter {
 			return;
 		}
 		//3.获取jwt令牌
-		String jwt = req.getHeader("token");
+		String jwt = req.getHeader("Authorization");
 
 		//4.判断令牌是否存在
 		if(!StringUtils.hasLength(jwt)){

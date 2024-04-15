@@ -1,0 +1,21 @@
+package cc.llcon.youshanxunche.mapper;
+
+import cc.llcon.youshanxunche.pojo.User;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface UserMapper {
+	/**
+	 * 更新用户数据
+	 * @param u user
+	 */
+	void update(User u);
+
+	/**
+	 * 根据使用者名称查询
+	 * @param username 使用者名稱
+	 * @return 查詢到的使用者
+	 */
+	User getByUsername(String username);
+
+}

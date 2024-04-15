@@ -22,7 +22,7 @@ public class User {
     private String jwt;
     private Integer gender;
     private Integer permission;
-    private Integer fail_count;
+    private Integer failCount;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private LocalDateTime lastLoginTime;
