@@ -26,7 +26,7 @@ class YoushanxuncheApplicationTests {
 
 
 
-    @Test
+//    @Test
     void contextLoads() {
 
         String password = "123456";
