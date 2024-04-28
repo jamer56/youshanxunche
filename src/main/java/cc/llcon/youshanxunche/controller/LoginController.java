@@ -21,7 +21,6 @@ public class LoginController {
 
     /**
      * 用户登入
-     *
      * @param user 使用者对象
      * @return 结果
      */
@@ -32,7 +31,7 @@ public class LoginController {
 
         if (u != null) {
             if (u.getJwt() != null) {
-                //log.info("生成的jwt:{}",u.getJwt());
+                log.info("生成的jwt:{}",u.getJwt());
                 return Result.success(u.getJwt());
             }else {
                 return Result.error("账号或密码错误",u.getFailCount());
@@ -42,24 +41,23 @@ public class LoginController {
         }
     }
 
+    //todo 设备登入接口
     /**
      * 设备登入
      * @param device
      * @return
      */
-/*
-	@PostMapping(value = "/devices/login")
-	public Result deviceLogin(@RequestBody Device device){
-		log.info("设备登入 username:{}",device.getId());
-		Device d = deviceService.login(device);
-
-		if (d!=null){
-//			log.info("生成的jwt:{}",u.getJwt());
-			return Result.success(d.getJwt());
-		}else {
-			return Result.error("错误清联系管理员");
-		}
-	}
-*/
+//	@PostMapping(value = "/devices/login")
+//	public Result deviceLogin(@RequestBody Device device){
+//		log.info("设备登入 username:{}",device.getId());
+//		Device d = deviceService.login(device);
+//
+//		if (d!=null){
+////			log.info("生成的jwt:{}",u.getJwt());
+//			return Result.success(d.getJwt());
+//		}else {
+//			return Result.error("错误清联系管理员");
+//		}
+//	}
 
 }

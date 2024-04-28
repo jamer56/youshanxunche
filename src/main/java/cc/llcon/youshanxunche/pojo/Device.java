@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class Device {
 	private String userId;
 	private String macAddress;
 	private String comment;
+	@JsonIgnore
 	private String jwt;
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;

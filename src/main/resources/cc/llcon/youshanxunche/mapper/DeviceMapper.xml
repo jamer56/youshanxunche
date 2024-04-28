@@ -11,10 +11,10 @@
 
 
     <update id="updateById">
-        update device
+        update tb_device
         <set>
             name=#{name},
-            description=#{description},
+            comment=#{comment},
             update_time=#{updateTime}
         </set>
         where id=uuid_to_bin(#{id})
@@ -46,6 +46,28 @@
         select bin_to_uuid(id) as id, name, bin_to_uuid(user_id) as user_id, comment, hex(mac_address) as mac_address, create_time, update_time
         from tb_device
         where id = uuid_to_bin(#{id}) and mac_address = unhex(#{macAddress});
+    </select>
+
+    <select id="getTotalByUserId" resultType="java.lang.Long">
+        select count(*) as totol
+        from tb_device
+        where user_id=uuid_to_bin(#{uid})
+    </select>
+    <select id="listByUserId" resultType="cc.llcon.youshanxunche.pojo.Device">
+        select bin_to_uuid(d.id)    as id,
+               d.name,
+               bin_to_uuid(user_id) as user_id,
+               d.comment,
+               hex(d.mac_address)   as mac_address,
+               d.create_time,
+               d.update_time,
+               date.date               last_recode_time
+        from tb_device d
+                 left join (select device_id, MAX(create_time) date
+                            from tb_pos
+                            group by device_id) date on d.id = date.device_id
+        where user_id=uuid_to_bin(#{uid})
+        order by last_recode_time desc
     </select>
 
 </mapper>

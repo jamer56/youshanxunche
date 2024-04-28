@@ -2,8 +2,7 @@ package cc.llcon.youshanxunche.service;
 
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.ListDevice;
-
-import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface DeviceService {
 	/**
@@ -17,13 +16,13 @@ public interface DeviceService {
 	 * 查询所有的装置
 	 * @return
 	 */
-	ListDevice list();
+	ListDevice list(String jwt);
 
 	/**
 	 * 根据id查询设备
 	 * @return
 	 */
-	Device getById(String id);
+	Device getById(String id, HttpServletRequest request);
 
 	/**
 	 * 设备登入
@@ -32,16 +31,12 @@ public interface DeviceService {
 	 */
 	Device login(Device device);
 
-	/**
-	 * 根据deviceid 获取感测器id列表
-	 * @param id
-	 * @return
-	 */
-	List<Integer> listSensor(String id);
 
 	/**
 	 * 修改设备信息
+	 *
 	 * @param device
+	 * @param request
 	 */
-	Boolean modifyDeviceInfo(Device device);
+	Boolean modifyDeviceInfo(Device device, HttpServletRequest request);
 }
