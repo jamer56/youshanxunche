@@ -1,0 +1,31 @@
+#配置服务器
+server:
+  port: 8080
+  address: 127.0.0.1
+
+spring:
+  #数据库连接
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/youshanxunche
+    username: root
+    password: 18898bbb
+  #档案上传限制
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1GB
+
+#mybatis配置
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    cc.llcon: debug
+
+
+#    org.springframework.jdbc.support.JdbcTransactionManager: debug
+
