@@ -3,7 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.llcon.youshanxunche.mapper.UserMapper">
-<!--    更新用户资料-->
+    <insert id="inst">
+        insert into tb_user (id, username, name, gender, email, password, salt, create_time, update_time,
+                             last_login_time)
+        values (uuid_to_bin(#{id}),
+                #{username},
+                #{name},
+                #{gender},
+                #{email},
+                #{password},
+                uuid_to_bin(#{salt}),
+                #{createTime},
+                #{updateTime},
+                #{lastLoginTime})
+    </insert>
+    <!--    更新用户资料-->
     <update id="update">
         update tb_user
         <set>
@@ -31,7 +45,23 @@
                update_time,
                last_login_time
         from tb_user
-        where username = #{username};
+        where username = #{username}
+    </select>
+    <select id="getByEmail" resultType="cc.llcon.youshanxunche.pojo.User">
+        select bin_to_uuid(id)                     as id,
+               username,
+               name,
+               gender,
+               email,
+               password,
+               replace(bin_to_uuid(salt), '-', '') as salt,
+               permission,
+               fail_count,
+               create_time,
+               update_time,
+               last_login_time
+        from tb_user
+        where email=#{email}
     </select>
 
 

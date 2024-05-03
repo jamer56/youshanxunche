@@ -18,4 +18,7 @@ public interface UserMapper {
 	 */
 	User getByUsername(String username);
 
+	void inst(User user);
+
+	User getByEmail(String email);
 }

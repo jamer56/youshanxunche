@@ -58,9 +58,11 @@ public class DeviceController {
 	}
 
 
-	//todo 修改设备信息
 	/**
 	 * 修改设备信息
+	 * @param device 欲修改的资讯
+	 * @param request 用于获取jwt令牌 自动注入
+	 * @return
 	 */
 	@PutMapping
 	public Result modifyDeviceInfo(@RequestBody Device device,HttpServletRequest request){

@@ -34,11 +34,18 @@ public class LoginCheckFilter implements Filter {
 			return;
 		}
 
-		//2.判断是否为login请求
+		//2.判断是否为login请求 或是 register 请求
 		if (url.contains("login")){
 			filterChain.doFilter(servletRequest,servletResponse);
 			return;
 		}
+		if (url.contains("register")){
+			filterChain.doFilter(servletRequest,servletResponse);
+			return;
+		}
+
+
+
 		//3.获取jwt令牌
 		String jwt = req.getHeader("Authorization");
 

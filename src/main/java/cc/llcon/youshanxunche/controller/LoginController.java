@@ -41,7 +41,7 @@ public class LoginController {
         }
     }
 
-    //todo 设备登入接口
+    //todo 设备登入
     /**
      * 设备登入
      * @param device

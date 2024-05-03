@@ -5,14 +5,16 @@ import cc.llcon.youshanxunche.pojo.User;
 import cc.llcon.youshanxunche.service.UserService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
 
+import com.sanctionco.jmail.EmailValidationResult;
+import com.sanctionco.jmail.JMail;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.passay.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -91,5 +93,89 @@ public class UserServiceImpl implements UserService {
 
 			return u;
 		}
+	}
+
+	@Override
+	public String register(User user) {
+		//1.验证输入
+		//1.1 用户名 姓名
+		if (user.getUsername()==null||user.getUsername().isBlank()||user.getName()==null||user.getName().isBlank()){
+			return "用户名或姓名為空";
+		}
+
+			//判断用户名是否存在
+		User user1 = userMapper.getByUsername(user.getUsername());
+		if (user1!=null){
+			return "用户名已存在";
+		}
+
+
+		//1.2 email
+		String email = user.getEmail();
+		EmailValidationResult validate = JMail.validate(email);
+
+		if (validate.isSuccess()){
+			log.info("email验证通过");
+		}else {
+			log.warn("email驗證失敗 失败原因:{}",validate.getFailureReason());
+			return validate.getFailureReason().toString();
+		}
+			User user2 = userMapper.getByEmail(user.getEmail());
+
+			//判断email 是否存在
+		if (user2!=null){
+			return "郵箱已存在";
+		}
+
+		//1.3 密码
+
+		PasswordData passwordData = new PasswordData(user.getUsername(),user.getPassword());
+			//建立密码规则
+		List<Rule> rules = new ArrayList<Rule>();
+		rules.add(new LengthRule(8,32));
+		CharacterCharacteristicsRule characterCharacteristicsRule =new CharacterCharacteristicsRule(4,
+				new CharacterRule(EnglishCharacterData.UpperCase,1),
+				new CharacterRule(EnglishCharacterData.LowerCase,1),
+				new CharacterRule(EnglishCharacterData.Digit,1),
+				new CharacterRule(EnglishCharacterData.Special,1)
+		);
+		rules.add(characterCharacteristicsRule);
+		rules.add(new UsernameRule());
+		rules.add(new  WhitespaceRule());
+			//驗證
+			//創建驗證器
+		PasswordValidator passwordValidator = new PasswordValidator(rules);
+
+		RuleResult passwordValidate = passwordValidator.validate(passwordData);
+
+		if (passwordValidate.isValid()){
+			log.info("密碼驗證成功");
+		}else {
+			log.error(passwordValidate.getDetails().toString());
+			return passwordValidate.getDetails().get(0).getErrorCode().toString();
+		}
+
+		//2. 完整数据
+		user.setId(UUID.randomUUID().toString().replace("-",""));
+		user.setSalt(UUID.randomUUID().toString().replace("-",""));
+		String password = user.getPassword();
+		//2.2 密碼
+			//加盐
+		password = password.concat(user.getSalt());
+			//杂凑
+		password = DigestUtils.sha256Hex(password);
+			//回寫
+		user.setPassword(password);
+
+		user.setCreateTime(LocalDateTime.now());
+		user.setUpdateTime(LocalDateTime.now());
+		user.setLastLoginTime(LocalDateTime.now());
+		//3. 写数据库
+
+		userMapper.inst(user);
+
+
+		//4. 返回状态
+		return "success";
 	}
 }

@@ -96,11 +96,8 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 	}
 
-	//todo 挑战设备描述 2024年4月29日05:29:09
 	@Override
 	public Boolean modifyDeviceInfo(Device device, HttpServletRequest request) {
-
-
 		log.info("id:{}",device.getId());
 		log.info("name:{}",device.getName());
 		//1.确认输入
@@ -122,9 +119,9 @@ public class DeviceServiceImpl implements DeviceService {
 			return false;
 		}
 
-		//2.添加信息
+		//3.添加信息
 		device.setUpdateTime(LocalDateTime.now());
-		//3.修改数据库
+		//4.修改数据库
 		return deviceMapper.updateById(device);
 	}
 }
