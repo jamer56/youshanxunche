@@ -124,4 +124,45 @@ public class DeviceServiceImpl implements DeviceService {
 		//4.修改数据库
 		return deviceMapper.updateById(device);
 	}
+
+	/**
+	 * 用户添加设备
+	 *
+	 * @param request
+	 * @param device
+	 * @return
+	 */
+	@Override
+	public String addDevice(HttpServletRequest request, Device device) {
+		//获取用户id
+		String jwt = request.getHeader("Authorization");
+		Claims claims = JwtUtils.parseJWT(jwt);
+		String uid = (String) claims.get("id");
+		String username = (String) claims.get("username");
+
+		//獲取目標設備
+		Device checkDevice = deviceMapper.getById(device.getId());
+
+		//確認目標設備是否存在
+		if (checkDevice==null){
+			log.info("目標設備不存在");
+			return "目標設備不存在";
+		}
+
+		//确认目标设备没有使用者
+		if (checkDevice.getUserId()!=null){
+			log.warn("设备已有主人 设备ID:{} 主人id:{} 操作者id:{}",checkDevice.getId(),checkDevice.getUserId(),uid);
+			return "失敗,設備已被添加過";
+		}
+
+		//添加信息
+			device.setUserId(uid);
+			device.setUpdateTime(LocalDateTime.now());
+			device.setName(username+"的新設備");
+
+		//寫數據庫
+			deviceMapper.updateById(device);
+
+		return "success";
+	}
 }

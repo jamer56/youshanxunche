@@ -39,4 +39,13 @@ public interface DeviceService {
 	 * @param request
 	 */
 	Boolean modifyDeviceInfo(Device device, HttpServletRequest request);
+
+	/**
+	 * 用户添加设备
+	 *
+	 * @param request
+	 * @param device
+	 * @return
+	 */
+	String addDevice(HttpServletRequest request, Device device);
 }

@@ -16,22 +16,6 @@ public class DeviceController {
 	@Autowired
 	DeviceService deviceService;
 
-//
-//
-//	/**
-//	 * 注册设备
-//	 * @param device
-//	 * @return
-//	 */
-//	@PostMapping
-//	public Result register(@RequestBody Device device){
-//		Device d = deviceService.register(device);
-//
-//		return Result.success(d.getId());
-//	}
-//
-//
-
 	/**
 	 * 查询设备列表
 	 */
@@ -73,5 +57,18 @@ public class DeviceController {
 		}else {
 			return Result.error("更新失败");
 		}
+	}
+
+	@PostMapping
+	public Result addDevice(@RequestBody Device device,HttpServletRequest request){
+		log.info("添加設備:{}",device.getId());
+		String status = deviceService.addDevice(request,device);
+
+		if (status.equals("success")){
+			return Result.success();
+		}else {
+			return Result.error(status);
+		}
+
 	}
 }

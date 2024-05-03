@@ -5,8 +5,8 @@
 
 <mapper namespace="cc.llcon.youshanxunche.mapper.DeviceMapper">
     <insert id="inst">
-        insert into tb_device (id,user_id, mac_address, create_time, update_time)
-        values (uuid_to_bin(#{id}),uuid_to_bin(#{userId}),unhex(#{macAddress}),#{createTime},#{updateTime})
+        insert into tb_device (id, mac_address, create_time, update_time)
+        values (uuid_to_bin(#{id}),unhex(#{macAddress}),#{createTime},#{updateTime})
     </insert>
 
 
@@ -15,7 +15,8 @@
         <set>
             name=#{name},
             comment=#{comment},
-            update_time=#{updateTime}
+            update_time=#{updateTime},
+            user_id=uuid_to_bin(#{userId})
         </set>
         where id=uuid_to_bin(#{id})
     </update>
