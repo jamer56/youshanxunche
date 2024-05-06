@@ -22,7 +22,6 @@ public class DeviceServiceImpl implements DeviceService {
 	@Autowired
 	DeviceMapper deviceMapper;
 
-	//todo 此处尚未处理 DeviceRegister
 	@Override
 	public Device register(Device device) {
 		if (device.getMacAddress() ==null){
