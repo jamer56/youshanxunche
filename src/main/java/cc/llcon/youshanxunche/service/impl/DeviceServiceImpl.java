@@ -90,7 +90,7 @@ public class DeviceServiceImpl implements DeviceService {
 			log.info("登入成功 {}",d.getId());
 			return d;
 		}else {
-			log.info("登入成功 {}",device.getId());
+			log.info("登入失敗 {}",device.getId());
 			return null;
 		}
 	}

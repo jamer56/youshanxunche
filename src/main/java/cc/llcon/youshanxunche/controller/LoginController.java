@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.controller;
 
+import cc.llcon.youshanxunche.service.DeviceService;
 import cc.llcon.youshanxunche.service.UserService;
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.Result;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     @Autowired
     UserService userService;
+    @Autowired
+    DeviceService deviceService;
 
     /**
      * 用户登入
@@ -41,23 +44,22 @@ public class LoginController {
         }
     }
 
-    //todo 设备登入
     /**
      * 设备登入
      * @param device
      * @return
      */
-//	@PostMapping(value = "/devices/login")
-//	public Result deviceLogin(@RequestBody Device device){
-//		log.info("设备登入 username:{}",device.getId());
-//		Device d = deviceService.login(device);
-//
-//		if (d!=null){
-////			log.info("生成的jwt:{}",u.getJwt());
-//			return Result.success(d.getJwt());
-//		}else {
-//			return Result.error("错误清联系管理员");
-//		}
-//	}
+	@PostMapping(value = "/devices/login")
+	public Result deviceLogin(@RequestBody Device device){
+		log.info("设备登入 username:{}",device.getId());
+		Device d = deviceService.login(device);
+
+		if (d!=null){
+//			log.info("生成的jwt:{}",u.getJwt());
+			return Result.success(d.getJwt());
+		}else {
+			return Result.error("错误清联系管理员");
+		}
+	}
 
 }

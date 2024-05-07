@@ -31,7 +31,6 @@ public interface DeviceService {
 	 */
 	Device login(Device device);
 
-
 	/**
 	 * 修改设备信息
 	 *

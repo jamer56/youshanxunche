@@ -27,7 +27,6 @@ public class DeviceController {
 		return Result.success(deviceList);
 	}
 
-
 	/**
 	 * 通过id查询设备
 	 * @param id 设备id
@@ -40,7 +39,6 @@ public class DeviceController {
 
 		return Result.success(device);
 	}
-
 
 	/**
 	 * 修改设备信息
@@ -59,6 +57,12 @@ public class DeviceController {
 		}
 	}
 
+	/**
+	 * 在设备管理内添加装置
+	 * @param device
+	 * @param request
+	 * @return
+	 */
 	@PostMapping
 	public Result addDevice(@RequestBody Device device,HttpServletRequest request){
 		log.info("添加設備:{}",device.getId());

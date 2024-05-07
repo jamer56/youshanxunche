@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 	/**
 	 * 更新用户数据
+	 *
 	 * @param u user
+	 * @return
 	 */
-	void update(User u);
+	boolean update(User u);
 
 	/**
 	 * 根据使用者名称查询
@@ -21,4 +23,6 @@ public interface UserMapper {
 	void inst(User user);
 
 	User getByEmail(String email);
+
+	User getById(String uid);
 }

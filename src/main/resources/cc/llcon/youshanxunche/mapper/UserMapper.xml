@@ -22,15 +22,16 @@
         update tb_user
         <set>
             <if test="password!=null">password=#{password},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="gender!=null">gender=#{gender},</if>
             <if test="failCount!=null">fail_count=#{failCount},</if>
             <if test="updateTime!=null">update_time=#{updateTime},</if>
             <if test="lastLoginTime!=null">last_login_time=#{lastLoginTime}</if>
         </set>
         where id= uuid_to_bin(#{id})
     </update>
-
-
-<!--    根据用户名查询-->
+    <!--    根据用户名查询-->
     <select id="getByUsername" resultType="cc.llcon.youshanxunche.pojo.User">
         select bin_to_uuid(id)                     as id,
                username,
@@ -61,7 +62,23 @@
                update_time,
                last_login_time
         from tb_user
-        where email=#{email}
+        where email = #{email}
+    </select>
+    <select id="getById" resultType="cc.llcon.youshanxunche.pojo.User">
+        select bin_to_uuid(id)   as 'id',
+               username,
+               name,
+               gender,
+               email,
+               password,
+               bin_to_uuid(salt) as 'salt',
+               permission,
+               fail_count,
+               create_time,
+               update_time,
+               last_login_time
+        from tb_user
+        where id = uuid_to_bin(#{uid})
     </select>
 
 

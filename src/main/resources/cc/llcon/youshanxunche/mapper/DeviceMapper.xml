@@ -8,8 +8,6 @@
         insert into tb_device (id, mac_address, create_time, update_time)
         values (uuid_to_bin(#{id}),unhex(#{macAddress}),#{createTime},#{updateTime})
     </insert>
-
-
     <update id="updateById">
         update tb_device
         <set>
@@ -22,7 +20,6 @@
         </set>
         where id=uuid_to_bin(#{id})
     </update>
-
     <select id="list" resultType="cc.llcon.youshanxunche.pojo.Device">
         select bin_to_uuid(d.id) as id, d.name, bin_to_uuid(user_id) as user_id, d.comment, hex(d.mac_address) as mac_address, d.create_time, d.update_time, date.date last_recode_time
         from tb_device d
@@ -31,26 +28,20 @@
                             group by device_id) date on d.id = date.device_id
         order by last_recode_time desc
     </select>
-
-
     <select id="getTotal" resultType="java.lang.Long">
         select count(*)
         from tb_device
     </select>
-
-
     <select id="getById" resultType="cc.llcon.youshanxunche.pojo.Device">
         select bin_to_uuid(id) as id, name, bin_to_uuid(user_id) as user_id, comment, hex(mac_address) as mac_address, create_time, update_time
         from tb_device
         where id= uuid_to_bin(#{id})
     </select>
-
     <select id="getByIdAndMacAddress" resultType="cc.llcon.youshanxunche.pojo.Device">
         select bin_to_uuid(id) as id, name, bin_to_uuid(user_id) as user_id, comment, hex(mac_address) as mac_address, create_time, update_time
         from tb_device
         where id = uuid_to_bin(#{id}) and mac_address = unhex(#{macAddress});
     </select>
-
     <select id="getTotalByUserId" resultType="java.lang.Long">
         select count(*) as totol
         from tb_device
@@ -72,5 +63,4 @@
         where user_id=uuid_to_bin(#{uid})
         order by last_recode_time desc
     </select>
-
 </mapper>

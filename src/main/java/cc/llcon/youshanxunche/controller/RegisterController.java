@@ -7,7 +7,6 @@ import cc.llcon.youshanxunche.service.DeviceService;
 import cc.llcon.youshanxunche.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,15 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class RegisterController {
-
-    /**
-     * 用戶註冊接口
-     */
     @Autowired
     UserService userService;
     @Autowired
     DeviceService deviceService;
-
     /**
      * 用戶註冊
      * @param user 註冊信息
@@ -41,7 +35,6 @@ public class RegisterController {
             return Result.error(msg);
         }
     }
-
     /**
      * 设备注册
      */
