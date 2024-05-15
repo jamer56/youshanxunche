@@ -48,8 +48,8 @@ public class posController {
         PosParam posParam = new PosParam(dID,begin,end);
 
         ListPos listPos = posService.list(posParam,request);
-        if (listPos == null){
-            return Result.error("查詢失敗");
+        if (listPos == null||listPos.getTotal()==0){
+            return Result.error("查無結果");
         }
         return Result.success(listPos);
     }

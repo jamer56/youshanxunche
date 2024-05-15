@@ -65,10 +65,14 @@ public class PosServiceImpl implements PosService {
         //確認查詢是否越權
         String uid = AuthUtils.getUID(request);
         Device checkDevice = deviceMapper.getById(posParam.getDID());
+        if (checkDevice==null) {
+            log.error("查無確認設備");
+            return null;
+        }
         if (!checkDevice.getUserId().equals(uid)){
             //todo 越權記錄
             log.error("查詢越權");
-            return null;
+            throw new RuntimeException("越權查詢");
         }
         //查詢
         ListPos listPos =new ListPos();
