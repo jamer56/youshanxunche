@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.llcon.youshanxunche.mapper.PosMapper">
+
+    <select id="getLatestById" resultType="cc.llcon.youshanxunche.pojo.Pos">
+        select id,
+               latitude,
+               latitude_dir,
+               longitude,
+               longitude_dir,
+               device_id,
+               sats,
+               create_time
+        from tb_pos
+        where device_id = uuid_to_bin(#{dId})
+        order by create_time DESC
+        limit 1
+    </select>
+</mapper>

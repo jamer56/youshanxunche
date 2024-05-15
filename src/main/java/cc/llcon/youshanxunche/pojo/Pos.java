@@ -1,6 +1,7 @@
 package cc.llcon.youshanxunche.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class Pos {
     private BigInteger id;
@@ -21,5 +23,4 @@ public class Pos {
     private String deviceId;
     private String sats;
     private LocalDateTime createTime;
-
 }

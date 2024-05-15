@@ -71,7 +71,6 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 	}
 
-	//todo 此处尚未处理 DeviceLogin
 	@Override
 	public Device login(Device device) {
 		log.info("设备登入请求 设备id:{}",device.getId());
