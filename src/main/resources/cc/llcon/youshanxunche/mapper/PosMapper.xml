@@ -19,4 +19,17 @@
         order by create_time DESC
         limit 1
     </select>
+    <select id="getListByDIDAndTime" resultType="cc.llcon.youshanxunche.pojo.Pos">
+        select latitude, latitude_dir, longitude, longitude_dir, create_time
+        from tb_pos
+        where device_id = uuid_to_bin(#{dID})
+          and create_time between #{begin} and #{end}
+    </select>
+    <select id="getTotal" resultType="java.lang.Integer">
+        select COUNT(*)
+        from tb_pos
+        where device_id = uuid_to_bin(#{dID})
+          and create_time between #{begin} and #{end}
+    </select>
+
 </mapper>

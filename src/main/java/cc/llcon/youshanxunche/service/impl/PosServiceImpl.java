@@ -3,16 +3,15 @@ package cc.llcon.youshanxunche.service.impl;
 import cc.llcon.youshanxunche.mapper.DeviceMapper;
 import cc.llcon.youshanxunche.mapper.PosMapper;
 import cc.llcon.youshanxunche.pojo.Device;
+import cc.llcon.youshanxunche.pojo.ListPos;
 import cc.llcon.youshanxunche.pojo.Pos;
+import cc.llcon.youshanxunche.pojo.PosParam;
 import cc.llcon.youshanxunche.service.PosService;
-import cc.llcon.youshanxunche.utils.JwtUtils;
-import io.jsonwebtoken.Claims;
+import cc.llcon.youshanxunche.utils.AuthUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -34,9 +33,7 @@ public class PosServiceImpl implements PosService {
 
         //1 验证是否修改自己的设备
         //1.1 获取uid
-        String jwt = request.getHeader("Authorization");
-        Claims claims = JwtUtils.parseJWT(jwt);
-        String uid = (String) claims.get("id");
+        String uid = AuthUtils.getUID(request);
         //1.2 获取欲查询的设备
         Device deviceCheck = deviceMapper.getById(dId);
         if (deviceCheck ==null){
@@ -55,6 +52,30 @@ public class PosServiceImpl implements PosService {
         //清除不必要數據
         pos.setDeviceId(null);
         return pos;
+    }
+    /**
+     * 通过 '时间' 和 'deviceid' 查询 定位資訊
+     */
+    @Override
+    public ListPos list(PosParam posParam, HttpServletRequest request) {
+        //判斷參數
+        if (!posParam.getBegin().isBefore(posParam.getEnd())) {
+            return null;
+        }
+        //確認查詢是否越權
+        String uid = AuthUtils.getUID(request);
+        Device checkDevice = deviceMapper.getById(posParam.getDID());
+        if (!checkDevice.getUserId().equals(uid)){
+            //todo 越權記錄
+            log.error("查詢越權");
+            return null;
+        }
+        //查詢
+        ListPos listPos =new ListPos();
+        listPos.setPosList(posMapper.getListByDIDAndTime(posParam));
+        listPos.setTotal(posMapper.getTotal(posParam));
+        //返回
+        return listPos;
     }
 }
 
