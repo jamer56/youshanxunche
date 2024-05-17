@@ -19,4 +19,8 @@
         values (#{operateTime},#{operateUser}, #{returnValue},
                 #{costTime})
     </insert>
+    <insert id="insertErrorLog">
+        insert into error_log (id, time, message,stack, stack_trace)
+        values (null,#{operateTime},#{message},#{stack},#{stackTrace});
+    </insert>
 </mapper>

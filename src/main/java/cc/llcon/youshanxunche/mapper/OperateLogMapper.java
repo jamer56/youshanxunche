@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.mapper;
 
+import cc.llcon.youshanxunche.pojo.ErrorLog;
 import cc.llcon.youshanxunche.pojo.OperateLog;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,4 +13,6 @@ public interface OperateLogMapper {
     void insertSelectLog(OperateLog operateLog);
 
     void insertLoginLog(OperateLog operateLog);
+
+    void insertErrorLog(ErrorLog errorLog);
 }

@@ -68,7 +68,8 @@ public class DeviceServiceImpl implements DeviceService {
 			return device;
 		}else {
 			//todo 越權記錄
-			throw new RuntimeException("查询其他用户设备或其他问题");
+			String rTEM = "查询其他用户设备" +"操作者"+uid+"设备"+device;
+			throw new RuntimeException(rTEM);
 		}
 	}
 
@@ -114,9 +115,11 @@ public class DeviceServiceImpl implements DeviceService {
 		//2.3 判断欲修改设备是否为该使用者的
 		if (!deviceCheck.getUserId().equals(uid)){
 			//不相等
+			log.warn("尝试修改他人装置");
 			//todo 越權記錄
-			log.warn("有人尝试修改他人装置 或其他错误");
-			return false;
+			String rTEM = "尝试修改他人装置" +"操作者"+uid+"设备"+deviceCheck;
+			throw new RuntimeException(rTEM);
+//			return false;
 		}
 
 		//3.添加信息

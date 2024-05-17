@@ -47,9 +47,12 @@ public class PosServiceImpl implements PosService {
         //1.3 判斷
         if (!deviceCheck.getUserId().equals(uid)) {
             //存取他人设备
-            //todo 越權記錄
             log.error("越權存取:{} 設備{} 持有人{}", uid, deviceCheck.getId(), deviceCheck.getUserId());
-            return null;
+
+            //todo 越權記錄
+            String rTEM = "獲取其他用户最後定位資訊" +"操作者"+uid+"设备"+deviceCheck;
+            throw new RuntimeException(rTEM);
+//            return null;
         }
 
         //查詢記錄
@@ -78,7 +81,8 @@ public class PosServiceImpl implements PosService {
         if (!checkDevice.getUserId().equals(uid)) {
             //todo 越權記錄
             log.error("查詢越權");
-            throw new RuntimeException("越權查詢");
+            String rTEM = "查询其他用户设备" +"操作者"+uid+"设备"+checkDevice;
+            throw new RuntimeException(rTEM);
         }
         //查詢
         ListPos listPos = new ListPos();
