@@ -17,4 +17,6 @@ public interface PosService {
      * 通过 '时间' 和 'deviceid' 查询 定位資訊
      */
     ListPos list(PosParam posParam, HttpServletRequest request);
+
+    String ins(Pos pos, HttpServletRequest request);
 }

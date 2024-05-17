@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
+    //todo 登入記錄
     /**
      * 用户登入
      * @param user
@@ -195,6 +196,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserInfo(HttpServletRequest request) {
+        //驗證權限 todo 越權記錄
         //获取用户uid
         String jwt = request.getHeader("Authorization");
         Claims claims = JwtUtils.parseJWT(jwt);

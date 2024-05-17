@@ -8,10 +8,14 @@ import cc.llcon.youshanxunche.pojo.Pos;
 import cc.llcon.youshanxunche.pojo.PosParam;
 import cc.llcon.youshanxunche.service.PosService;
 import cc.llcon.youshanxunche.utils.AuthUtils;
+import cc.llcon.youshanxunche.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j
@@ -24,6 +28,7 @@ public class PosServiceImpl implements PosService {
 
     /**
      * 獲取最後定位資訊
+     *
      * @param dId
      * @param request
      * @return
@@ -36,14 +41,14 @@ public class PosServiceImpl implements PosService {
         String uid = AuthUtils.getUID(request);
         //1.2 获取欲查询的设备
         Device deviceCheck = deviceMapper.getById(dId);
-        if (deviceCheck ==null){
+        if (deviceCheck == null) {
             throw new RuntimeException("查無設備");
         }
         //1.3 判斷
-        if (!deviceCheck.getUserId().equals(uid)){
+        if (!deviceCheck.getUserId().equals(uid)) {
             //存取他人设备
-            //todo 记录操作日志
-            log.error("越權存取:{} 設備{} 持有人{}" ,uid,deviceCheck.getId(),deviceCheck.getUserId());
+            //todo 越權記錄
+            log.error("越權存取:{} 設備{} 持有人{}", uid, deviceCheck.getId(), deviceCheck.getUserId());
             return null;
         }
 
@@ -53,6 +58,7 @@ public class PosServiceImpl implements PosService {
         pos.setDeviceId(null);
         return pos;
     }
+
     /**
      * 通过 '时间' 和 'deviceid' 查询 定位資訊
      */
@@ -65,21 +71,67 @@ public class PosServiceImpl implements PosService {
         //確認查詢是否越權
         String uid = AuthUtils.getUID(request);
         Device checkDevice = deviceMapper.getById(posParam.getDID());
-        if (checkDevice==null) {
+        if (checkDevice == null) {
             log.error("查無確認設備");
             return null;
         }
-        if (!checkDevice.getUserId().equals(uid)){
+        if (!checkDevice.getUserId().equals(uid)) {
             //todo 越權記錄
             log.error("查詢越權");
             throw new RuntimeException("越權查詢");
         }
         //查詢
-        ListPos listPos =new ListPos();
+        ListPos listPos = new ListPos();
         listPos.setPosList(posMapper.getListByDIDAndTime(posParam));
         listPos.setTotal(posMapper.getTotal(posParam));
         //返回
         return listPos;
+    }
+
+    @Override
+    public String ins(Pos pos, HttpServletRequest request) {
+        //1. 驗證輸入
+        //1.1 驗證空
+        if (pos.getLatitude() == null ||
+                pos.getLatitudeDir() == null ||
+                pos.getLongitude() == null ||
+                pos.getLongitudeDir() == null ||
+                pos.getSats() == null) {
+            return "参数不完整";
+        }
+        //1.2 驗證範圍
+        //1.2.1 经度
+        if (pos.getLongitude().doubleValue()>180||pos.getLongitude().doubleValue()<-180){
+            //经度不合法
+            return "经度不合法";
+        }
+        //1.2.2 纬度
+        if (pos.getLatitude().doubleValue()>90||pos.getLatitude().doubleValue()<-90){
+            //经度不合法
+            return "纬度不合法";
+        }
+        //1.2.3 经度方向
+        if (!(pos.getLongitudeDir().equals("E")||pos.getLongitudeDir().equals("W"))){
+            return "经度方向不合法";
+        }
+        //1.2.4 纬度方向
+        if (!(pos.getLatitudeDir().equals("S")||pos.getLatitudeDir().equals("N"))){
+            return "纬度方向不合法";
+        }
+        //2.新增信息
+        String jwt = request.getHeader("Authorization");
+        Claims claims = JwtUtils.parseJWT(jwt);
+        String dID = (String) claims.get("id");
+
+        pos.setDeviceId(dID);
+        pos.setCreateTime(LocalDateTime.now());
+
+        //3. 新增記錄
+        Integer insertedRow = posMapper.ins(pos);
+        if (insertedRow == 1){
+            return "success";
+        }
+        return "插入失败";
     }
 }
 

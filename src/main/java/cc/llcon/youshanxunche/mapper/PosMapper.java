@@ -29,4 +29,6 @@ public interface PosMapper {
      * @return
      */
     Integer getTotal(PosParam posParam);
+
+    Integer ins(Pos pos);
 }

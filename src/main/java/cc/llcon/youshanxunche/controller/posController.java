@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +24,7 @@ public class posController {
 
     /**
      * 獲取最後定位資訊
+     *
      * @param uuid
      * @param request
      * @return
@@ -39,19 +37,37 @@ public class posController {
         }
         return Result.success(pos);
     }
+
     /**
      * 通过 '时间' 和 'deviceid' 查询 定位資訊
      */
     @GetMapping("/{dID}")
-    public Result list(@PathVariable() String dID, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime begin, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime end,HttpServletRequest request) {
+    public Result list(@PathVariable() String dID, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime begin, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime end, HttpServletRequest request) {
         //包裝參數
-        PosParam posParam = new PosParam(dID,begin,end);
+        PosParam posParam = new PosParam(dID, begin, end);
 
-        ListPos listPos = posService.list(posParam,request);
-        if (listPos == null||listPos.getTotal()==0){
+        ListPos listPos = posService.list(posParam, request);
+        if (listPos == null || listPos.getTotal() == 0) {
             return Result.error("查無結果");
         }
         return Result.success(listPos);
+    }
+
+    /**
+     * 新增记录
+     * @param pos
+     * @param request
+     * @return
+     */
+    @PostMapping
+    public Result ins(@RequestBody Pos pos, HttpServletRequest request) {
+        log.info("新增数据:{}",pos);
+
+        String result = posService.ins(pos, request);
+        if (result.equals("success")) {
+            return Result.success();
+        }
+        return Result.error(result);
     }
 }
 

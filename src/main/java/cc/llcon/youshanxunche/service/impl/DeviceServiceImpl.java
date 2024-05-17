@@ -67,6 +67,7 @@ public class DeviceServiceImpl implements DeviceService {
 		if (device.getUserId().equals(uid)){
 			return device;
 		}else {
+			//todo 越權記錄
 			throw new RuntimeException("查询其他用户设备或其他问题");
 		}
 	}
@@ -113,6 +114,7 @@ public class DeviceServiceImpl implements DeviceService {
 		//2.3 判断欲修改设备是否为该使用者的
 		if (!deviceCheck.getUserId().equals(uid)){
 			//不相等
+			//todo 越權記錄
 			log.warn("有人尝试修改他人装置 或其他错误");
 			return false;
 		}
