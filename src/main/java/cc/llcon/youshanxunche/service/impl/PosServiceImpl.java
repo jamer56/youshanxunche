@@ -123,6 +123,14 @@ public class PosServiceImpl implements PosService {
         Claims claims = JwtUtils.parseJWT(jwt);
         String dID = (String) claims.get("id");
 
+        //2.1 验证设备是否存在
+        Device deviceCheck = deviceMapper.getById(dID);
+        if (deviceCheck==null){
+            log.info("设备不存在");
+            return "设备不存在";
+        }
+
+        //2.2 新增信息
         pos.setDeviceId(dID);
         pos.setCreateTime(LocalDateTime.now());
 

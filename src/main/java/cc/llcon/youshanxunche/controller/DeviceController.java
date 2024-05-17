@@ -1,5 +1,7 @@
 package cc.llcon.youshanxunche.controller;
 
+import cc.llcon.youshanxunche.anno.OperateLog;
+import cc.llcon.youshanxunche.anno.SelectLog;
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.ListDevice;
 import cc.llcon.youshanxunche.pojo.Result;
@@ -19,6 +21,7 @@ public class DeviceController {
 	/**
 	 * 查询设备列表
 	 */
+	@SelectLog
 	@GetMapping
 	public Result list(HttpServletRequest request){
 		log.info("查询自有设备");
@@ -32,6 +35,7 @@ public class DeviceController {
 	 * @param id 设备id
 	 * @return 设备资讯
 	 */
+	@SelectLog
 	@GetMapping("/{id}")
 	public Result getById(@PathVariable String id ,HttpServletRequest request){
 		log.info("根据id查询设备 ID:{}",id);
@@ -46,6 +50,7 @@ public class DeviceController {
 	 * @param request 用于获取jwt令牌 自动注入
 	 * @return
 	 */
+	@OperateLog
 	@PutMapping
 	public Result modifyDeviceInfo(@RequestBody Device device,HttpServletRequest request){
 		log.info("修改设备信息 参数:{}",device);
@@ -63,6 +68,7 @@ public class DeviceController {
 	 * @param request
 	 * @return
 	 */
+	@OperateLog
 	@PostMapping
 	public Result addDevice(@RequestBody Device device,HttpServletRequest request){
 		log.info("添加設備:{}",device.getId());

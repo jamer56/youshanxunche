@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.controller;
 
+import cc.llcon.youshanxunche.anno.LoginLog;
 import cc.llcon.youshanxunche.service.DeviceService;
 import cc.llcon.youshanxunche.service.UserService;
 import cc.llcon.youshanxunche.pojo.Device;
@@ -27,6 +28,7 @@ public class LoginController {
      * @param user 使用者对象
      * @return 结果
      */
+    @LoginLog
     @PostMapping(value = "/login", consumes = "*/*")
     public Result login(@RequestBody User user) {
         log.info("用户登入 username:{}", user.getUsername());
@@ -49,7 +51,7 @@ public class LoginController {
      * @param device
      * @return
      */
-	@PostMapping(value = "/devices/login")
+    @PostMapping(value = "/devices/login")
 	public Result deviceLogin(@RequestBody Device device){
 		log.info("设备登入 username:{}",device.getId());
 		Device d = deviceService.login(device);

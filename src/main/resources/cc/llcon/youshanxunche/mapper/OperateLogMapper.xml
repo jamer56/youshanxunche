@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.llcon.youshanxunche.mapper.OperateLogMapper">
+
+    <insert id="insertOperateLog">
+        insert into operate_log (operate_user, operate_time, class_name, method_name, method_params, return_value,
+                                 cost_time)
+        values (UUID_TO_BIN(#{operateUser}), #{operateTime}, #{className}, #{methodName}, #{methodParams}, #{returnValue},
+                #{costTime})
+    </insert>
+    <insert id="insertSelectLog">
+        insert into select_log (operate_user, operate_time, class_name, method_name, method_params,
+                                cost_time)
+        values (UUID_TO_BIN(#{operateUser}), #{operateTime}, #{className}, #{methodName}, #{methodParams},
+                #{costTime})
+    </insert>
+    <insert id="insertLoginLog">
+        insert into login_log (operate_time,operate_user, return_value, cost_time)
+        values (#{operateTime},#{operateUser}, #{returnValue},
+                #{costTime})
+    </insert>
+</mapper>
