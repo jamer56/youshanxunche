@@ -12,7 +12,7 @@
     </select>
         <select id="getListOperateLog" resultType="cc.llcon.youshanxunche.pojo.OperateLog">
         select id,
-        bin_to_uuid(operate_user),
+        bin_to_uuid(operate_user) operate_user,
         operate_time,
         class_name,
         method_name,
