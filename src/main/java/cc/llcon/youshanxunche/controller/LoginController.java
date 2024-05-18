@@ -76,14 +76,14 @@ public class LoginController {
      */
     @PostMapping(value = "/devices/login")
 	public Result deviceLogin(@RequestBody Device device){
-		log.info("设备登入 username:{}",device.getId());
+		log.info("设备登入 device:{}",device);
 		Device d = deviceService.login(device);
 
 		if (d!=null){
 //			log.info("生成的jwt:{}",u.getJwt());
 			return Result.success(d.getJwt());
 		}else {
-			return Result.error("错误清联系管理员");
+			return Result.error("登入失败");
 		}
 	}
 
