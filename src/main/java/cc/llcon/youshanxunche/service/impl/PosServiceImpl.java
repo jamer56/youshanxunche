@@ -51,7 +51,7 @@ public class PosServiceImpl implements PosService {
 
             //todo 越權記錄
             String rTEM = "獲取其他用户最後定位資訊" +"操作者"+uid+"设备"+deviceCheck;
-            throw new RuntimeException(rTEM);
+            throw new RuntimeException(rTEM,new RuntimeException("使用者接口越權"));
 //            return null;
         }
 
@@ -82,7 +82,7 @@ public class PosServiceImpl implements PosService {
             //todo 越權記錄
             log.error("查詢越權");
             String rTEM = "查询其他用户设备" +"操作者"+uid+"设备"+checkDevice;
-            throw new RuntimeException(rTEM);
+            throw new RuntimeException(rTEM,new RuntimeException("使用者接口越權"));
         }
         //查詢
         ListPos listPos = new ListPos();

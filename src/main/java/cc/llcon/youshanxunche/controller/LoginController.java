@@ -31,7 +31,7 @@ public class LoginController {
     @LoginLog
     @PostMapping(value = "/login", consumes = "*/*")
     public Result login(@RequestBody User user) {
-        log.info("用户登入 username:{}", user.getUsername());
+        log.info("管理员登入登入 username:{}", user.getUsername());
         User u = userService.login(user);
 
         if (u != null) {
@@ -45,6 +45,30 @@ public class LoginController {
             return Result.error("账号或密码错误");
         }
     }
+
+    @LoginLog
+    @PostMapping(value = "/glylogin", consumes = "*/*")
+    public Result adminLogin(@RequestBody User user) {
+        log.info("用户登入 username:{}", user.getUsername());
+        User u = userService.login(user);
+
+        if (u != null) {
+            if (u.getJwt() != null) {
+                log.info("生成的jwt:{}",u.getJwt());
+                if (u.getPermission()!=2){
+                    log.warn("没有权限");
+                    throw new RuntimeException("使用者登入管理员页面 使用者:"+u.getUsername(),new RuntimeException("管理员接口越权"));
+//                    throw new RuntimeException("使用者登入管理员页面 使用者:"+u.getUsername());
+                }
+                return Result.success(u.getJwt());
+            }else {
+                return Result.error("账号或密码错误",u.getFailCount());
+            }
+        } else {
+            return Result.error("账号或密码错误");
+        }
+    }
+
 
     /**
      * 设备登入

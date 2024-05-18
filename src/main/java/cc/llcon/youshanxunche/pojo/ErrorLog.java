@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class ErrorLog {
     private Integer id; //ID
     private LocalDateTime operateTime; //操作时间
+    private String classification;//分類
     private String message; //message
     private String stack; //StackTop
     private String stackTrace; //StackTrace

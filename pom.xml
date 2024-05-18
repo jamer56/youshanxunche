@@ -10,7 +10,7 @@
     </parent>
     <groupId>cc.llcon</groupId>
     <artifactId>youshanxunche</artifactId>
-    <version>0.10.1</version>
+    <version>0.11.1</version>
     <packaging>war</packaging>
     <name>youshanxunche</name>
     <description>youshanxunche</description>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.4.6</version>
+            <version>2.1.0</version>
         </dependency>
         <!--        fastjson-->
         <dependency>
