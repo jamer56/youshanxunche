@@ -58,7 +58,6 @@ public class LoginController {
                 if (u.getPermission()!=2){
                     log.warn("没有权限");
                     throw new RuntimeException("使用者登入管理员页面 使用者:"+u.getUsername(),new RuntimeException("管理员接口越权"));
-//                    throw new RuntimeException("使用者登入管理员页面 使用者:"+u.getUsername());
                 }
                 return Result.success(u.getJwt());
             }else {

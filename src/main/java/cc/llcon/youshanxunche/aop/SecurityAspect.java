@@ -35,7 +35,7 @@ public class SecurityAspect {
             user.setPassword(null);
             user.setSalt(null);
 
-            throw new RuntimeException("权限不足 使用者"+user);
+            throw new RuntimeException("权限不足 使用者"+user,new RuntimeException("管理员接口越权"));
 //            return Result.error("权限不足");
         }
         return joinPoint.proceed();

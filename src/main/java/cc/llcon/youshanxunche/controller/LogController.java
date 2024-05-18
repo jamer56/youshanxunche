@@ -21,7 +21,7 @@ public class LogController {
      * 獲取 操作日志 类(class) 列表
      */
     @SecurityAuth
-    @GetMapping("/operate/listclass ")
+    @GetMapping("/operate/listclass")
     public Result getOperateLogClassList() {
         List<String> list = logService.listOperateLogClass();
         return Result.success(list);
