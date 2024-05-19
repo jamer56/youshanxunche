@@ -1,8 +1,7 @@
 package cc.llcon.youshanxunche.service.impl;
 
 import cc.llcon.youshanxunche.mapper.LogMapper;
-import cc.llcon.youshanxunche.pojo.ListOperateLog;
-import cc.llcon.youshanxunche.pojo.OperateLog;
+import cc.llcon.youshanxunche.pojo.*;
 import cc.llcon.youshanxunche.service.LogService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -69,5 +68,26 @@ public class LogServiceImpl implements LogService {
         listOperateLog.setTotal(p.getTotal());
 
         return listOperateLog;
+    }
+
+    @Override
+    public List<String> ErrorLogClassificationList() {
+        List<String> list =logMapper.getErrorLogClassificationList();
+        return list;
+    }
+
+    @Override
+    public ListErrorLog listErrorLog(OperateLogListParam param) {
+        PageHelper.startPage(param.getPage(),param.getPageSize());
+
+        List<ErrorLog> list =logMapper.getListErrorLog(param.getClassification(),param.getBegin(), param.getEnd());
+        Page<ErrorLog> p = (Page<ErrorLog>) list;
+
+        ListErrorLog listOperateLog = new ListErrorLog();
+        listOperateLog.setRows(p.getResult());
+        listOperateLog.setTotal(p.getTotal());
+
+        return listOperateLog;
+
     }
 }

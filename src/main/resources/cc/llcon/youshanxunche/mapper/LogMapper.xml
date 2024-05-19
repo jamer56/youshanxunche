@@ -64,4 +64,25 @@
         </where>
         ORDER BY operate_time DESC ,id DESC
     </select>
+    <select id="getErrorLogClassificationList" resultType="java.lang.String">
+        select distinct(classification)
+        from error_log
+    </select>
+    <select id="getListErrorLog" resultType="cc.llcon.youshanxunche.pojo.ErrorLog">
+
+        select id, time, classification, message, stack, stack_trace
+        from error_log
+        <where>
+            <if test="classification != null">
+                classification = #{classification}
+            </if>
+            <if test="classification == 'null'">
+                and classification IS NULL
+            </if>
+            <if test="begin!=null and end != null">
+                and operate_time between #{begin} and #{end}
+            </if>
+        </where>
+        ORDER BY time DESC ,id DESC
+    </select>
 </mapper>

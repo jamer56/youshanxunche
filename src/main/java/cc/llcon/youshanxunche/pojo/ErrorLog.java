@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ErrorLog {
     private Integer id; //ID
-    private LocalDateTime operateTime; //操作时间
+    private LocalDateTime time; //操作时间
     private String classification;//分類
     private String message; //message
     private String stack; //StackTop

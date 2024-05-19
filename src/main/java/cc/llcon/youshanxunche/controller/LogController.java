@@ -2,13 +2,12 @@ package cc.llcon.youshanxunche.controller;
 
 import cc.llcon.youshanxunche.anno.SecurityAuth;
 import cc.llcon.youshanxunche.anno.SelectLog;
-import cc.llcon.youshanxunche.pojo.ListOperateLog;
-import cc.llcon.youshanxunche.pojo.OperateLogListParam;
-import cc.llcon.youshanxunche.pojo.Result;
+import cc.llcon.youshanxunche.pojo.*;
 import cc.llcon.youshanxunche.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
@@ -31,6 +30,7 @@ public class LogController {
 
     /**
      * 获取 操作日志 方法名by类名
+     *
      * @param classname
      * @return
      */
@@ -57,7 +57,6 @@ public class LogController {
     }
 
 
-
     /**
      * 獲取 查询日志 类(class) 列表
      */
@@ -71,6 +70,7 @@ public class LogController {
 
     /**
      * 获取 查询日志 方法名by类名
+     *
      * @param classname
      * @return
      */
@@ -97,7 +97,27 @@ public class LogController {
     }
 
 
-/**
- * 获取错误日志
- */
+    //todo 获取错误日志
+
+    /**
+     * 获取 错误日志 分类列表
+     * @return
+     */
+    @SecurityAuth
+    @SelectLog
+    @GetMapping("/error/listclassification")
+    public Result getErrorLogClassificationList() {
+        List<String> list = logService.ErrorLogClassificationList();
+        return Result.success(list);
+    }
+
+    @SecurityAuth
+    @SelectLog
+    @GetMapping("/error/listerrorlog")
+    public Result listErrorLog(OperateLogListParam param) {
+        ListErrorLog listErrorLog = logService.listErrorLog(param);
+        return Result.success(listErrorLog);
+    }
+
+
 }

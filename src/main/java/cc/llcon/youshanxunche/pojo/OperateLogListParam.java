@@ -14,6 +14,7 @@ public class OperateLogListParam {
     private Integer page=1;
     private Integer pageSize =10;
     private String className;
+    private String classification;
     private String methodName;
     @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
     private LocalDateTime begin;
