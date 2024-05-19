@@ -73,7 +73,7 @@
         select id, time, classification, message, stack, stack_trace
         from error_log
         <where>
-            <if test="classification != null">
+            <if test="classification != null and classification != 'null'">
                 classification = #{classification}
             </if>
             <if test="classification == 'null'">
