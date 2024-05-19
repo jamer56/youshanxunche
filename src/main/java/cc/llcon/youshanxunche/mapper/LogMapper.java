@@ -12,7 +12,7 @@ public interface LogMapper {
 
     List<String> getOperateLogMethodListByClassName(String classname);
 
-    List<OperateLog> getListOperateLog(String classname, String method, LocalDateTime begin, LocalDateTime end);
+    List<OperateLog> getListOperateLog(String className, String methodName, LocalDateTime begin, LocalDateTime end);
 
     List<String> getListSelectLogClass();
 

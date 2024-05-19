@@ -32,10 +32,10 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ListOperateLog getOperateLogList(Integer page, Integer pageSize, String classname, String method, LocalDateTime begin, LocalDateTime end) {
+    public ListOperateLog getOperateLogList(Integer page, Integer pageSize, String className, String methodName, LocalDateTime begin, LocalDateTime end) {
         PageHelper.startPage(page,pageSize);
 
-        List<OperateLog> list =logMapper.getListOperateLog(classname,method,begin,end);
+        List<OperateLog> list =logMapper.getListOperateLog(className,methodName,begin,end);
         Page<OperateLog> p = (Page<OperateLog>) list;
 
         ListOperateLog listOperateLog = new ListOperateLog();
