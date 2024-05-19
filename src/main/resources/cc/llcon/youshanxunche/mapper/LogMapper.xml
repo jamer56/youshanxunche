@@ -80,7 +80,7 @@
                 and classification IS NULL
             </if>
             <if test="begin!=null and end != null">
-                and operate_time between #{begin} and #{end}
+                and time between #{begin} and #{end}
             </if>
         </where>
         ORDER BY time DESC ,id DESC
