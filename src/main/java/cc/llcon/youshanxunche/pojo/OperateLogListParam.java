@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OperateLogListParam {
     private Integer page=1;
-    private Integer pagesize=10;
+    private Integer pageSize =10;
     private String className;
-    private String MethodName;
+    private String methodName;
     @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
     private LocalDateTime begin;
     @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")

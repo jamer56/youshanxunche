@@ -1,6 +1,7 @@
 package cc.llcon.youshanxunche.controller;
 
 import cc.llcon.youshanxunche.anno.SecurityAuth;
+import cc.llcon.youshanxunche.anno.SelectLog;
 import cc.llcon.youshanxunche.pojo.ListOperateLog;
 import cc.llcon.youshanxunche.pojo.OperateLogListParam;
 import cc.llcon.youshanxunche.pojo.Result;
@@ -21,6 +22,7 @@ public class LogController {
      * 獲取 操作日志 类(class) 列表
      */
     @SecurityAuth
+    @SelectLog
     @GetMapping("/operate/listclass")
     public Result getOperateLogClassList() {
         List<String> list = logService.listOperateLogClass();
@@ -34,6 +36,7 @@ public class LogController {
      * @return
      */
     @SecurityAuth
+    @SelectLog
     @GetMapping("/operate/listmethod/{classname}")
     public Result getOperateLogMethodListbyClassName(@PathVariable String classname) {
         List<String> list = logService.getOperateLogMethodListByClassName(classname);
@@ -45,11 +48,12 @@ public class LogController {
      */
 
     @SecurityAuth
+    @SelectLog
     @GetMapping("/operate/list")
     public Result listOperateLog(OperateLogListParam param) {
         log.info(param.toString());
 
-        ListOperateLog operateLogs = logService.getOperateLogList(param.getPage(), param.getPagesize(), param.getClassName(), param.getMethodName(), param.getBegin(), param.getEnd());
+        ListOperateLog operateLogs = logService.getOperateLogList(param.getPage(), param.getPageSize(), param.getClassName(), param.getMethodName(), param.getBegin(), param.getEnd());
         return Result.success(operateLogs);
     }
 
