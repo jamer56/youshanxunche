@@ -22,23 +22,46 @@ public class LogServiceImpl implements LogService {
     @Override
     public List<String> listOperateLogClass() {
         List<String> list= logMapper.getListOperateLogClass();
-
         return list;
     }
 
     @Override
     public List<String> getOperateLogMethodListByClassName(String classname) {
-
         List<String> list=logMapper.getOperateLogMethodListByClassName(classname);
         return list;
     }
 
     @Override
     public ListOperateLog getOperateLogList(Integer page, Integer pageSize, String classname, String method, LocalDateTime begin, LocalDateTime end) {
-
         PageHelper.startPage(page,pageSize);
 
         List<OperateLog> list =logMapper.getListOperateLog(classname,method,begin,end);
+        Page<OperateLog> p = (Page<OperateLog>) list;
+
+        ListOperateLog listOperateLog = new ListOperateLog();
+        listOperateLog.setRows(p.getResult());
+        listOperateLog.setTotal(p.getTotal());
+
+        return listOperateLog;
+    }
+
+    @Override
+    public List<String> listSelectLogClass() {
+        List<String> list= logMapper.getListSelectLogClass();
+        return list;
+    }
+
+    @Override
+    public List<String> getSelectLogMethodListByClassName(String classname) {
+        List<String> list=logMapper.getSelectLogMethodListByClassName(classname);
+        return list;
+    }
+
+    @Override
+    public ListOperateLog getSelectLogList(Integer page, Integer pageSize, String className, String methodName, LocalDateTime begin, LocalDateTime end) {
+        PageHelper.startPage(page,pageSize);
+
+        List<OperateLog> list =logMapper.getListSelectLog(className,methodName,begin,end);
         Page<OperateLog> p = (Page<OperateLog>) list;
 
         ListOperateLog listOperateLog = new ListOperateLog();

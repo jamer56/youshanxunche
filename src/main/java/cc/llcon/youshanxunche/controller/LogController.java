@@ -30,8 +30,7 @@ public class LogController {
     }
 
     /**
-     * 获取方法名by类名
-     *
+     * 获取 操作日志 方法名by类名
      * @param classname
      * @return
      */
@@ -58,9 +57,44 @@ public class LogController {
     }
 
 
-/**
- * 获取查询日志
- */
+
+    /**
+     * 獲取 查询日志 类(class) 列表
+     */
+    @SecurityAuth
+    @SelectLog
+    @GetMapping("/select/listclass")
+    public Result getSelectLogClassList() {
+        List<String> list = logService.listSelectLogClass();
+        return Result.success(list);
+    }
+
+    /**
+     * 获取 查询日志 方法名by类名
+     * @param classname
+     * @return
+     */
+    @SecurityAuth
+    @SelectLog
+    @GetMapping("/select/listmethod/{classname}")
+    public Result getSelectLogMethodListByClassName(@PathVariable String classname) {
+        List<String> list = logService.getSelectLogMethodListByClassName(classname);
+        return Result.success(list);
+    }
+
+    /**
+     * 获取 查询日志
+     */
+
+    @SecurityAuth
+    @SelectLog
+    @GetMapping("/select/list")
+    public Result listSelectLog(OperateLogListParam param) {
+        log.info(param.toString());
+
+        ListOperateLog operateLogs = logService.getSelectLogList(param.getPage(), param.getPageSize(), param.getClassName(), param.getMethodName(), param.getBegin(), param.getEnd());
+        return Result.success(operateLogs);
+    }
 
 
 /**

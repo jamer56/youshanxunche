@@ -11,26 +11,57 @@
         where class_name=#{classname};
     </select>
         <select id="getListOperateLog" resultType="cc.llcon.youshanxunche.pojo.OperateLog">
+            select id,
+            bin_to_uuid(operate_user) as operate_user,
+            operate_time,
+            class_name,
+            method_name,
+            method_params,
+            return_value,
+            cost_time
+            from operate_log
+            <where>
+                <if test="className != null">
+                    class_name = #{className}
+                </if>
+                <if test="methodName != null">
+                    and method_name = #{methodName}
+                </if>
+                <if test="begin!=null and end != null">
+                    and operate_time between #{begin} and #{end}
+                </if>
+            </where>
+            ORDER BY operate_time DESC ,id DESC
+        </select>
+    <select id="getListSelectLogClass" resultType="java.lang.String">
+        select distinct(class_name)
+        from select_log
+    </select>
+    <select id="getSelectLogMethodListByClassName" resultType="java.lang.String">
+        select distinct(method_name)
+        from select_log
+        where class_name=#{classname};
+    </select>
+    <select id="getListSelectLog" resultType="cc.llcon.youshanxunche.pojo.OperateLog">
         select id,
-        bin_to_uuid(operate_user) operate_user,
+        bin_to_uuid(operate_user) as operate_user,
         operate_time,
         class_name,
         method_name,
         method_params,
-        return_value,
         cost_time
-        from operate_log
+        from select_log
         <where>
-            <if test="classname != null">
-                class_name = #{classname}
+            <if test="className != null">
+                class_name = #{className}
             </if>
-            <if test="method != null">
-                and method_name = #{method}
+            <if test="methodName != null">
+                and method_name = #{methodName}
             </if>
             <if test="begin!=null and end != null">
                 and operate_time between #{begin} and #{end}
             </if>
         </where>
         ORDER BY operate_time DESC ,id DESC
-        </select>
+    </select>
 </mapper>

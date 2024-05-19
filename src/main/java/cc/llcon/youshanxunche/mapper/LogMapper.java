@@ -13,4 +13,10 @@ public interface LogMapper {
     List<String> getOperateLogMethodListByClassName(String classname);
 
     List<OperateLog> getListOperateLog(String classname, String method, LocalDateTime begin, LocalDateTime end);
+
+    List<String> getListSelectLogClass();
+
+    List<String> getSelectLogMethodListByClassName(String classname);
+
+    List<OperateLog> getListSelectLog(String className, String methodName, LocalDateTime begin, LocalDateTime end);
 }
