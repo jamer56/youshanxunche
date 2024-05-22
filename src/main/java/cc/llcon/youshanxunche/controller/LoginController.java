@@ -31,7 +31,7 @@ public class LoginController {
     @LoginLog
     @PostMapping(value = "/login", consumes = "*/*")
     public Result login(@RequestBody User user) {
-        log.info("管理员登入登入 username:{}", user.getUsername());
+        log.info("用户登入 username:{}", user.getUsername());
         User u = userService.login(user);
 
         if (u != null) {
@@ -49,7 +49,7 @@ public class LoginController {
     @LoginLog
     @PostMapping(value = "/glylogin", consumes = "*/*")
     public Result adminLogin(@RequestBody User user) {
-        log.info("用户登入 username:{}", user.getUsername());
+        log.info("管理员登入 username:{}", user.getUsername());
         User u = userService.login(user);
 
         if (u != null) {
