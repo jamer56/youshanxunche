@@ -69,7 +69,6 @@
         from error_log
     </select>
     <select id="getListErrorLog" resultType="cc.llcon.youshanxunche.pojo.ErrorLog">
-
         select id, time, classification, message, stack, stack_trace
         from error_log
         <where>

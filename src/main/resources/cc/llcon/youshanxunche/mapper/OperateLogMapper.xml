@@ -20,7 +20,7 @@
                 #{costTime})
     </insert>
     <insert id="insertErrorLog">
-        insert into error_log (id, time,classification, message,stack, stack_trace)
-        values (null,#{operateTime},#{classification},#{message},#{stack},#{stackTrace});
+        insert into error_log (id, time, classification, message, stack, stack_trace)
+        values (null,#{time}, #{classification}, #{message}, #{stack}, #{stackTrace})
     </insert>
 </mapper>
