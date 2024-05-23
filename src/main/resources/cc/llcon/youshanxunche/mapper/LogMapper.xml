@@ -88,10 +88,10 @@
         select id, operate_user as operate_user_name, operate_time, return_value, cost_time
         from login_log
         <where>
-            <if test="userName != 'null'">
+            <if test="userName != null">
                 operate_user like CONCAT('%',#{userName},'%')
             </if>
-            <if test="returnValue != 'null'">
+            <if test="returnValue != null">
                 and return_value = #{returnValue}
             </if>
             <if test="begin!=null and end != null">
