@@ -84,4 +84,20 @@
         </where>
         ORDER BY time DESC ,id DESC
     </select>
+    <select id="getLoginLog" resultType="cc.llcon.youshanxunche.pojo.LoginLogPojo">
+        select id, operate_user as operate_user_name, operate_time, return_value, cost_time
+        from login_log
+        <where>
+            <if test="userName != 'null'">
+                operate_user like CONCAT('%',#{userName},'%')
+            </if>
+            <if test="returnValue != 'null'">
+                and return_value = #{returnValue}
+            </if>
+            <if test="begin!=null and end != null">
+                and operate_time between #{begin} and #{end}
+            </if>
+        </where>
+        ORDER BY operate_time DESC ,id DESC
+    </select>
 </mapper>

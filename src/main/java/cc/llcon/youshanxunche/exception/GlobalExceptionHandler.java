@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
         errorLog.setStackTrace(Arrays.toString(ex.getStackTrace()));
 
 
-        log.error("記錄錯誤:{}", errorLog);
+//        log.error("記錄錯誤:{}", errorLog);
 
         operateLogMapper.insertErrorLog(errorLog);
 
@@ -51,6 +51,8 @@ public class GlobalExceptionHandler {
 //      String exstack=ex.getStackTrace()[0].toString();
 //		log.error(exstack);
 //        ex.printStackTrace();
+        log.error("全局異常處理",ex);
+
         return Result.error("操作失敗,請聯絡管理員");
     }
 }

@@ -45,17 +45,15 @@ public class LogController {
     /**
      * 获取操作日志
      */
-
     @SecurityAuth
     @SelectLog
     @GetMapping("/operate/list")
-    public Result listOperateLog(OperateLogListParam param) {
+    public Result listOperateLog(ListLogParam param) {
         log.info(param.toString());
 
         ListOperateLog operateLogs = logService.getOperateLogList(param.getPage(), param.getPageSize(), param.getClassName(), param.getMethodName(), param.getBegin(), param.getEnd());
         return Result.success(operateLogs);
     }
-
 
     /**
      * 獲取 查询日志 类(class) 列表
@@ -85,19 +83,17 @@ public class LogController {
     /**
      * 获取 查询日志
      */
-
     @SecurityAuth
     @SelectLog
     @GetMapping("/select/list")
-    public Result listSelectLog(OperateLogListParam param) {
+    public Result listSelectLog(ListLogParam param) {
         log.info(param.toString());
 
         ListOperateLog operateLogs = logService.getSelectLogList(param.getPage(), param.getPageSize(), param.getClassName(), param.getMethodName(), param.getBegin(), param.getEnd());
         return Result.success(operateLogs);
     }
 
-
-    //todo 获取错误日志
+    //获取错误日志
 
     /**
      * 获取 错误日志 分类列表
@@ -111,13 +107,29 @@ public class LogController {
         return Result.success(list);
     }
 
+    /**
+     * 獲取錯誤日誌
+     * @param param
+     * @return
+     */
     @SecurityAuth
     @SelectLog
     @GetMapping("/error/listerrorlog")
-    public Result listErrorLog(OperateLogListParam param) {
+    public Result listErrorLog(ListLogParam param) {
         ListErrorLog listErrorLog = logService.listErrorLog(param);
         return Result.success(listErrorLog);
     }
 
-
+    /**
+     * 獲取登入日誌
+     * @param param
+     * @return
+     */
+    @SecurityAuth
+    @SelectLog
+    @GetMapping("/linlog/listlinlog")
+    public Result listLoginLog(ListLogParam param) {
+        ListLoginLog loginLog = logService.listLoginLog(param);
+        return Result.success(loginLog);
+    }
 }

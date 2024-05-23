@@ -5,22 +5,23 @@
     <insert id="insertOperateLog">
         insert into operate_log (operate_user, operate_time, class_name, method_name, method_params, return_value,
                                  cost_time)
-        values (UUID_TO_BIN(#{operateUser}), #{operateTime}, #{className}, #{methodName}, #{methodParams}, #{returnValue},
+        values (UUID_TO_BIN(#{operateUserId}), #{operateTime}, #{className}, #{methodName}, #{methodParams},
+                #{returnValue},
                 #{costTime})
     </insert>
     <insert id="insertSelectLog">
         insert into select_log (operate_user, operate_time, class_name, method_name, method_params,
                                 cost_time)
-        values (UUID_TO_BIN(#{operateUser}), #{operateTime}, #{className}, #{methodName}, #{methodParams},
+        values (UUID_TO_BIN(#{operateUserId}), #{operateTime}, #{className}, #{methodName}, #{methodParams},
                 #{costTime})
     </insert>
     <insert id="insertLoginLog">
-        insert into login_log (operate_time,operate_user, return_value, cost_time)
-        values (#{operateTime},#{operateUser}, #{returnValue},
+        insert into login_log (operate_time, operate_user, return_value, cost_time)
+        values (#{operateTime}, #{operateUserName}, #{returnValue},
                 #{costTime})
     </insert>
     <insert id="insertErrorLog">
         insert into error_log (id, time, classification, message, stack, stack_trace)
-        values (null,#{time}, #{classification}, #{message}, #{stack}, #{stackTrace})
+        values (null, #{time}, #{classification}, #{message}, #{stack}, #{stackTrace})
     </insert>
 </mapper>

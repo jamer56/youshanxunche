@@ -1,8 +1,9 @@
 package cc.llcon.youshanxunche.service;
 
 import cc.llcon.youshanxunche.pojo.ListErrorLog;
+import cc.llcon.youshanxunche.pojo.ListLoginLog;
 import cc.llcon.youshanxunche.pojo.ListOperateLog;
-import cc.llcon.youshanxunche.pojo.OperateLogListParam;
+import cc.llcon.youshanxunche.pojo.ListLogParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,5 +24,7 @@ public interface LogService {
 
     List<String> ErrorLogClassificationList();
 
-    ListErrorLog listErrorLog(OperateLogListParam param);
+    ListErrorLog listErrorLog(ListLogParam param);
+
+    ListLoginLog listLoginLog(ListLogParam param);
 }

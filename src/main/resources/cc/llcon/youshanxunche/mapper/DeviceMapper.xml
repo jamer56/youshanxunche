@@ -14,7 +14,7 @@
             name=#{name},
             comment=#{comment},
             <if test='userId != null'>
-                user_id=uuid_to_bin(#{userId})
+                user_id=uuid_to_bin(#{userId}),
             </if>
             update_time=#{updateTime},
         </set>

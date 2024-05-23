@@ -1,6 +1,7 @@
 package cc.llcon.youshanxunche.service.impl;
 
 import cc.llcon.youshanxunche.mapper.LogMapper;
+import cc.llcon.youshanxunche.mapper.UserMapper;
 import cc.llcon.youshanxunche.pojo.*;
 import cc.llcon.youshanxunche.service.LogService;
 import com.github.pagehelper.Page;
@@ -17,6 +18,8 @@ import java.util.List;
 public class LogServiceImpl implements LogService {
     @Autowired
     LogMapper logMapper;
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public List<String> listOperateLogClass() {
@@ -77,7 +80,7 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ListErrorLog listErrorLog(OperateLogListParam param) {
+    public ListErrorLog listErrorLog(ListLogParam param) {
         PageHelper.startPage(param.getPage(),param.getPageSize());
 
         List<ErrorLog> list =logMapper.getListErrorLog(param.getClassification(),param.getBegin(), param.getEnd());
@@ -89,5 +92,25 @@ public class LogServiceImpl implements LogService {
 
         return listOperateLog;
 
+    }
+
+    @Override
+    public ListLoginLog listLoginLog(ListLogParam param) {
+
+        //判断传入值是否为uuid
+        String userName = param.getUserName();
+        try {
+            param.setUserName(userMapper.getById(userName).getUsername());
+        } catch (Exception e) {
+            //忽略
+        }
+        PageHelper.startPage(param.getPage(),param.getPageSize());
+
+        List<LoginLogPojo> list = logMapper.getLoginLog(param);
+        Page<LoginLogPojo> p = (Page<LoginLogPojo>) list;
+        ListLoginLog loginLog = new ListLoginLog();
+        loginLog.setTotal(p.getTotal());
+        loginLog.setRows(p.getResult());
+        return loginLog;
     }
 }
