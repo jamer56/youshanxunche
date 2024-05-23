@@ -85,8 +85,8 @@
         ORDER BY time DESC ,id DESC
     </select>
     <select id="getLoginLog" resultType="cc.llcon.youshanxunche.pojo.LoginLogPojo">
-        select id, operate_user as operate_user_name, operate_time, return_value, cost_time
-        from login_log
+        select l.id, operate_user ,bin_to_uuid(u.id) as operate_user_id, l.operate_time, return_value, cost_time
+        from login_log l left join (select * from tb_user) u on l.operate_user=u.username
         <where>
             <if test="userName != null">
                 operate_user like CONCAT('%',#{userName},'%')
