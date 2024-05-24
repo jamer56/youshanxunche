@@ -57,6 +57,8 @@ public class PosServiceImpl implements PosService {
 
         //查詢記錄
         Pos pos = posMapper.getLatestById(dId);
+
+        //判斷是否有記錄
         if(pos == null){
             return null;
         }
