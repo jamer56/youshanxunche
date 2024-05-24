@@ -57,6 +57,10 @@ public class PosServiceImpl implements PosService {
 
         //查詢記錄
         Pos pos = posMapper.getLatestById(dId);
+        if(pos == null){
+            return null;
+        }
+
         //清除不必要數據
         pos.setDeviceId(null);
         return pos;
@@ -143,7 +147,7 @@ public class PosServiceImpl implements PosService {
         if (insertedRow == 1){
             return "success";
         }
-        return "插入失败";
+        return "數據新增失败";
     }
 }
 

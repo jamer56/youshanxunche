@@ -35,7 +35,7 @@ public class posController {
     public Result latest(@PathVariable String uuid, HttpServletRequest request) {
         Pos pos = posService.latest(uuid, request);
         if (pos == null) {
-            return Result.error("无记录");
+            return Result.error("查無記錄");
         }
         return Result.success(pos);
     }
@@ -62,10 +62,11 @@ public class posController {
      * @param request
      * @return
      */
-    @OperateLog
+//    @OperateLog
     @PostMapping
     public Result ins(@RequestBody Pos pos, HttpServletRequest request) {
-        log.info("新增数据:{}",pos);
+//        log.info("新增数据:{}",pos);
+        log.info("新增定位数据");
 
         String result = posService.ins(pos, request);
         if (result.equals("success")) {
