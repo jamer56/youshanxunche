@@ -19,7 +19,7 @@ public class JwtUtils {
         if (SECRET_KEY == null) {
             throw new RuntimeException("SECRET_KEY 為空",new RuntimeException("JWT錯誤"));
         }
-        log.info("是否讀取到環境變量:{}",System.getenv("JWT_SECRET_KEY")==null);
+        log.info("是否讀取到環境變量:{}",System.getenv("JWT_SECRET_KEY")!=null);
 
         String jwt = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
