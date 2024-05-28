@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.passay.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 //@SpringBootTest
 @Slf4j
@@ -94,10 +92,28 @@ class YoushanxuncheApplicationTests {
 
     }
 
-    @Test
+//    @Test
     void UUID(){
         log.info(UUID.randomUUID().toString().replace("-",""));
         log.info(UUID.randomUUID().toString().replace("-",""));
     }
+//    @Test
+    void getenv(){
+        String secret = System.getenv("PATH");
 
+        System.out.println(secret);
+    }
+//    @Test
+    void Jwt(){
+        String secret = System.getenv("JWT_SIGNKEY");
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", "123");
+        claims.put("username", "456");
+        claims.put("permission", "789");
+        String s = JwtUtils.generateJWT(claims);
+
+        log.info(secret);
+        log.info(s);
+    }
 }
