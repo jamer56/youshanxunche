@@ -7,6 +7,16 @@ pipeline {
                 git changelog: false, credentialsId: '0b75c3ca-c113-4cdc-85bf-1a8148dea06c', poll: false, url: 'git@github.com:jamer56/youshanxunche.git'
             }
         }
+        stage('code checking') {
+            steps{
+                script {
+                    scannerHome = tool 'sonar-scanner'
+                }
+                withSonarQubeEnv('SonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
         stage('build project') {
             steps {
                 sh 'mvn clean package -P prod'
