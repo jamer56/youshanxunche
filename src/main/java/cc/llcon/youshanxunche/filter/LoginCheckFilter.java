@@ -23,7 +23,7 @@ public class LoginCheckFilter implements Filter {
 		HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
 		//1.获取url
-		String url = req.getRequestURI().toString();
+		String url = req.getRequestURI();
 		log.info("请求的url:{}",url);
 		log.info("请求的方法:{}",req.getMethod());
 
@@ -62,7 +62,6 @@ public class LoginCheckFilter implements Filter {
 		try {
 			JwtUtils.parseJWT(jwt);
 		} catch (Exception e) {
-//			e.printStackTrace();
 			log.error("登入異常",e);
 			log.info("解析失败");
 			Result error =Result.error("NOT_LOGIN");
