@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Getter
+@Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {

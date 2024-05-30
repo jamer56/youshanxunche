@@ -80,6 +80,41 @@
         from tb_user
         where id = uuid_to_bin(#{uid})
     </select>
+    <select id="listByParam" resultType="cc.llcon.youshanxunche.pojo.User">
+        select bin_to_uuid(id) as id,
+        username,
+        name,
+        gender,
+        email,
+        permission,
+        fail_count,
+        create_time,
+        last_login_time
+        from tb_user
+        <where>
+            <if test="id != null">
+                id = UUID_TO_BIN(#{id})
+            </if>
+            <if test="username != null">
+                and username = #{username}
+            </if>
+            <if test="email != email">
+                and email = #{email}
+            </if>
+            <if test="createTimeBegin != null and createTimeEnd != null">
+                and create_time between #{createTimeBegin}and #{createTimeEnd}
+            </if>
+            <if test="lastLoginTimeBegin != null and lastLoginTimeEnd != null">
+                and last_login_time between #{lastLoginTimeBegin}and #{lastLoginTimeEnd}
+            </if>
+            <if test="gender != null">and gender = #{gender}</if>
+            <if test="permission != null">and permission = #{permission}</if>
+            <if test="failCount != null">and fail_count = #{failCount}</if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
 
 
 </mapper>

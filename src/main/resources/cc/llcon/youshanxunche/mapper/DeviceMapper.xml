@@ -21,12 +21,29 @@
         where id=uuid_to_bin(#{id})
     </update>
     <select id="list" resultType="cc.llcon.youshanxunche.pojo.Device">
-        select bin_to_uuid(d.id) as id, d.name, bin_to_uuid(user_id) as user_id, d.comment, hex(d.mac_address) as mac_address, d.create_time, d.update_time, date.date last_recode_time
+        select bin_to_uuid(d.id) as id,
+        bin_to_uuid(d.user_id) as user_id,
+        hex(d.mac_address) as mac_address,
+        d.name as name,
+        d.comment as comment,
+        d.create_time as create_time,
+        data.date as last_recode_time
         from tb_device d
-                 left join (select device_id, MAX(create_time) date
-                            from tb_pos
-                            group by device_id) date on d.id = date.device_id
-        order by last_recode_time desc
+        left join (select device_id, MAX(create_time) date
+        from tb_pos
+        group by device_id) data on d.id = data.device_id
+        <where>
+            <if test="userId != null and userId != 'null'">
+                and user_id = uuid_to_bin(#{userId})
+            </if>
+            <if test="userId == 'null'">
+                and user_id is null
+            </if>
+            <if test="id != null">
+                and id = UUID_TO_BIN(#{id})
+            </if>
+        </where>
+        order by id desc
     </select>
     <select id="getTotal" resultType="java.lang.Long">
         select count(*)

@@ -1,6 +1,7 @@
 package cc.llcon.youshanxunche.mapper;
 
 import cc.llcon.youshanxunche.pojo.Device;
+import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,13 +13,13 @@ public interface DeviceMapper {
 	 * 新增设备
 	 * @param device
 	 */
-	public void inst(Device device);
+	void inst(Device device);
 
 	/**
 	 * 查询所有设备
 	 * @return
 	 */
-	List<Device> list();
+	List<Device> list(ListDeviceParam user);
 
 	/**
 	 * 根据使用者id 获取设备列表

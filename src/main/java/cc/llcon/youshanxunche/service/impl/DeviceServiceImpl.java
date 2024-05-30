@@ -3,8 +3,11 @@ package cc.llcon.youshanxunche.service.impl;
 import cc.llcon.youshanxunche.mapper.DeviceMapper;
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.ListDevice;
+import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import cc.llcon.youshanxunche.service.DeviceService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,6 +25,8 @@ import java.util.UUID;
 public class DeviceServiceImpl implements DeviceService {
 	@Autowired
 	DeviceMapper deviceMapper;
+	@Autowired
+	HttpServletRequest request;
 
 	@Override
 	public Device register(Device device) {
@@ -38,11 +44,12 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
-	public ListDevice list(String jwt) {
+	public ListDevice list() {
 		//创建列表
 		ListDevice listDevice = new ListDevice();
 
 		//解析jwt 获取使用者id
+		String jwt = request.getHeader("Authorization");
 		Claims claims = JwtUtils.parseJWT(jwt);
 		String uid = (String) claims.get("id");
 
@@ -56,7 +63,7 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
-	public Device getById(String did, HttpServletRequest request) {
+	public Device getById(String did) {
 		String jwt = request.getHeader("Authorization");
 		Claims claims = JwtUtils.parseJWT(jwt);
 
@@ -97,7 +104,7 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
-	public Boolean modifyDeviceInfo(Device device, HttpServletRequest request) {
+	public Boolean modifyDeviceInfo(Device device) {
 		log.info("id:{}",device.getId());
 		log.info("name:{}",device.getName());
 		//1.确认输入
@@ -127,16 +134,9 @@ public class DeviceServiceImpl implements DeviceService {
 		//4.修改数据库
 		return deviceMapper.updateById(device);
 	}
-
-	/**
-	 * 用户添加设备
-	 *
-	 * @param request
-	 * @param device
-	 * @return
-	 */
+	
 	@Override
-	public String addDevice(HttpServletRequest request, Device device) {
+	public String addDevice(Device device) {
 		//获取用户id
 		String jwt = request.getHeader("Authorization");
 		Claims claims = JwtUtils.parseJWT(jwt);
@@ -167,5 +167,18 @@ public class DeviceServiceImpl implements DeviceService {
 			deviceMapper.updateById(device);
 
 		return "success";
+	}
+
+	@Override
+	public ListDevice listAllByParam(ListDeviceParam param) {
+		PageHelper.startPage(param.getPage(),param.getPageSize());
+		List<Device> list = deviceMapper.list(param);
+		Page<Device> page = (Page<Device>) list;
+
+		ListDevice listDevice = new ListDevice();
+		listDevice.setTotal(page.getTotal());
+		listDevice.setRows(page.getResult());
+
+		return listDevice;
 	}
 }

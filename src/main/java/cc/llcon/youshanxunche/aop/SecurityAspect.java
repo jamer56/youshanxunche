@@ -24,6 +24,7 @@ public class SecurityAspect {
 
     @Around("@annotation(cc.llcon.youshanxunche.anno.SecurityAuth)")
     public Object doBefore(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.info("開始驗證管理員權限");
         String jwt = request.getHeader("Authorization");
         Claims claims = JwtUtils.parseJWT(jwt);
         String uid = (String) claims.get("id");
@@ -38,6 +39,7 @@ public class SecurityAspect {
             throw new RuntimeException("权限不足 使用者"+user,new RuntimeException("管理员接口越权"));
 //            return Result.error("权限不足");
         }
+        log.info("管理員權限驗證成功");
         return joinPoint.proceed();
     }
 }

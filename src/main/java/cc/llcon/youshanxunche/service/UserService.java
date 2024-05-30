@@ -1,7 +1,8 @@
 package cc.llcon.youshanxunche.service;
 
+import cc.llcon.youshanxunche.pojo.ListUser;
+import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.User;
-import jakarta.servlet.http.HttpServletRequest;
 
 public interface UserService {
     /**
@@ -20,16 +21,16 @@ public interface UserService {
 
     /**
      * 获取用户资讯
-     * @param request
      * @return
      */
-    User getUserInfo(HttpServletRequest request);
+    User getUserInfo();
 
     /**
      * 修改用户资讯
-     * @param request
      * @param user
      * @return
      */
-    boolean modifyUserInfo(HttpServletRequest request, User user);
+    boolean modifyUserInfo(User user);
+
+    ListUser list(ListUserParam param);
 }

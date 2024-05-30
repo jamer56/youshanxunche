@@ -2,7 +2,7 @@ package cc.llcon.youshanxunche.service;
 
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.ListDevice;
-import jakarta.servlet.http.HttpServletRequest;
+import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 
 public interface DeviceService {
 	/**
@@ -16,13 +16,13 @@ public interface DeviceService {
 	 * 查询所有的装置
 	 * @return
 	 */
-	ListDevice list(String jwt);
+	ListDevice list();
 
 	/**
 	 * 根据id查询设备
 	 * @return
 	 */
-	Device getById(String id, HttpServletRequest request);
+	Device getById(String id);
 
 	/**
 	 * 设备登入
@@ -33,18 +33,22 @@ public interface DeviceService {
 
 	/**
 	 * 修改设备信息
-	 *
-	 * @param device
-	 * @param request
+	 * @param device 要修改的設備 含有目標配置
 	 */
-	Boolean modifyDeviceInfo(Device device, HttpServletRequest request);
+	Boolean modifyDeviceInfo(Device device);
 
 	/**
 	 * 用户添加设备
-	 *
-	 * @param request
 	 * @param device
 	 * @return
 	 */
-	String addDevice(HttpServletRequest request, Device device);
+	String addDevice(Device device);
+
+	/**
+	 * 條件查詢設備
+	 * 管理員使用
+	 * @param param
+	 * @return
+	 */
+	ListDevice listAllByParam(ListDeviceParam param);
 }

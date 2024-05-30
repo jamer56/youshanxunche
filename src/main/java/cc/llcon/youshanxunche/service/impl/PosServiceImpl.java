@@ -25,16 +25,11 @@ public class PosServiceImpl implements PosService {
     DeviceMapper deviceMapper;
     @Autowired
     PosMapper posMapper;
+    @Autowired
+    HttpServletRequest request;
 
-    /**
-     * 獲取最後定位資訊
-     *
-     * @param dId
-     * @param request
-     * @return
-     */
     @Override
-    public Pos latest(String dId, HttpServletRequest request) {
+    public Pos latest(String dId) {
 
         //1 验证是否修改自己的设备
         //1.1 获取uid
@@ -68,11 +63,8 @@ public class PosServiceImpl implements PosService {
         return pos;
     }
 
-    /**
-     * 通过 '时间' 和 'deviceid' 查询 定位資訊
-     */
     @Override
-    public ListPos list(PosParam posParam, HttpServletRequest request) {
+    public ListPos list(PosParam posParam) {
         //判斷參數
         if (!posParam.getBegin().isBefore(posParam.getEnd())) {
             return null;
@@ -99,7 +91,7 @@ public class PosServiceImpl implements PosService {
     }
 
     @Override
-    public String ins(Pos pos, HttpServletRequest request) {
+    public String ins(Pos pos) {
         //1. 驗證輸入
         //1.1 驗證空
         if (pos.getLatitude() == null ||

@@ -1,7 +1,10 @@
 package cc.llcon.youshanxunche.mapper;
 
+import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -25,4 +28,6 @@ public interface UserMapper {
 	User getByEmail(String email);
 
 	User getById(String uid);
+
+	List<User> listByParam(ListUserParam param);
 }

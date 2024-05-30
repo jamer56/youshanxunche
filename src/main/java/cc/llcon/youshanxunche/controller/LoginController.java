@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-//@CrossOrigin("http://127.0.0.1:7000/")
 public class LoginController {
     @Autowired
     UserService userService;

@@ -1,10 +1,14 @@
 package cc.llcon.youshanxunche.service.impl;
 
 import cc.llcon.youshanxunche.mapper.UserMapper;
+import cc.llcon.youshanxunche.pojo.ListUser;
+import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.User;
 import cc.llcon.youshanxunche.service.UserService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
 import io.jsonwebtoken.Claims;
@@ -25,9 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    HttpServletRequest request;
 
     /**
      * 用户登入
+     *
      * @param user
      * @return
      */
@@ -101,6 +108,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户注册
+     *
      * @param user
      * @return
      */
@@ -194,7 +202,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User getUserInfo(HttpServletRequest request) {
+    public User getUserInfo() {
         //获取用户uid
         String jwt = request.getHeader("Authorization");
         Claims claims = JwtUtils.parseJWT(jwt);
@@ -213,14 +221,14 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 修改用户信息
-     * @param request
+     *
      * @param user
      * @return
      */
     @Override
-    public boolean modifyUserInfo(HttpServletRequest request, @NotNull User user) {
+    public boolean modifyUserInfo(@NotNull User user) {
         //确认输入
-        if (user.getName() == null || user.getName().isBlank()){
+        if (user.getName() == null || user.getName().isBlank()) {
             log.info("修改用户信息失败 验证输入失败");
             return false;
         }
@@ -236,11 +244,24 @@ public class UserServiceImpl implements UserService {
         }
 
         //获取uid
-        String uid = (String)JwtUtils.parseJWT((request.getHeader("Authorization"))).get("id");
+        String uid = (String) JwtUtils.parseJWT((request.getHeader("Authorization"))).get("id");
         //添加信息
         user.setId(uid);
         user.setUpdateTime(LocalDateTime.now());
         //修改数据库
         return userMapper.update(user);
+    }
+
+    @Override
+    public ListUser list(@NotNull() ListUserParam param) {
+        PageHelper.startPage(param.getPage(), param.getPageSize());
+
+        List<User> userList = userMapper.listByParam(param);
+        Page<User> p = (Page<User>) userList;
+
+        ListUser listUser = new ListUser();
+        listUser.setRows(p.getResult());
+        listUser.setTotal(p.getTotal());
+        return listUser;
     }
 }

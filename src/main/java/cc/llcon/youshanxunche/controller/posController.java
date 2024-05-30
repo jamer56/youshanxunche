@@ -1,13 +1,11 @@
 package cc.llcon.youshanxunche.controller;
 
-import cc.llcon.youshanxunche.anno.OperateLog;
 import cc.llcon.youshanxunche.anno.SelectLog;
 import cc.llcon.youshanxunche.pojo.ListPos;
 import cc.llcon.youshanxunche.pojo.Pos;
 import cc.llcon.youshanxunche.pojo.PosParam;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.service.PosService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,13 +25,12 @@ public class posController {
      * 獲取最後定位資訊
      *
      * @param uuid
-     * @param request
      * @return
      */
     @SelectLog
     @GetMapping("/{uuid}/latest")
-    public Result latest(@PathVariable String uuid, HttpServletRequest request) {
-        Pos pos = posService.latest(uuid, request);
+    public Result latest(@PathVariable String uuid) {
+        Pos pos = posService.latest(uuid);
         if (pos == null) {
             return Result.error("查無記錄");
         }
@@ -45,11 +42,11 @@ public class posController {
      */
     @SelectLog
     @GetMapping("/{dID}")
-    public Result list(@PathVariable() String dID, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime begin, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime end, HttpServletRequest request) {
+    public Result list(@PathVariable() String dID, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime begin, @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime end) {
         //包裝參數
         PosParam posParam = new PosParam(dID, begin, end);
 
-        ListPos listPos = posService.list(posParam, request);
+        ListPos listPos = posService.list(posParam);
         if (listPos == null || listPos.getTotal() == 0) {
             return Result.error("查無結果");
         }
@@ -59,16 +56,15 @@ public class posController {
     /**
      * 新增记录
      * @param pos
-     * @param request
      * @return
      */
 //    @OperateLog
     @PostMapping
-    public Result ins(@RequestBody Pos pos, HttpServletRequest request) {
+    public Result ins(@RequestBody Pos pos) {
 //        log.info("新增数据:{}",pos);
         log.info("新增定位数据");
 
-        String result = posService.ins(pos, request);
+        String result = posService.ins(pos);
         if (result.equals("success")) {
             return Result.success();
         }
