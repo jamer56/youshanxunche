@@ -8,31 +8,31 @@
     <select id="getOperateLogMethodListByClassName" resultType="string">
         select distinct(method_name)
         from operate_log
-        where class_name=#{classname};
+        where class_name = #{classname};
     </select>
-        <select id="getListOperateLog" resultType="cc.llcon.youshanxunche.pojo.OperateLog">
-            select id,
-            bin_to_uuid(operate_user) as operate_user,
-            operate_time,
-            class_name,
-            method_name,
-            method_params,
-            return_value,
-            cost_time
-            from operate_log
-            <where>
-                <if test="className != null">
-                    class_name = #{className}
-                </if>
-                <if test="methodName != null">
-                    and method_name = #{methodName}
-                </if>
-                <if test="begin!=null and end != null">
-                    and operate_time between #{begin} and #{end}
-                </if>
-            </where>
-            ORDER BY operate_time DESC ,id DESC
-        </select>
+    <select id="getListOperateLog" resultType="cc.llcon.youshanxunche.pojo.OperateLog">
+        select id,
+        bin_to_uuid(operate_user) as operate_user,
+        operate_time,
+        class_name,
+        method_name,
+        method_params,
+        return_value,
+        cost_time
+        from operate_log
+        <where>
+            <if test="className != null">
+                class_name = #{className}
+            </if>
+            <if test="methodName != null">
+                and method_name = #{methodName}
+            </if>
+            <if test="begin!=null and end != null">
+                and operate_time between #{begin} and #{end}
+            </if>
+        </where>
+        ORDER BY operate_time DESC ,id DESC
+    </select>
     <select id="getListSelectLogClass" resultType="java.lang.String">
         select distinct(class_name)
         from select_log
@@ -40,7 +40,7 @@
     <select id="getSelectLogMethodListByClassName" resultType="java.lang.String">
         select distinct(method_name)
         from select_log
-        where class_name=#{classname};
+        where class_name = #{classname};
     </select>
     <select id="getListSelectLog" resultType="cc.llcon.youshanxunche.pojo.OperateLog">
         select id,
@@ -85,7 +85,8 @@
         ORDER BY time DESC ,id DESC
     </select>
     <select id="getLoginLog" resultType="cc.llcon.youshanxunche.pojo.LoginLogPojo">
-        select l.id, operate_user as operateUserName,bin_to_uuid(u.id) as operate_user_id, l.operate_time, return_value, cost_time
+        select l.id, operate_user as operateUserName,bin_to_uuid(u.id) as operate_user_id, l.operate_time, return_value,
+        cost_time
         from login_log l left join (select * from tb_user) u on l.operate_user=u.username
         <where>
             <if test="userName != null">

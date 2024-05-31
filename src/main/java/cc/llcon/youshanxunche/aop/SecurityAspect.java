@@ -31,12 +31,12 @@ public class SecurityAspect {
         Integer permission = (Integer) claims.get("permission");
 
 
-        if (permission ==1){
+        if (permission == 1) {
             User user = userMapper.getById(uid);
             user.setPassword(null);
             user.setSalt(null);
 
-            throw new RuntimeException("权限不足 使用者"+user,new RuntimeException("管理员接口越权"));
+            throw new RuntimeException("权限不足 使用者" + user, new RuntimeException("管理员接口越权"));
 //            return Result.error("权限不足");
         }
         log.info("管理員權限驗證成功");

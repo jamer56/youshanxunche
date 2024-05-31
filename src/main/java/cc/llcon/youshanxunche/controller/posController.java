@@ -55,6 +55,7 @@ public class posController {
 
     /**
      * 新增记录
+     *
      * @param pos
      * @return
      */

@@ -98,15 +98,15 @@ public class OperateLogAspect {
         Long end = System.currentTimeMillis();
         //操作使用者
         Object[] args = joinPoint.getArgs();
-        User user = (User)Arrays.stream(args).toList().get(0);
+        User user = (User) Arrays.stream(args).toList().get(0);
         String operateUserName = user.getUsername();
         //操作方法返回值
         Result result1 = (Result) result;
-        String returnValue=result1.getCode().toString();
+        String returnValue = result1.getCode().toString();
         //操作耗时
         Long costTime = end - begin;
 
-        LoginLogPojo loginlog = new LoginLogPojo(null,null,operateUserName,operateTime,returnValue,costTime);
+        LoginLogPojo loginlog = new LoginLogPojo(null, null, operateUserName, operateTime, returnValue, costTime);
         operateLogMapper.insertLoginLog(loginlog);
 
         return result;

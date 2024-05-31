@@ -24,6 +24,7 @@ public class LoginController {
 
     /**
      * 用户登入
+     *
      * @param user 使用者对象
      * @return 结果
      */
@@ -35,10 +36,10 @@ public class LoginController {
 
         if (u != null) {
             if (u.getJwt() != null) {
-                log.info("生成的jwt:{}",u.getJwt());
+                log.info("生成的jwt:{}", u.getJwt());
                 return Result.success(u.getJwt());
-            }else {
-                return Result.error("账号或密码错误",u.getFailCount());
+            } else {
+                return Result.error("账号或密码错误", u.getFailCount());
             }
         } else {
             return Result.error("账号或密码错误");
@@ -53,14 +54,14 @@ public class LoginController {
 
         if (u != null) {
             if (u.getJwt() != null) {
-                log.info("生成的jwt:{}",u.getJwt());
-                if (u.getPermission()!=2){
+                log.info("生成的jwt:{}", u.getJwt());
+                if (u.getPermission() != 2) {
                     log.warn("没有权限");
-                    throw new RuntimeException("使用者登入管理员页面 使用者:"+u.getUsername(),new RuntimeException("管理员接口越权"));
+                    throw new RuntimeException("使用者登入管理员页面 使用者:" + u.getUsername(), new RuntimeException("管理员接口越权"));
                 }
                 return Result.success(u.getJwt());
-            }else {
-                return Result.error("账号或密码错误",u.getFailCount());
+            } else {
+                return Result.error("账号或密码错误", u.getFailCount());
             }
         } else {
             return Result.error("账号或密码错误");
@@ -70,20 +71,21 @@ public class LoginController {
 
     /**
      * 设备登入
+     *
      * @param device
      * @return
      */
     @PostMapping(value = "/devices/login")
-	public Result deviceLogin(@RequestBody Device device){
-		log.info("设备登入 device:{}",device);
-		Device d = deviceService.login(device);
+    public Result deviceLogin(@RequestBody Device device) {
+        log.info("设备登入 device:{}", device);
+        Device d = deviceService.login(device);
 
-		if (d!=null){
+        if (d != null) {
 //			log.info("生成的jwt:{}",u.getJwt());
-			return Result.success(d.getJwt());
-		}else {
-			return Result.error("登入失败");
-		}
-	}
+            return Result.success(d.getJwt());
+        } else {
+            return Result.error("登入失败");
+        }
+    }
 
 }

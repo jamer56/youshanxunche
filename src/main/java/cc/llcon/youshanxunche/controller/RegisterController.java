@@ -19,8 +19,10 @@ public class RegisterController {
     UserService userService;
     @Autowired
     DeviceService deviceService;
+
     /**
      * 用戶註冊
+     *
      * @param user 註冊信息
      * @return 結果
      */
@@ -35,6 +37,7 @@ public class RegisterController {
             return Result.error(msg);
         }
     }
+
     /**
      * 设备注册
      */

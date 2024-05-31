@@ -23,21 +23,21 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<String> listOperateLogClass() {
-        List<String> list= logMapper.getListOperateLogClass();
+        List<String> list = logMapper.getListOperateLogClass();
         return list;
     }
 
     @Override
     public List<String> getOperateLogMethodListByClassName(String classname) {
-        List<String> list=logMapper.getOperateLogMethodListByClassName(classname);
+        List<String> list = logMapper.getOperateLogMethodListByClassName(classname);
         return list;
     }
 
     @Override
     public ListOperateLog getOperateLogList(Integer page, Integer pageSize, String className, String methodName, LocalDateTime begin, LocalDateTime end) {
-        PageHelper.startPage(page,pageSize);
+        PageHelper.startPage(page, pageSize);
 
-        List<OperateLog> list =logMapper.getListOperateLog(className,methodName,begin,end);
+        List<OperateLog> list = logMapper.getListOperateLog(className, methodName, begin, end);
         Page<OperateLog> p = (Page<OperateLog>) list;
 
         ListOperateLog listOperateLog = new ListOperateLog();
@@ -49,21 +49,21 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<String> listSelectLogClass() {
-        List<String> list= logMapper.getListSelectLogClass();
+        List<String> list = logMapper.getListSelectLogClass();
         return list;
     }
 
     @Override
     public List<String> getSelectLogMethodListByClassName(String classname) {
-        List<String> list=logMapper.getSelectLogMethodListByClassName(classname);
+        List<String> list = logMapper.getSelectLogMethodListByClassName(classname);
         return list;
     }
 
     @Override
     public ListOperateLog getSelectLogList(Integer page, Integer pageSize, String className, String methodName, LocalDateTime begin, LocalDateTime end) {
-        PageHelper.startPage(page,pageSize);
+        PageHelper.startPage(page, pageSize);
 
-        List<OperateLog> list =logMapper.getListSelectLog(className,methodName,begin,end);
+        List<OperateLog> list = logMapper.getListSelectLog(className, methodName, begin, end);
         Page<OperateLog> p = (Page<OperateLog>) list;
 
         ListOperateLog listOperateLog = new ListOperateLog();
@@ -75,15 +75,15 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<String> ErrorLogClassificationList() {
-        List<String> list =logMapper.getErrorLogClassificationList();
+        List<String> list = logMapper.getErrorLogClassificationList();
         return list;
     }
 
     @Override
     public ListErrorLog listErrorLog(ListLogParam param) {
-        PageHelper.startPage(param.getPage(),param.getPageSize());
+        PageHelper.startPage(param.getPage(), param.getPageSize());
 
-        List<ErrorLog> list =logMapper.getListErrorLog(param.getClassification(),param.getBegin(), param.getEnd());
+        List<ErrorLog> list = logMapper.getListErrorLog(param.getClassification(), param.getBegin(), param.getEnd());
         Page<ErrorLog> p = (Page<ErrorLog>) list;
 
         ListErrorLog listOperateLog = new ListErrorLog();
@@ -104,7 +104,7 @@ public class LogServiceImpl implements LogService {
         } catch (Exception e) {
             //忽略
         }
-        PageHelper.startPage(param.getPage(),param.getPageSize());
+        PageHelper.startPage(param.getPage(), param.getPageSize());
 
         List<LoginLogPojo> list = logMapper.getLoginLog(param);
         Page<LoginLogPojo> p = (Page<LoginLogPojo>) list;

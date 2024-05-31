@@ -14,15 +14,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Device {
-	private String id;
-	private String name;
-	private String userId;
-	private String macAddress;
-	private String comment;
-	@JsonIgnore
-	private String jwt;
-	private LocalDateTime createTime;
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private LocalDateTime updateTime;
-	private LocalDateTime lastRecodeTime;
+    private String id;
+    private String name;
+    private String userId;
+    private String macAddress;
+    private String comment;
+    @JsonIgnore
+    private String jwt;
+    private LocalDateTime createTime;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private LocalDateTime updateTime;
+    private LocalDateTime lastRecodeTime;
 }

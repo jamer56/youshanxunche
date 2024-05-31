@@ -38,7 +38,7 @@ public class UserController {
     @OperateLog
     @PutMapping
     public Result modifyUserInfo(@RequestBody User user) {
-        log.info("修改用戶信息信息:{}",user.toString());
+        log.info("修改用戶信息信息:{}", user.toString());
         if (userService.modifyUserInfo(user)) {
             return Result.success();
         } else {
@@ -51,12 +51,13 @@ public class UserController {
     /**
      * 條件查詢 所有用戶接口
      * 管理員接口
+     *
      * @return 查詢到的用戶列表
      */
     @SecurityAuth
     @SelectLog
     @GetMapping("/list")
-    public Result list(ListUserParam param){
+    public Result list(ListUserParam param) {
         log.info("管理員查詢所有用戶 參數:{}", JSON.toJSONString(param));
 
         ListUser list = userService.list(param);

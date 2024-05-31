@@ -10,6 +10,7 @@ import java.util.List;
 public interface PosMapper {
     /**
      * 使用did查詢最後一筆記錄
+     *
      * @param dId
      * @return
      */
@@ -25,6 +26,7 @@ public interface PosMapper {
 
     /**
      * 獲取 日期區間 特定設備 的總記錄數
+     *
      * @param posParam
      * @return
      */

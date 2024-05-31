@@ -45,8 +45,8 @@ public class PosServiceImpl implements PosService {
             log.error("越權存取:{} 設備{} 持有人{}", uid, deviceCheck.getId(), deviceCheck.getUserId());
 
             //todo 越權記錄
-            String rTEM = "獲取其他用户最後定位資訊" +"操作者"+uid+"设备"+deviceCheck;
-            throw new RuntimeException(rTEM,new RuntimeException("使用者接口越權"));
+            String rTEM = "獲取其他用户最後定位資訊" + "操作者" + uid + "设备" + deviceCheck;
+            throw new RuntimeException(rTEM, new RuntimeException("使用者接口越權"));
 //            return null;
         }
 
@@ -54,7 +54,7 @@ public class PosServiceImpl implements PosService {
         Pos pos = posMapper.getLatestById(dId);
 
         //判斷是否有記錄
-        if(pos == null){
+        if (pos == null) {
             return null;
         }
 
@@ -79,8 +79,8 @@ public class PosServiceImpl implements PosService {
         if (!checkDevice.getUserId().equals(uid)) {
             //todo 越權記錄
             log.error("查詢越權");
-            String rTEM = "查询其他用户设备" +"操作者"+uid+"设备"+checkDevice;
-            throw new RuntimeException(rTEM,new RuntimeException("使用者接口越權"));
+            String rTEM = "查询其他用户设备" + "操作者" + uid + "设备" + checkDevice;
+            throw new RuntimeException(rTEM, new RuntimeException("使用者接口越權"));
         }
         //查詢
         ListPos listPos = new ListPos();
@@ -103,21 +103,21 @@ public class PosServiceImpl implements PosService {
         }
         //1.2 驗證範圍
         //1.2.1 经度
-        if (pos.getLongitude().doubleValue()>180||pos.getLongitude().doubleValue()<-180){
+        if (pos.getLongitude().doubleValue() > 180 || pos.getLongitude().doubleValue() < -180) {
             //经度不合法
             return "经度不合法";
         }
         //1.2.2 纬度
-        if (pos.getLatitude().doubleValue()>90||pos.getLatitude().doubleValue()<-90){
+        if (pos.getLatitude().doubleValue() > 90 || pos.getLatitude().doubleValue() < -90) {
             //经度不合法
             return "纬度不合法";
         }
         //1.2.3 经度方向
-        if (!(pos.getLongitudeDir().equals("E")||pos.getLongitudeDir().equals("W"))){
+        if (!(pos.getLongitudeDir().equals("E") || pos.getLongitudeDir().equals("W"))) {
             return "经度方向不合法";
         }
         //1.2.4 纬度方向
-        if (!(pos.getLatitudeDir().equals("S")||pos.getLatitudeDir().equals("N"))){
+        if (!(pos.getLatitudeDir().equals("S") || pos.getLatitudeDir().equals("N"))) {
             return "纬度方向不合法";
         }
         //2.新增信息
@@ -127,7 +127,7 @@ public class PosServiceImpl implements PosService {
 
         //2.1 验证设备是否存在
         Device deviceCheck = deviceMapper.getById(dID);
-        if (deviceCheck==null){
+        if (deviceCheck == null) {
             log.info("设备不存在");
             return "设备不存在";
         }
@@ -138,7 +138,7 @@ public class PosServiceImpl implements PosService {
 
         //3. 新增記錄
         Integer insertedRow = posMapper.ins(pos);
-        if (insertedRow == 1){
+        if (insertedRow == 1) {
             return "success";
         }
         return "數據新增失败";

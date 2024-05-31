@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class AuthUtils {
 
-    public static String getUID(HttpServletRequest request){
+    public static String getUID(HttpServletRequest request) {
         String jwt = request.getHeader("Authorization");
         Claims claims = JwtUtils.parseJWT(jwt);
         return (String) claims.get("id");

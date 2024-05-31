@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ListDeviceParam extends Device{
-    private Integer page=1;
-    private Integer pageSize =10;
+public class ListDeviceParam extends Device {
+    private Integer page = 1;
+    private Integer pageSize = 10;
 }

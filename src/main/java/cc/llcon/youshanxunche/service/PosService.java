@@ -7,6 +7,7 @@ import cc.llcon.youshanxunche.pojo.PosParam;
 public interface PosService {
     /**
      * 获取最后定位資訊
+     *
      * @param uuid
      * @return
      */
@@ -19,6 +20,7 @@ public interface PosService {
 
     /**
      * 新增定位資訊
+     *
      * @param pos
      * @return
      */

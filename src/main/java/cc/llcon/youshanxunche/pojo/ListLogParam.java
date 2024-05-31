@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListLogParam {
-    private Integer page=1;
-    private Integer pageSize =10;
+    private Integer page = 1;
+    private Integer pageSize = 10;
     private String userName;
     private String className;
     private String classification;

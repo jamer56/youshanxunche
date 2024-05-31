@@ -97,6 +97,7 @@ public class LogController {
 
     /**
      * 获取 错误日志 分类列表
+     *
      * @return
      */
     @SecurityAuth
@@ -109,6 +110,7 @@ public class LogController {
 
     /**
      * 獲取錯誤日誌
+     *
      * @param param
      * @return
      */
@@ -122,6 +124,7 @@ public class LogController {
 
     /**
      * 獲取登入日誌
+     *
      * @param param
      * @return
      */

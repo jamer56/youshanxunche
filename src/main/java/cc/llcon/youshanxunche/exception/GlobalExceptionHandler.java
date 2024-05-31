@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -30,7 +31,7 @@ public class GlobalExceptionHandler {
         Throwable exCause = ex.getCause();
         if (exCause != null) {
             errorLog.setClassification(exCause.getMessage());
-        }else{
+        } else {
             errorLog.setClassification(null);
         }
 
@@ -51,7 +52,7 @@ public class GlobalExceptionHandler {
 //      String exstack=ex.getStackTrace()[0].toString();
 //		log.error(exstack);
 //        ex.printStackTrace();
-        log.error("全局異常處理",ex);
+        log.error("全局異常處理", ex);
 
         return Result.error("操作失敗,請聯絡管理員");
     }

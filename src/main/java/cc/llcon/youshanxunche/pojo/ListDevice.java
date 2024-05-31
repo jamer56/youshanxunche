@@ -15,6 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListDevice {
-	private Long total;
-	private List<Device> rows;
+    private Long total;
+    private List<Device> rows;
 }

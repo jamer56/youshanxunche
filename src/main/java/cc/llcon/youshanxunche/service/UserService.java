@@ -7,6 +7,7 @@ import cc.llcon.youshanxunche.pojo.User;
 public interface UserService {
     /**
      * 用户登入
+     *
      * @param user
      * @return
      */
@@ -14,6 +15,7 @@ public interface UserService {
 
     /**
      * 用户注册
+     *
      * @param user
      * @return
      */
@@ -21,12 +23,14 @@ public interface UserService {
 
     /**
      * 获取用户资讯
+     *
      * @return
      */
     User getUserInfo();
 
     /**
      * 修改用户资讯
+     *
      * @param user
      * @return
      */
