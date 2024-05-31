@@ -9,6 +9,7 @@ import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.pojo.User;
 import cc.llcon.youshanxunche.service.UserService;
+import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,7 @@ public class UserController {
     @SelectLog
     @GetMapping("/list")
     public Result list(ListUserParam param){
-        log.info("管理員查詢所有用戶 參數:{}",param.toString());
+        log.info("管理員查詢所有用戶 參數:{}", JSON.toJSONString(param));
 
         ListUser list = userService.list(param);
 

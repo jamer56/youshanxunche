@@ -84,8 +84,6 @@ public class DeviceController {
 	@GetMapping("/list")
 	public Result listByParam(ListDeviceParam param){
 		ListDevice listDevice = deviceService.listAllByParam(param);
-
-
 		if (listDevice == null) {
 			return Result.error("查無數據");
 		}

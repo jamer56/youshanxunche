@@ -109,9 +109,9 @@
             </if>
             <if test="gender != null">and gender = #{gender}</if>
             <if test="permission != null">and permission = #{permission}</if>
-            <if test="failCount != null">and fail_count = #{failCount}</if>
+            <if test="failCount != null">and fail_count >= #{failCount}</if>
             <if test="name != null">
-                and name = #{name}
+                and name like concat('%',#{name},'%')
             </if>
         </where>
     </select>

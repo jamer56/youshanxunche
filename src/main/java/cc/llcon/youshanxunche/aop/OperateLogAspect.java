@@ -6,6 +6,7 @@ import cc.llcon.youshanxunche.pojo.OperateLog;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.pojo.User;
 import cc.llcon.youshanxunche.utils.AuthUtils;
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +71,7 @@ public class OperateLogAspect {
         String methodName = joinPoint.getSignature().getName();
         //操作方法参数
         Object[] args = joinPoint.getArgs();
-        String methodParams = Arrays.toString(args);
+        String methodParams = JSON.toJSONString(args);
         //调用原方法
         Long begin = System.currentTimeMillis();
         Object result = joinPoint.proceed();

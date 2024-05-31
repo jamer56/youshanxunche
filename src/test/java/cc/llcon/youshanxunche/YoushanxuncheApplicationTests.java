@@ -1,6 +1,8 @@
 package cc.llcon.youshanxunche;
 
+import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.utils.JwtUtils;
+import com.alibaba.fastjson2.JSON;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
 import io.jsonwebtoken.Claims;
@@ -8,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
 import org.passay.*;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 
@@ -115,5 +116,14 @@ class YoushanxuncheApplicationTests {
 
         log.info(secret);
         log.info(s);
+    }
+//    @Test
+    void tostringtest(){
+        ListUserParam userParam = new ListUserParam();
+
+        userParam.setEmail("dsf");
+
+        log.info(JSON.toJSONString(userParam));
+        log.info(userParam.toString());
     }
 }
