@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -25,11 +24,13 @@ import java.util.Arrays;
 
 public class OperateLogAspect {
 
-    @Autowired
-    HttpServletRequest request;
+    final HttpServletRequest request;
+    private final OperateLogMapper operateLogMapper;
 
-    @Autowired
-    private OperateLogMapper operateLogMapper;
+    public OperateLogAspect(HttpServletRequest request, OperateLogMapper operateLogMapper) {
+        this.request = request;
+        this.operateLogMapper = operateLogMapper;
+    }
 
     @Around("@annotation(cc.llcon.youshanxunche.anno.OperateLog)")
     public Object recordOperateLog(ProceedingJoinPoint joinPoint) throws Throwable {

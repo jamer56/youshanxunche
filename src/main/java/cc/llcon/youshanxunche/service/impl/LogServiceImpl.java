@@ -7,7 +7,6 @@ import cc.llcon.youshanxunche.service.LogService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,10 +15,13 @@ import java.util.List;
 @Slf4j
 @Service
 public class LogServiceImpl implements LogService {
-    @Autowired
-    LogMapper logMapper;
-    @Autowired
-    UserMapper userMapper;
+    final LogMapper logMapper;
+    final UserMapper userMapper;
+
+    public LogServiceImpl(LogMapper logMapper, UserMapper userMapper) {
+        this.logMapper = logMapper;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public List<String> listOperateLogClass() {

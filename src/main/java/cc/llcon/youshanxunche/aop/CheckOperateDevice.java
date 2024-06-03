@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -15,12 +14,15 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class CheckOperateDevice {
 
-    @Autowired
-    HttpServletRequest request;
-    @Autowired
-    DeviceMapper deviceMapper;
-    @Autowired
-    OperateLogMapper logMapper;
+    final HttpServletRequest request;
+    final DeviceMapper deviceMapper;
+    final OperateLogMapper logMapper;
+
+    public CheckOperateDevice(HttpServletRequest request, DeviceMapper deviceMapper, OperateLogMapper logMapper) {
+        this.request = request;
+        this.deviceMapper = deviceMapper;
+        this.logMapper = logMapper;
+    }
 
     /**
      * todo 确认操作设备为自己的

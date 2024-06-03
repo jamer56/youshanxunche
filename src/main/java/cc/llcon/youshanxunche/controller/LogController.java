@@ -5,7 +5,6 @@ import cc.llcon.youshanxunche.anno.SelectLog;
 import cc.llcon.youshanxunche.pojo.*;
 import cc.llcon.youshanxunche.service.LogService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/log")
 public class LogController {
-    @Autowired
-    LogService logService;
+
+    final LogService logService;
+
+    public LogController(LogService logService) {
+        this.logService = logService;
+    }
 
     /**
      * 獲取 操作日志 类(class) 列表

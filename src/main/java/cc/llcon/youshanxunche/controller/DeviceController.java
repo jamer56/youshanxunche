@@ -9,15 +9,18 @@ import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.service.DeviceService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/devices")
 public class DeviceController {
-    @Autowired
+    final
     DeviceService deviceService;
+
+    public DeviceController(DeviceService deviceService) {
+        this.deviceService = deviceService;
+    }
 
     /**
      * 查询用戶自己的设备列表

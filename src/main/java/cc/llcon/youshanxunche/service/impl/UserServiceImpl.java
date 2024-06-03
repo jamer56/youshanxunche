@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 import org.passay.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,10 +26,13 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    HttpServletRequest request;
+    final UserMapper userMapper;
+    final HttpServletRequest request;
+
+    public UserServiceImpl(UserMapper userMapper, HttpServletRequest request) {
+        this.userMapper = userMapper;
+        this.request = request;
+    }
 
     /**
      * 用户登入
@@ -150,12 +152,7 @@ public class UserServiceImpl implements UserService {
         //建立密码规则
         List<Rule> rules = new ArrayList<>();
         rules.add(new LengthRule(8, 32));
-        CharacterCharacteristicsRule characterCharacteristicsRule = new CharacterCharacteristicsRule(4,
-                new CharacterRule(EnglishCharacterData.UpperCase, 1),
-                new CharacterRule(EnglishCharacterData.LowerCase, 1),
-                new CharacterRule(EnglishCharacterData.Digit, 1),
-                new CharacterRule(EnglishCharacterData.Special, 1)
-        );
+        CharacterCharacteristicsRule characterCharacteristicsRule = new CharacterCharacteristicsRule(4, new CharacterRule(EnglishCharacterData.UpperCase, 1), new CharacterRule(EnglishCharacterData.LowerCase, 1), new CharacterRule(EnglishCharacterData.Digit, 1), new CharacterRule(EnglishCharacterData.Special, 1));
         rules.add(characterCharacteristicsRule);
         rules.add(new UsernameRule());
         rules.add(new WhitespaceRule());

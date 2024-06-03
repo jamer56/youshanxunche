@@ -7,7 +7,6 @@ import cc.llcon.youshanxunche.pojo.PosParam;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.service.PosService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +17,11 @@ import java.time.LocalDateTime;
 @Slf4j
 public class posController {
 
-    @Autowired
-    PosService posService;
+    final PosService posService;
+
+    public posController(PosService posService) {
+        this.posService = posService;
+    }
 
     /**
      * 獲取最後定位資訊

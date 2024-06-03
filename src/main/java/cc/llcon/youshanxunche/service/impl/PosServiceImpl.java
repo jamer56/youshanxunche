@@ -12,7 +12,6 @@ import cc.llcon.youshanxunche.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,12 +20,15 @@ import java.time.LocalDateTime;
 @Slf4j
 public class PosServiceImpl implements PosService {
 
-    @Autowired
-    DeviceMapper deviceMapper;
-    @Autowired
-    PosMapper posMapper;
-    @Autowired
-    HttpServletRequest request;
+    final DeviceMapper deviceMapper;
+    final PosMapper posMapper;
+    final HttpServletRequest request;
+
+    public PosServiceImpl(DeviceMapper deviceMapper, PosMapper posMapper, HttpServletRequest request) {
+        this.deviceMapper = deviceMapper;
+        this.posMapper = posMapper;
+        this.request = request;
+    }
 
     @Override
     public Pos latest(String dId) {
@@ -94,11 +96,7 @@ public class PosServiceImpl implements PosService {
     public String ins(Pos pos) {
         //1. 驗證輸入
         //1.1 驗證空
-        if (pos.getLatitude() == null ||
-                pos.getLatitudeDir() == null ||
-                pos.getLongitude() == null ||
-                pos.getLongitudeDir() == null ||
-                pos.getSats() == null) {
+        if (pos.getLatitude() == null || pos.getLatitudeDir() == null || pos.getLongitude() == null || pos.getLongitudeDir() == null || pos.getSats() == null) {
             return "参数不完整";
         }
         //1.2 驗證範圍

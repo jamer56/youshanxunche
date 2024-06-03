@@ -3,6 +3,8 @@ package cc.llcon.youshanxunche;
 import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.utils.JwtUtils;
 import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.mysql.cj.log.Log;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
 import io.jsonwebtoken.Claims;
@@ -11,6 +13,10 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
 import org.passay.*;
 
+import java.math.BigInteger;
+import java.sql.Array;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.*;
 
 //@SpringBootTest
@@ -28,48 +34,47 @@ class YoushanxuncheApplicationTests {
     }
 
 
-//@Test
-    void password(){
+    //@Test
+    void password() {
         PasswordData passwordData = new PasswordData("jamer56@JC5441");
         passwordData.setUsername("jamer56");
 
         List<Rule> rules = new ArrayList<Rule>();
-        rules.add(new LengthRule(8,32));
-        CharacterCharacteristicsRule characterCharacteristicsRule =new CharacterCharacteristicsRule(4,
-                new CharacterRule(EnglishCharacterData.UpperCase,1),
-                new CharacterRule(EnglishCharacterData.LowerCase,1),
-                new CharacterRule(EnglishCharacterData.Digit,1),
-                new CharacterRule(EnglishCharacterData.Special,1)
+        rules.add(new LengthRule(8, 32));
+        CharacterCharacteristicsRule characterCharacteristicsRule = new CharacterCharacteristicsRule(4,
+                new CharacterRule(EnglishCharacterData.UpperCase, 1),
+                new CharacterRule(EnglishCharacterData.LowerCase, 1),
+                new CharacterRule(EnglishCharacterData.Digit, 1),
+                new CharacterRule(EnglishCharacterData.Special, 1)
         );
         rules.add(characterCharacteristicsRule);
         rules.add(new UsernameRule());
-        rules.add(new  WhitespaceRule());
+        rules.add(new WhitespaceRule());
 
         PasswordValidator passwordValidator = new PasswordValidator(rules);
         RuleResult validate = passwordValidator.validate(passwordData);
 
         String string = validate.getDetails().toString();
 
-        if (!validate.isValid()){
+        if (!validate.isValid()) {
             log.error(validate.getDetails().toString());
-        }else {
+        } else {
             log.warn("成功");
         }
 
     }
 
 
-
-//    @Test
+    //    @Test
     void email() {
         String email = "";
 
         EmailValidationResult validate = JMail.validate(email);
 
-        if (validate.isSuccess()){
+        if (validate.isSuccess()) {
             log.info("email验证通过");
         }
-        log.warn("失败原因:{}",validate.getFailureReason());
+        log.warn("失败原因:{}", validate.getFailureReason());
     }
 
     //    @Test
@@ -93,19 +98,21 @@ class YoushanxuncheApplicationTests {
 
     }
 
-//    @Test
-    void UUID(){
-        log.info(UUID.randomUUID().toString().replace("-",""));
-        log.info(UUID.randomUUID().toString().replace("-",""));
+    //    @Test
+    void UUID() {
+        log.info(UUID.randomUUID().toString().replace("-", ""));
+        log.info(UUID.randomUUID().toString().replace("-", ""));
     }
-//    @Test
-    void getenv(){
+
+    //    @Test
+    void getenv() {
         String secret = System.getenv("PATH");
 
         System.out.println(secret);
     }
-//    @Test
-    void Jwt(){
+
+    //    @Test
+    void Jwt() {
         String secret = System.getenv("JWT_SIGNKEY");
 
         Map<String, Object> claims = new HashMap<>();
@@ -117,13 +124,28 @@ class YoushanxuncheApplicationTests {
         log.info(secret);
         log.info(s);
     }
+
 //    @Test
-    void tostringtest(){
-        ListUserParam userParam = new ListUserParam();
+void tostringtest() {
+    byte[] a = new byte[8];
 
-        userParam.setEmail("dsf");
+    for (int i = 0; i < 8; i++) {
+        a[i] = (byte) ((i + 6) * 17);
+    }
+    BigInteger bigInteger = new BigInteger(1, a);
+    BigInteger bigInteger1 = BigInteger.valueOf(16516511665156L);
+    System.out.println(bigInteger1);
+    System.out.printf(bigInteger1.toString(16));
 
-        log.info(JSON.toJSONString(userParam));
-        log.info(userParam.toString());
+}
+
+    @Test
+    void datetime() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime locakDate = LocalDateTime.of(2024, Month.JUNE, 15, 6, 15, 15);
+
+        log.info("{}", localDateTime.isBefore(locakDate));
+
+
     }
 }

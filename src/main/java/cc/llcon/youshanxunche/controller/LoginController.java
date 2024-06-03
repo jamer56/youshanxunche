@@ -9,7 +9,6 @@ import cc.llcon.youshanxunche.pojo.User;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,10 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class LoginController {
-    @Autowired
-    UserService userService;
-    @Autowired
-    DeviceService deviceService;
+    final UserService userService;
+    final DeviceService deviceService;
+
+    public LoginController(UserService userService, DeviceService deviceService) {
+        this.userService = userService;
+        this.deviceService = deviceService;
+    }
 
     /**
      * 用户登入

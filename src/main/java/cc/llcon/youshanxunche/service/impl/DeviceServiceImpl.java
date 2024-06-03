@@ -11,7 +11,6 @@ import com.github.pagehelper.PageHelper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,10 +22,13 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class DeviceServiceImpl implements DeviceService {
-    @Autowired
-    DeviceMapper deviceMapper;
-    @Autowired
-    HttpServletRequest request;
+    final DeviceMapper deviceMapper;
+    final HttpServletRequest request;
+
+    public DeviceServiceImpl(DeviceMapper deviceMapper, HttpServletRequest request) {
+        this.deviceMapper = deviceMapper;
+        this.request = request;
+    }
 
     @Override
     public Device register(Device device) {

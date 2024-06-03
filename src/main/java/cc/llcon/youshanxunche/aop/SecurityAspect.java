@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -17,10 +16,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityAspect {
 
-    @Autowired
-    HttpServletRequest request;
-    @Autowired
-    UserMapper userMapper;
+    final HttpServletRequest request;
+    final UserMapper userMapper;
+
+    public SecurityAspect(HttpServletRequest request, UserMapper userMapper) {
+        this.request = request;
+        this.userMapper = userMapper;
+    }
 
     @Around("@annotation(cc.llcon.youshanxunche.anno.SecurityAuth)")
     public Object doBefore(ProceedingJoinPoint joinPoint) throws Throwable {

@@ -4,7 +4,6 @@ import cc.llcon.youshanxunche.mapper.OperateLogMapper;
 import cc.llcon.youshanxunche.pojo.ErrorLog;
 import cc.llcon.youshanxunche.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,8 +13,11 @@ import java.util.Arrays;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @Autowired
-    OperateLogMapper operateLogMapper;
+    final OperateLogMapper operateLogMapper;
+
+    public GlobalExceptionHandler(OperateLogMapper operateLogMapper) {
+        this.operateLogMapper = operateLogMapper;
+    }
 
     @ExceptionHandler(Exception.class)
     public Result ex(Exception ex) {
