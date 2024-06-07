@@ -1,5 +1,7 @@
 package cc.llcon.youshanxunche.service;
 
+import cc.llcon.youshanxunche.controller.request.DeviceLoginRequest;
+import cc.llcon.youshanxunche.controller.vo.DeviceLoginVO;
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.ListDevice;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
@@ -33,7 +35,7 @@ public interface DeviceService {
      * @param device
      * @return
      */
-    Device login(Device device);
+    DeviceLoginVO login(DeviceLoginRequest device);
 
     /**
      * 修改设备信息

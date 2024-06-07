@@ -1,10 +1,6 @@
 package cc.llcon.youshanxunche;
 
-import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.utils.JwtUtils;
-import com.alibaba.fastjson2.JSON;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.mysql.cj.log.Log;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
 import io.jsonwebtoken.Claims;
@@ -14,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.passay.*;
 
 import java.math.BigInteger;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
@@ -125,19 +120,19 @@ class YoushanxuncheApplicationTests {
         log.info(s);
     }
 
-//    @Test
-void tostringtest() {
-    byte[] a = new byte[8];
+    //    @Test
+    void tostringtest() {
+        byte[] a = new byte[8];
 
-    for (int i = 0; i < 8; i++) {
-        a[i] = (byte) ((i + 6) * 17);
+        for (int i = 0; i < 8; i++) {
+            a[i] = (byte) ((i + 6) * 17);
+        }
+        BigInteger bigInteger = new BigInteger(1, a);
+        BigInteger bigInteger1 = BigInteger.valueOf(16516511665156L);
+        System.out.println(bigInteger1);
+        System.out.printf(bigInteger1.toString(16));
+
     }
-    BigInteger bigInteger = new BigInteger(1, a);
-    BigInteger bigInteger1 = BigInteger.valueOf(16516511665156L);
-    System.out.println(bigInteger1);
-    System.out.printf(bigInteger1.toString(16));
-
-}
 
     @Test
     void datetime() {

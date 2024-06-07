@@ -1,16 +1,13 @@
 package cc.llcon.youshanxunche.pojo;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ListErrorLog {
-    private Long total;
-    private List<ErrorLog> rows;
+@AllArgsConstructor
+public class DeviceLoginDTO {
+    private byte[] id;
+    private byte[] macAddress;
 }

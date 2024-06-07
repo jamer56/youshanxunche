@@ -1,13 +1,12 @@
 package cc.llcon.youshanxunche.controller;
 
 import cc.llcon.youshanxunche.anno.LoginLog;
-import cc.llcon.youshanxunche.service.DeviceService;
-import cc.llcon.youshanxunche.service.UserService;
-import cc.llcon.youshanxunche.pojo.Device;
+import cc.llcon.youshanxunche.controller.request.DeviceLoginRequest;
+import cc.llcon.youshanxunche.controller.vo.DeviceLoginVO;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.pojo.User;
-
-
+import cc.llcon.youshanxunche.service.DeviceService;
+import cc.llcon.youshanxunche.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,9 +77,9 @@ public class LoginController {
      * @return
      */
     @PostMapping(value = "/devices/login")
-    public Result deviceLogin(@RequestBody Device device) {
+    public Result deviceLogin(@RequestBody DeviceLoginRequest device) {
         log.info("设备登入 device:{}", device);
-        Device d = deviceService.login(device);
+        DeviceLoginVO d = deviceService.login(device);
 
         if (d != null) {
 //			log.info("生成的jwt:{}",u.getJwt());

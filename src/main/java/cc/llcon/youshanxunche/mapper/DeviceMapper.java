@@ -1,6 +1,7 @@
 package cc.llcon.youshanxunche.mapper;
 
 import cc.llcon.youshanxunche.pojo.Device;
+import cc.llcon.youshanxunche.pojo.DeviceLoginDTO;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -60,7 +61,7 @@ public interface DeviceMapper {
      * @param device
      * @return
      */
-    Device getByIdAndMacAddress(Device device);
+    Device getByIdAndMacAddress(DeviceLoginDTO device);
 
     /**
      * 修改设备描述和名称

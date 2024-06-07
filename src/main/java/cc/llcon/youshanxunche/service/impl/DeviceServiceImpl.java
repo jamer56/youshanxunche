@@ -1,11 +1,16 @@
 package cc.llcon.youshanxunche.service.impl;
 
+import cc.llcon.youshanxunche.controller.request.DeviceLoginRequest;
+import cc.llcon.youshanxunche.controller.vo.DeviceLoginVO;
 import cc.llcon.youshanxunche.mapper.DeviceMapper;
 import cc.llcon.youshanxunche.pojo.Device;
+import cc.llcon.youshanxunche.pojo.DeviceLoginDTO;
 import cc.llcon.youshanxunche.pojo.ListDevice;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import cc.llcon.youshanxunche.service.DeviceService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
+import cc.llcon.youshanxunche.utils.MacAddressUtils;
+import cc.llcon.youshanxunche.utils.UUIDUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import io.jsonwebtoken.Claims;
@@ -82,22 +87,30 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Device login(Device device) {
+    public DeviceLoginVO login(DeviceLoginRequest device) {
         log.info("设备登入请求 设备id:{}", device.getId());
-//		log.info("device:{}",device);
-        Device d = deviceMapper.getByIdAndMacAddress(device);
-//		log.info("d:{}",d);
+
+        //转换子串uuid到字节阵列中 顺手验证uuid是否合法
+        byte[] dID = UUIDUtils.UUIDtoBytes(device.getId());
+        //验证並轉換macAddress
+        byte[] macAddress = MacAddressUtils.toBytes(device.getMacAddress());
+
+        //封装到dto
+        DeviceLoginDTO deviceLoginDTO = new DeviceLoginDTO(dID, macAddress);
+
+        Device d = deviceMapper.getByIdAndMacAddress(deviceLoginDTO);
 
         if (d != null) {
-            //登入成功 返回jwt
+            //登入成功 创建并返回返回jwt
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", d.getId());
             claims.put("name", d.getName());
 
             String jwt = JwtUtils.generateJWT(claims);
-            d.setJwt(jwt);
+
+            DeviceLoginVO deviceLoginVO = new DeviceLoginVO(jwt);
             log.info("登入成功 {}", d.getId());
-            return d;
+            return deviceLoginVO;
         } else {
             log.info("登入失敗 {}", device.getId());
             return null;

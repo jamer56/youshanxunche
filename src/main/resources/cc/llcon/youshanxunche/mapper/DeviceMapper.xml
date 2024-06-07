@@ -69,8 +69,8 @@
                create_time,
                update_time
         from tb_device
-        where id = uuid_to_bin(#{id})
-          and mac_address = unhex(#{macAddress});
+        where id = #{id}
+          and mac_address = #{macAddress}
     </select>
     <select id="getTotalByUserId" resultType="java.lang.Long">
         select count(*) as totol

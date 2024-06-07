@@ -10,7 +10,7 @@
     </parent>
     <groupId>cc.llcon</groupId>
     <artifactId>youshanxunche</artifactId>
-    <version>0.15.4</version>
+    <version>0.16.0</version>
     <packaging>war</packaging>
     <name>youshanxunche</name>
     <description>youshanxunche</description>
