@@ -21,7 +21,7 @@ public interface LogMapper {
 
     List<String> getSelectLogMethodListByClassName(String classname);
 
-    List<OperateLog> getListSelectLog(String className, String methodName, LocalDateTime begin, LocalDateTime end);
+    List<OperateLog> getListSelectLog(ListLogParam param);
 
     List<String> getErrorLogClassificationList();
 

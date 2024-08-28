@@ -20,7 +20,7 @@ public interface LogService {
 
     List<String> getSelectLogMethodListByClassName(String classname);
 
-    ListOperateLog getSelectLogList(Integer page, Integer pageSize, String className, String methodName, LocalDateTime begin, LocalDateTime end);
+    ListOperateLog getSelectLogList(ListLogParam param);
 
     List<String> ErrorLogClassificationList();
 

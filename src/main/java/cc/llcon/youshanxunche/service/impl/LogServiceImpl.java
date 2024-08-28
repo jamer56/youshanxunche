@@ -4,12 +4,12 @@ import cc.llcon.youshanxunche.mapper.LogMapper;
 import cc.llcon.youshanxunche.mapper.UserMapper;
 import cc.llcon.youshanxunche.pojo.*;
 import cc.llcon.youshanxunche.service.LogService;
+import cc.llcon.youshanxunche.utils.UUIDUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -37,22 +37,30 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public ListOperateLog getOperateLogList(ListLogParam param) {
-        //判断是否有传入operator参数
-
         User user = null;
 
+        //判断是否有传入operator参数
         if (param.getOperator() != null && !param.getOperator().isBlank()) {
+            //使用用户名查询
             user = userMapper.getByUsername(param.getOperator());
             if (user == null) {
+                //使用id查询
+
+                //判断uuid是否合法
+                try {
+                    UUIDUtils.UUIDtoBytes(param.getOperator());
+                } catch (IllegalArgumentException e) {
+                    return null;
+                }
+
                 try {
                     user = userMapper.getById(param.getOperator());
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("數據庫錯誤");
                 }
             }
-            if (user == null) {
-                return null;
-            } else {
+            //查询到就赋值
+            if (user != null) {
                 param.setOperator(user.getId());
             }
         }
@@ -83,10 +91,37 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ListOperateLog getSelectLogList(Integer page, Integer pageSize, String className, String methodName, LocalDateTime begin, LocalDateTime end) {
-        PageHelper.startPage(page, pageSize);
+    public ListOperateLog getSelectLogList(ListLogParam param) {
+        User user = null;
 
-        List<OperateLog> list = logMapper.getListSelectLog(className, methodName, begin, end);
+        //判断是否有传入operator参数
+        if (param.getOperator() != null && !param.getOperator().isBlank()) {
+            //使用用户名查询
+            user = userMapper.getByUsername(param.getOperator());
+            if (user == null) {
+                //使用id查询
+
+                //判断uuid是否合法
+                try {
+                    UUIDUtils.UUIDtoBytes(param.getOperator());
+                } catch (IllegalArgumentException e) {
+                    return null;
+                }
+
+                try {
+                    user = userMapper.getById(param.getOperator());
+                } catch (Exception e) {
+                    throw new RuntimeException("數據庫錯誤");
+                }
+            }
+            //查询到就赋值
+            if (user != null) {
+                param.setOperator(user.getId());
+            }
+        }
+        PageHelper.startPage(param.getPage(), param.getPageSize());
+
+        List<OperateLog> list = logMapper.getListSelectLog(param);
         Page<OperateLog> p = (Page<OperateLog>) list;
 
         ListOperateLog listOperateLog = new ListOperateLog();
