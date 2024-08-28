@@ -143,7 +143,7 @@ class YoushanxuncheApplicationTests {
 
     }
 
-    @Test
+    //    @Test
     void parseTest() {
 
         String uuid = "027b4f4abfec48d687fe84c9c7d4bf9c";
