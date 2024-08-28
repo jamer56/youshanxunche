@@ -1,4 +1,4 @@
-package cc.llcon.youshanxunche.pojo;
+package cc.llcon.youshanxunche.pojo.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

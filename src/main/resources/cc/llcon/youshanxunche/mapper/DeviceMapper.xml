@@ -13,12 +13,12 @@
         <set>
             name=#{name},
             comment=#{comment},
-            <if test='userId != null'>
-                user_id=uuid_to_bin(#{userId}),
-            </if>
             update_time=#{updateTime},
+            <if test='userId != null'>
+                user_id=#{userId},
+            </if>
         </set>
-        where id=uuid_to_bin(#{id})
+        where id=#{id}
     </update>
     <select id="list" resultType="cc.llcon.youshanxunche.pojo.Device">
         select bin_to_uuid(d.id) as id,

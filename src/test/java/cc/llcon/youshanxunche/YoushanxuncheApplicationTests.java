@@ -134,13 +134,38 @@ class YoushanxuncheApplicationTests {
 
     }
 
-    @Test
+    //    @Test
     void datetime() {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime locakDate = LocalDateTime.of(2024, Month.JUNE, 15, 6, 15, 15);
 
         log.info("{}", localDateTime.isBefore(locakDate));
 
-
     }
+
+    @Test
+    void parseTest() {
+
+        String uuid = "027b4f4abfec48d687fe84c9c7d4bf9c";
+        if (uuid.contains("-")) {
+
+        }
+
+        String substring1 = uuid.substring(0, 16);
+        String substring2 = uuid.substring(16, 32);
+
+        UUID uuid1 = UUID.fromString(uuid);
+
+        log.info("{}", uuid1);
+
+
+        long l1 = Long.parseLong("027b4f4abfec48d6", 16);
+        long l2 = Long.parseLong(substring1, 16);
+        long l3 = Long.parseLong(substring2, 16);
+        log.info("{}", l1);
+        log.info("{}", l2);
+        log.info("{}", l3);
+    }
+
+
 }

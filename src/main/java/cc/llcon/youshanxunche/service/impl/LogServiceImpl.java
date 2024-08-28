@@ -36,10 +36,31 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ListOperateLog getOperateLogList(Integer page, Integer pageSize, String className, String methodName, LocalDateTime begin, LocalDateTime end) {
-        PageHelper.startPage(page, pageSize);
+    public ListOperateLog getOperateLogList(ListLogParam param) {
+        //判断是否有传入operator参数
 
-        List<OperateLog> list = logMapper.getListOperateLog(className, methodName, begin, end);
+        User user = null;
+
+        if (param.getOperator() != null && !param.getOperator().isBlank()) {
+            user = userMapper.getByUsername(param.getOperator());
+            if (user == null) {
+                try {
+                    user = userMapper.getById(param.getOperator());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (user == null) {
+                return null;
+            } else {
+                param.setOperator(user.getId());
+            }
+        }
+
+        PageHelper.startPage(param.getPage(), param.getPageSize());
+
+        List<OperateLog> list = logMapper.getListOperateLog(param);
+
         Page<OperateLog> p = (Page<OperateLog>) list;
 
         ListOperateLog listOperateLog = new ListOperateLog();

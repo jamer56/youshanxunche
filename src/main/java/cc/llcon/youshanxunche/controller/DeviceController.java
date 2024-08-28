@@ -3,6 +3,8 @@ package cc.llcon.youshanxunche.controller;
 import cc.llcon.youshanxunche.anno.OperateLog;
 import cc.llcon.youshanxunche.anno.SecurityAuth;
 import cc.llcon.youshanxunche.anno.SelectLog;
+import cc.llcon.youshanxunche.controller.request.AddDeviceRequest;
+import cc.llcon.youshanxunche.controller.request.ModifyDeviceInfoRequest;
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.ListDevice;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
@@ -56,7 +58,7 @@ public class DeviceController {
      */
     @OperateLog
     @PutMapping
-    public Result modifyDeviceInfo(@RequestBody Device device) {
+    public Result modifyDeviceInfo(@RequestBody ModifyDeviceInfoRequest device) {
         log.info("修改设备信息 参数:{}", device);
 
         if (deviceService.modifyDeviceInfo(device)) {
@@ -74,7 +76,7 @@ public class DeviceController {
      */
     @OperateLog
     @PostMapping
-    public Result addDevice(@RequestBody Device device) {
+    public Result addDevice(@RequestBody AddDeviceRequest device) {
         log.info("添加設備:{}", device.getId());
         String status = deviceService.addDevice(device);
 

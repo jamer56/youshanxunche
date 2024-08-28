@@ -1,7 +1,9 @@
 package cc.llcon.youshanxunche.mapper;
 
+import cc.llcon.youshanxunche.pojo.DTO.AddDeviceDTO;
+import cc.llcon.youshanxunche.pojo.DTO.ModifyDeviceInfoDTO;
 import cc.llcon.youshanxunche.pojo.Device;
-import cc.llcon.youshanxunche.pojo.DeviceLoginDTO;
+import cc.llcon.youshanxunche.pojo.DTO.DeviceLoginDTO;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -63,10 +65,15 @@ public interface DeviceMapper {
      */
     Device getByIdAndMacAddress(DeviceLoginDTO device);
 
+
     /**
-     * 修改设备描述和名称
+     * 根据设备ID更新设备信息。
      *
-     * @param device
+     * @param device 包含待更新设备信息的请求对象。
+     * @return 如果更新成功，返回true；如果更新失败或未找到待更新的设备，返回false。
      */
-    Boolean updateById(Device device);
+    Boolean updateById(ModifyDeviceInfoDTO device);
+
+    Boolean updateById(AddDeviceDTO device);
+
 }

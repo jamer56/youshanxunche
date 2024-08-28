@@ -57,7 +57,8 @@ public class LogController {
     public Result listOperateLog(ListLogParam param) {
         log.info(param.toString());
 
-        ListOperateLog operateLogs = logService.getOperateLogList(param.getPage(), param.getPageSize(), param.getClassName(), param.getMethodName(), param.getBegin(), param.getEnd());
+//        ListOperateLog operateLogs = logService.getOperateLogList(param.getPage(), param.getPageSize(), param.getClassName(), param.getMethodName(), param.getBegin(), param.getEnd());
+        ListOperateLog operateLogs = logService.getOperateLogList(param);
         return Result.success(operateLogs);
     }
 

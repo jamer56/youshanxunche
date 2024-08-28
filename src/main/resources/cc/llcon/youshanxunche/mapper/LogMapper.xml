@@ -12,7 +12,7 @@
     </select>
     <select id="getListOperateLog" resultType="cc.llcon.youshanxunche.pojo.OperateLog">
         select id,
-        bin_to_uuid(operate_user) as operate_user,
+        bin_to_uuid(operate_user) as operate_user_id,
         operate_time,
         class_name,
         method_name,
@@ -27,8 +27,11 @@
             <if test="methodName != null">
                 and method_name = #{methodName}
             </if>
-            <if test="begin!=null and end != null">
+            <if test="begin != null and end != null">
                 and operate_time between #{begin} and #{end}
+            </if>
+            <if test="operator != null">
+                and operate_user = UUID_TO_BIN(#{operator})
             </if>
         </where>
         ORDER BY operate_time DESC ,id DESC

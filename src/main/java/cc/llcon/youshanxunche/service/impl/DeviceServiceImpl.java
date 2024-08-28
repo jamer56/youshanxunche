@@ -1,10 +1,14 @@
 package cc.llcon.youshanxunche.service.impl;
 
+import cc.llcon.youshanxunche.controller.request.AddDeviceRequest;
 import cc.llcon.youshanxunche.controller.request.DeviceLoginRequest;
+import cc.llcon.youshanxunche.controller.request.ModifyDeviceInfoRequest;
 import cc.llcon.youshanxunche.controller.vo.DeviceLoginVO;
 import cc.llcon.youshanxunche.mapper.DeviceMapper;
+import cc.llcon.youshanxunche.pojo.DTO.AddDeviceDTO;
+import cc.llcon.youshanxunche.pojo.DTO.ModifyDeviceInfoDTO;
 import cc.llcon.youshanxunche.pojo.Device;
-import cc.llcon.youshanxunche.pojo.DeviceLoginDTO;
+import cc.llcon.youshanxunche.pojo.DTO.DeviceLoginDTO;
 import cc.llcon.youshanxunche.pojo.ListDevice;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import cc.llcon.youshanxunche.service.DeviceService;
@@ -19,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +78,6 @@ public class DeviceServiceImpl implements DeviceService {
     public Device getById(String did) {
         String jwt = request.getHeader("Authorization");
         Claims claims = JwtUtils.parseJWT(jwt);
-
         String uid = (String) claims.get("id");
 
         Device device = deviceMapper.getById(did);
@@ -88,42 +92,47 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public DeviceLoginVO login(DeviceLoginRequest device) {
+        // 记录设备登录请求的日志
         log.info("设备登入请求 设备id:{}", device.getId());
 
-        //转换子串uuid到字节阵列中 顺手验证uuid是否合法
+        // 将设备ID转换为字节数组
         byte[] dID = UUIDUtils.UUIDtoBytes(device.getId());
-        //验证並轉換macAddress
+        // 将MAC地址转换为字节数组
         byte[] macAddress = MacAddressUtils.toBytes(device.getMacAddress());
 
-        //封装到dto
+        // 创建设备登录DTO，包含设备ID和MAC地址的字节数组形式
         DeviceLoginDTO deviceLoginDTO = new DeviceLoginDTO(dID, macAddress);
 
+        // 根据设备ID和MAC地址查询设备信息
         Device d = deviceMapper.getByIdAndMacAddress(deviceLoginDTO);
 
         if (d != null) {
-            //登入成功 创建并返回返回jwt
+            // 设备存在，生成JWT令牌
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", d.getId());
             claims.put("name", d.getName());
 
+            // 使用claims生成JWT令牌
             String jwt = JwtUtils.generateJWT(claims);
 
+            // 创建并返回设备登录VO，包含生成的JWT令牌
             DeviceLoginVO deviceLoginVO = new DeviceLoginVO(jwt);
             log.info("登入成功 {}", d.getId());
             return deviceLoginVO;
         } else {
+            // 设备不存在，登录失败
             log.info("登入失敗 {}", device.getId());
             return null;
         }
     }
 
     @Override
-    public Boolean modifyDeviceInfo(Device device) {
+    public Boolean modifyDeviceInfo(ModifyDeviceInfoRequest device) {
         log.info("id:{}", device.getId());
         log.info("name:{}", device.getName());
         //1.确认输入
         if (device.getId() == null || device.getId().isBlank() || device.getName() == null || device.getName().isBlank()) {
-            throw new RuntimeException("输入不合法");
+            throw new IllegalArgumentException("输入不合法");
         }
 
         //2 验证是否修改自己的设备
@@ -139,17 +148,19 @@ public class DeviceServiceImpl implements DeviceService {
             log.warn("尝试修改他人装置");
             String rTEM = "尝试修改他人装置" + "操作者" + uid + "设备" + deviceCheck;
             throw new RuntimeException(rTEM, new RuntimeException("使用者接口越權"));
-//			return false;
         }
 
-        //3.添加信息
-        device.setUpdateTime(LocalDateTime.now());
+        //3.封装修改信息
+        ModifyDeviceInfoDTO deviceDTO = new ModifyDeviceInfoDTO(null, device.getName(), device.getComment(), null);
+        deviceDTO.setId(UUIDUtils.UUIDtoBytes(device.getId()));
+        deviceDTO.setUpdateTime(LocalDateTime.now());
+
         //4.修改数据库
-        return deviceMapper.updateById(device);
+        return deviceMapper.updateById(deviceDTO);
     }
 
     @Override
-    public String addDevice(Device device) {
+    public String addDevice(AddDeviceRequest device) {
         //获取用户id
         String jwt = request.getHeader("Authorization");
         Claims claims = JwtUtils.parseJWT(jwt);
@@ -172,14 +183,15 @@ public class DeviceServiceImpl implements DeviceService {
         }
 
         //添加信息
-        device.setUserId(uid);
-        device.setUpdateTime(LocalDateTime.now());
-        device.setName(username + "的新設備");
-
+        AddDeviceDTO deviceDTO = new AddDeviceDTO(UUIDUtils.UUIDtoBytes(device.getId()), UUIDUtils.UUIDtoBytes(uid), null, null, LocalDateTime.now());
+        deviceDTO.setName(username + "的新設備");
+        deviceDTO.setComment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " 添加的新裝置");
         //寫數據庫
-        deviceMapper.updateById(device);
-
-        return "success";
+        if (deviceMapper.updateById(deviceDTO)) {
+            return "success";
+        } else {
+            return "db error";
+        }
     }
 
     @Override

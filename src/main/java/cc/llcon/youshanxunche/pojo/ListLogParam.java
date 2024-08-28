@@ -14,6 +14,7 @@ public class ListLogParam {
     private Integer page = 1;
     private Integer pageSize = 10;
     private String userName;
+    private String operator;
     private String className;
     private String classification;
     private String methodName;
