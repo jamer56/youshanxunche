@@ -37,4 +37,6 @@ public interface UserService {
     boolean modifyUserInfo(User user);
 
     ListUser list(ListUserParam param);
+
+    User userInfo(String uid);
 }

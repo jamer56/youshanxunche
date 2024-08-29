@@ -1,11 +1,13 @@
 package cc.llcon.youshanxunche.service.impl;
 
+import cc.llcon.youshanxunche.controller.vo.UserInfoVo;
 import cc.llcon.youshanxunche.mapper.UserMapper;
 import cc.llcon.youshanxunche.pojo.ListUser;
 import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.User;
 import cc.llcon.youshanxunche.service.UserService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
+import cc.llcon.youshanxunche.utils.UUIDUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sanctionco.jmail.EmailValidationResult;
@@ -259,5 +261,18 @@ public class UserServiceImpl implements UserService {
         listUser.setRows(p.getResult());
         listUser.setTotal(p.getTotal());
         return listUser;
+    }
+
+    @Override
+    public User userInfo(String uid) {
+        try {
+            UUIDUtils.UUIDtoBytes(uid);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        User user = userMapper.getById(uid);
+        UserInfoVo userInfoVo = new UserInfoVo();
+
+        return user;
     }
 }

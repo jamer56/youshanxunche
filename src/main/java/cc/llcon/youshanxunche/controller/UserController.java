@@ -4,6 +4,7 @@ package cc.llcon.youshanxunche.controller;
 import cc.llcon.youshanxunche.anno.OperateLog;
 import cc.llcon.youshanxunche.anno.SecurityAuth;
 import cc.llcon.youshanxunche.anno.SelectLog;
+import cc.llcon.youshanxunche.controller.vo.UserInfoVo;
 import cc.llcon.youshanxunche.pojo.ListUser;
 import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.Result;
@@ -51,6 +52,7 @@ public class UserController {
 
     }
 
+
     /**
      * 條件查詢 所有用戶接口
      * 管理員接口
@@ -69,5 +71,35 @@ public class UserController {
             return Result.error("查無數據");
         }
         return Result.success(list);
+    }
+
+
+    /**
+     * 查询单一用户 用户资讯
+     * 管理員接口
+     *
+     * @return 查詢到的用戶资讯
+     */
+    @SecurityAuth
+    @SelectLog
+    @GetMapping("/{uid}")
+    public Result userInfo(@PathVariable String uid) {
+        log.info("管理員查詢用戶資訊 參數:{}", uid);
+
+        User user = userService.userInfo(uid);
+        //包装
+        UserInfoVo userInfoVo = new UserInfoVo();
+        userInfoVo.setId(user.getId());
+        userInfoVo.setUsername(user.getUsername());
+        userInfoVo.setName(user.getName());
+        userInfoVo.setEmail(user.getEmail());
+        userInfoVo.setGender(user.getGender());
+        userInfoVo.setPermission(user.getPermission());
+        userInfoVo.setFailCount(user.getFailCount());
+        userInfoVo.setLastLoginTime(user.getLastLoginTime());
+        userInfoVo.setCreateTime(user.getCreateTime());
+        userInfoVo.setUpdateTime(user.getUpdateTime());
+
+        return Result.success(userInfoVo);
     }
 }
