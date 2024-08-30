@@ -74,6 +74,6 @@ public interface DeviceMapper {
      */
     Boolean updateById(ModifyDeviceInfoDTO device);
 
-    Boolean updateById(AddDeviceDTO device);
+//    Boolean updateById(AddDeviceDTO device);
 
 }

@@ -151,7 +151,7 @@ public class DeviceServiceImpl implements DeviceService {
         }
 
         //3.封装修改信息
-        ModifyDeviceInfoDTO deviceDTO = new ModifyDeviceInfoDTO(null, device.getName(), device.getComment(), null);
+        ModifyDeviceInfoDTO deviceDTO = new ModifyDeviceInfoDTO(null, null, device.getName(), device.getComment(), null);
         deviceDTO.setId(UUIDUtils.UUIDtoBytes(device.getId()));
         deviceDTO.setUpdateTime(LocalDateTime.now());
 
@@ -183,11 +183,16 @@ public class DeviceServiceImpl implements DeviceService {
         }
 
         //添加信息
-        AddDeviceDTO deviceDTO = new AddDeviceDTO(UUIDUtils.UUIDtoBytes(device.getId()), UUIDUtils.UUIDtoBytes(uid), null, null, LocalDateTime.now());
-        deviceDTO.setName(username + "的新設備");
-        deviceDTO.setComment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " 添加的新裝置");
+//        AddDeviceDTO deviceDTO = new AddDeviceDTO(UUIDUtils.UUIDtoBytes(device.getId()), UUIDUtils.UUIDtoBytes(uid), null, null, LocalDateTime.now());
+//        deviceDTO.setName(username + "的新設備");
+//        deviceDTO.setComment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " 添加的新裝置");
+
+        ModifyDeviceInfoDTO modifyDeviceInfoDTO = new ModifyDeviceInfoDTO(UUIDUtils.UUIDtoBytes(device.getId()), UUIDUtils.UUIDtoBytes(uid), null, null, LocalDateTime.now());
+        modifyDeviceInfoDTO.setName(username + "的新設備");
+        modifyDeviceInfoDTO.setComment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " 添加的新裝置");
+
         //寫數據庫
-        if (deviceMapper.updateById(deviceDTO)) {
+        if (deviceMapper.updateById(modifyDeviceInfoDTO)) {
             return "success";
         } else {
             return "db error";

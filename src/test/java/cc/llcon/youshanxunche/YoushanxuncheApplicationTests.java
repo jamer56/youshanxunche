@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche;
 
+import cc.llcon.youshanxunche.service.MailService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
@@ -8,17 +9,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
 import org.passay.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.ResourceUtils;
 
-
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
 
-//@SpringBootTest
+@SpringBootTest
 @Slf4j
 class YoushanxuncheApplicationTests {
 
+    @Autowired
+    MailService mailService;
 
     //@Test
     void getClaims() {
@@ -168,5 +175,31 @@ class YoushanxuncheApplicationTests {
         log.info("{}", l3);
     }
 
+    @Test
+    void test() {
+//        mailService.sendPlainText();
+        File mailTemplate = null;
+        StringBuilder mailContent = new StringBuilder();
 
+
+        try {
+            mailTemplate = ResourceUtils.getFile("classpath:mailtemplate.html");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Scanner scanner = new Scanner(mailTemplate);
+
+            while (scanner.hasNext()) {
+                mailContent.append(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String mail = mailContent.toString().replace("{{nickname}}", "jamer56").replace("{{code}}", "123456");
+
+
+        Collection<String> receivers = Arrays.asList("l8898b@hotmail.com");
+        mailService.sendPlainText(receivers, "友善尋車系統 註冊驗證碼", mail);
+    }
 }

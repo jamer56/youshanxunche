@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ModifyDeviceInfoDTO {
     private byte[] id;
+    private byte[] userId;
     private String name;
     private String comment;
     private LocalDateTime updateTime;
