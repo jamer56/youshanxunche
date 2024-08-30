@@ -65,7 +65,7 @@ public class posController {
     @PostMapping
     public Result ins(@RequestBody Pos pos) {
 //        log.info("新增数据:{}",pos);
-        log.info("新增定位数据");
+        log.info("新增定位数据 內容:{}", pos);
 
         String result = posService.ins(pos);
         if (result.equals("success")) {
