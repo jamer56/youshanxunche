@@ -1,7 +1,11 @@
 package cc.llcon.youshanxunche.service.impl;
 
+import cc.llcon.youshanxunche.constant.VerificationCodeType;
+import cc.llcon.youshanxunche.controller.request.UserRegisterRequest;
 import cc.llcon.youshanxunche.controller.vo.UserInfoVo;
 import cc.llcon.youshanxunche.mapper.UserMapper;
+import cc.llcon.youshanxunche.mapper.VerificationCodeMapper;
+import cc.llcon.youshanxunche.pojo.DAO.VerificationCodeDAO;
 import cc.llcon.youshanxunche.pojo.ListUser;
 import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.User;
@@ -29,10 +33,12 @@ public class UserServiceImpl implements UserService {
 
     final UserMapper userMapper;
     final HttpServletRequest request;
+    final VerificationCodeMapper verificationCodeMapper;
 
-    public UserServiceImpl(UserMapper userMapper, HttpServletRequest request) {
+    public UserServiceImpl(UserMapper userMapper, HttpServletRequest request, VerificationCodeMapper verificationCodeMapper) {
         this.userMapper = userMapper;
         this.request = request;
+        this.verificationCodeMapper = verificationCodeMapper;
     }
 
     /**
@@ -116,7 +122,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public String register(User user) {
+    public String register(UserRegisterRequest user) {
         //1.验证输入
         //1.1 用户名 姓名
         if (user.getUsername() == null || user.getUsername().isBlank() || user.getName() == null || user.getName().isBlank()) {
@@ -146,8 +152,34 @@ public class UserServiceImpl implements UserService {
         if (user2 != null) {
             return "郵箱已存在";
         }
+        // 1.3 验证码
+        Integer code = null;
+        try {
+            code = Integer.parseInt(user.getCode());
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        }
+        // 1.3.1 从数据库查询验证码是否有效
+        VerificationCodeDAO verificationCode = verificationCodeMapper.getVerificationCode(email, code);
 
-        //1.3 密码
+        if (verificationCode == null) {
+            return "验证码错误";
+        }
+        // 1.3.2 确认验证码类型
+        if (!VerificationCodeType.fromValue(verificationCode.getType()).equals(VerificationCodeType.REGISTER)) {
+            // 类型错误
+            throw new RuntimeException("验证码类型错误");
+        }
+        // 1.3.3 确认验证码是否使用过
+        if (verificationCode.getUsed()) {
+            // 使用过
+            return "验证码已使用";
+        }
+        // 1.3.4 更新验证码状态为已使用
+        verificationCode.setUsed(true);
+        verificationCodeMapper.update_used(verificationCode);
+
+        //1.4 密码
 
         PasswordData passwordData = new PasswordData(user.getUsername(), user.getPassword());
         //建立密码规则

@@ -9,8 +9,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Scanner;
 
 @Slf4j
 @Service
@@ -23,7 +28,7 @@ public class MailServiceImpl implements MailService {
     }
 
 
-    public void sendPlainText(Collection<String> receivers, String subject, String content) {
+    public void sendMail(Collection<String> receivers, String subject, String content) {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -37,6 +42,32 @@ public class MailServiceImpl implements MailService {
         }
 
         mailSender.send(message);
+    }
+
+    public void sendRegisterVerificationCode(String receiver, String nickname, String code) {
+//        mailService.sendPlainText();
+        File mailTemplate = null;
+        StringBuilder mailContent = new StringBuilder();
+
+        try {
+            mailTemplate = ResourceUtils.getFile("classpath:templates/mailtemplate.html");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            // 讀取信件模版
+            Scanner scanner = new Scanner(mailTemplate);
+            while (scanner.hasNext()) {
+                mailContent.append(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String mail = mailContent.toString().replace("{{nickname}}", nickname).replace("{{code}}", code);
+
+
+        Collection<String> receivers = Arrays.asList(receiver);
+        this.sendMail(receivers, "友善尋車系統 註冊驗證碼", mail);
     }
 
 }

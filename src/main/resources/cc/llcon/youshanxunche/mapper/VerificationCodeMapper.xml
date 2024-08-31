@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.llcon.youshanxunche.mapper.VerificationCodeMapper">
+
+
+    <insert id="createVerificationCode">
+        insert into verification_code (user_id, type, email, verification_code, used, create_time)
+        values (
+        <choose>
+            <when test="uid != null">
+                UUID_TO_BIN(#{uid})
+            </when>
+            <otherwise>
+                null
+            </otherwise>
+        </choose>
+        ,#{type}, #{email}, #{code}, #{used}, #{createTime}
+        );
+    </insert>
+    <update id="update_used">
+        update verification_code
+        set used = #{used}
+        where id = #{id};
+    </update>
+    <select id="getVerificationCode" resultType="cc.llcon.youshanxunche.pojo.DAO.VerificationCodeDAO">
+        select id, user_id, type, email, verification_code, used, create_time
+        from verification_code
+        where email = #{email}
+          and verification_code = #{code}
+          and create_time > NOW() - INTERVAL 5 MINUTE
+        order by create_time desc
+        limit 1;
+    </select>
+</mapper>

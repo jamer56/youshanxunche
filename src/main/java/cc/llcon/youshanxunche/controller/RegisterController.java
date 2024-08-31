@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.controller;
 
+import cc.llcon.youshanxunche.controller.request.UserRegisterRequest;
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.pojo.User;
@@ -29,7 +30,7 @@ public class RegisterController {
      * @return 結果
      */
     @PostMapping("/register")
-    Result register(@RequestBody User user) {
+    Result register(@RequestBody UserRegisterRequest user) {
         log.info("新用户注册:{}", user.getUsername());
         String msg = userService.register(user);
         log.info("注册回传值:{}", msg);

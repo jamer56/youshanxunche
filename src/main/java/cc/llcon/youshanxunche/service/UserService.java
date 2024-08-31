@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.service;
 
+import cc.llcon.youshanxunche.controller.request.UserRegisterRequest;
 import cc.llcon.youshanxunche.pojo.ListUser;
 import cc.llcon.youshanxunche.pojo.ListUserParam;
 import cc.llcon.youshanxunche.pojo.User;
@@ -19,7 +20,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    String register(User user);
+    String register(UserRegisterRequest user);
 
     /**
      * 获取用户资讯

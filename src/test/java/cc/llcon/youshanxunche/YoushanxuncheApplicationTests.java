@@ -1,9 +1,13 @@
 package cc.llcon.youshanxunche;
 
+import cc.llcon.youshanxunche.constant.VerificationCodeType;
+import cc.llcon.youshanxunche.controller.VerifcationCodeController;
+import cc.llcon.youshanxunche.controller.request.VerificationCodeRequest;
 import cc.llcon.youshanxunche.service.MailService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
+import com.sanctionco.jmail.ValidationRules;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -26,6 +30,9 @@ class YoushanxuncheApplicationTests {
 
     @Autowired
     MailService mailService;
+
+    @Autowired
+    VerifcationCodeController verifcationCodeController;
 
     //@Test
     void getClaims() {
@@ -175,12 +182,11 @@ class YoushanxuncheApplicationTests {
         log.info("{}", l3);
     }
 
-    @Test
+    //    @Test
     void test() {
 //        mailService.sendPlainText();
         File mailTemplate = null;
         StringBuilder mailContent = new StringBuilder();
-
 
         try {
             mailTemplate = ResourceUtils.getFile("classpath:mailtemplate.html");
@@ -200,6 +206,13 @@ class YoushanxuncheApplicationTests {
 
 
         Collection<String> receivers = Arrays.asList("l8898b@hotmail.com");
-        mailService.sendPlainText(receivers, "友善尋車系統 註冊驗證碼", mail);
+//        mailService.sendRegisterVerificationCode(receivers, "友善尋車系統 註冊驗證碼", mail);
+    }
+
+
+    @Test
+    void testemailsend() {
+        VerificationCodeRequest request = new VerificationCodeRequest("l8898b@hotmail.com", "jamer56", VerificationCodeType.REGISTER);
+        verifcationCodeController.generateVerificationCode(request);
     }
 }
