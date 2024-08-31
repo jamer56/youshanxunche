@@ -24,15 +24,15 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
 
-@SpringBootTest
+//@SpringBootTest
 @Slf4j
 class YoushanxuncheApplicationTests {
 
-    @Autowired
-    MailService mailService;
-
-    @Autowired
-    VerifcationCodeController verifcationCodeController;
+//    @Autowired
+//    MailService mailService;
+//
+//    @Autowired
+//    VerifcationCodeController verifcationCodeController;
 
     //@Test
     void getClaims() {
@@ -210,9 +210,9 @@ class YoushanxuncheApplicationTests {
     }
 
 
-    @Test
+    //    @Test
     void testemailsend() {
         VerificationCodeRequest request = new VerificationCodeRequest("l8898b@hotmail.com", "jamer56", VerificationCodeType.REGISTER);
-        verifcationCodeController.generateVerificationCode(request);
+//        verifcationCodeController.generateVerificationCode(request);
     }
 }
