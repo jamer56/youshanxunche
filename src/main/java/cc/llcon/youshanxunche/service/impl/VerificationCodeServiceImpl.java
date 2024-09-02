@@ -32,12 +32,9 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     public Integer sendVerificationCode(VerificationCodeRequest request) {
         // 判断发送类型
         if (httpServletRequest.getHeader("Authorization") == null) {
-//            request.setType(VerificationCodeType.REGISTER);
-            request.setType(VerificationCodeType.fromValue(1));
-
+            request.setType(VerificationCodeType.REGISTER);
         } else if (httpServletRequest.getHeader("Authorization").isBlank()) {
-//            request.setType(VerificationCodeType.REGISTER);
-            request.setType(VerificationCodeType.fromValue(1));
+            request.setType(VerificationCodeType.REGISTER);
         }
 
         //判断参数是否合法

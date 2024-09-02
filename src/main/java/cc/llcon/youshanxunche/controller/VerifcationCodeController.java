@@ -17,7 +17,7 @@ public class VerifcationCodeController {
         this.verificationCodeService = verificationCodeService;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public Result generateVerificationCode(@RequestBody VerificationCodeRequest request) {
         Integer code = verificationCodeService.sendVerificationCode(request);
         if (code.equals(200)) {
