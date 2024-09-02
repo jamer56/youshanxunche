@@ -302,9 +302,7 @@ public class UserServiceImpl implements UserService {
         } catch (IllegalArgumentException e) {
             return null;
         }
-        User user = userMapper.getById(uid);
-        UserInfoVo userInfoVo = new UserInfoVo();
 
-        return user;
+        return userMapper.getById(uid);
     }
 }

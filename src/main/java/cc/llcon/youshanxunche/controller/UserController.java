@@ -87,19 +87,11 @@ public class UserController {
         log.info("管理員查詢用戶資訊 參數:{}", uid);
 
         User user = userService.userInfo(uid);
+        if (user == null) {
+            return Result.error("查無數據");
+        }
         //包装
-        UserInfoVo userInfoVo = new UserInfoVo();
-        userInfoVo.setId(user.getId());
-        userInfoVo.setUsername(user.getUsername());
-        userInfoVo.setName(user.getName());
-        userInfoVo.setEmail(user.getEmail());
-        userInfoVo.setGender(user.getGender());
-        userInfoVo.setPermission(user.getPermission());
-        userInfoVo.setFailCount(user.getFailCount());
-        userInfoVo.setLastLoginTime(user.getLastLoginTime());
-        userInfoVo.setCreateTime(user.getCreateTime());
-        userInfoVo.setUpdateTime(user.getUpdateTime());
-
+        UserInfoVo userInfoVo = new UserInfoVo(user);
         return Result.success(userInfoVo);
     }
 }
