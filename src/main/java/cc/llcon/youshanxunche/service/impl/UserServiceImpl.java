@@ -316,14 +316,6 @@ public class UserServiceImpl implements UserService {
         Claims claims = JwtUtils.parseJWT(jwt);
         String username = (String) claims.get("username");
 
-        // 验证验证码
-        VerificationCodeDAO verificationCode = verificationCodeMapper.getVerificationCode(login.getEmail(), Integer.parseInt(passwordRequest.getVerificationCode()));
-        if (verificationCode == null || VerificationCodeType.fromValue(verificationCode.getType()) != VerificationCodeType.MODIFY || verificationCode.getUsed()) {
-            return 412;
-        }
-        verificationCode.setUsed(true);
-        // 标记验证码为已使用
-        verificationCodeMapper.update_used(verificationCode);
 
         // 验证旧的密码
         User userLogin = new User();
@@ -333,6 +325,16 @@ public class UserServiceImpl implements UserService {
         if (login == null) {
             return 410;
         }
+
+        // 验证验证码
+        VerificationCodeDAO verificationCode = verificationCodeMapper.getVerificationCode(login.getEmail(), Integer.parseInt(passwordRequest.getVerificationCode()));
+        if (verificationCode == null || VerificationCodeType.fromValue(verificationCode.getType()) != VerificationCodeType.MODIFY || verificationCode.getUsed()) {
+            return 412;
+        }
+        verificationCode.setUsed(true);
+        // 标记验证码为已使用
+        verificationCodeMapper.update_used(verificationCode);
+
 
         // 验证新密码是否符合规则
         PasswordData passwordData = new PasswordData(login.getUsername(), passwordRequest.getNewPassword());
