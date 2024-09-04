@@ -1,6 +1,8 @@
 package cc.llcon.youshanxunche.service.impl;
 
+import cc.llcon.youshanxunche.anno.OperateLog;
 import cc.llcon.youshanxunche.constant.VerificationCodeType;
+import cc.llcon.youshanxunche.controller.request.ModifyUserPasswordRequest;
 import cc.llcon.youshanxunche.controller.request.UserRegisterRequest;
 import cc.llcon.youshanxunche.controller.vo.UserInfoVo;
 import cc.llcon.youshanxunche.mapper.UserMapper;
@@ -304,5 +306,69 @@ public class UserServiceImpl implements UserService {
         }
 
         return userMapper.getById(uid);
+    }
+
+    @OperateLog
+    @Override
+    public Integer modifyPassword(ModifyUserPasswordRequest passwordRequest) {
+        // 用于验证旧密码
+        String jwt = request.getHeader("Authorization");
+        Claims claims = JwtUtils.parseJWT(jwt);
+        String username = (String) claims.get("username");
+
+        // 验证验证码
+        VerificationCodeDAO verificationCode = verificationCodeMapper.getVerificationCode(login.getEmail(), Integer.parseInt(passwordRequest.getVerificationCode()));
+        if (verificationCode == null || VerificationCodeType.fromValue(verificationCode.getType()) != VerificationCodeType.MODIFY || verificationCode.getUsed()) {
+            return 412;
+        }
+        verificationCode.setUsed(true);
+        // 标记验证码为已使用
+        verificationCodeMapper.update_used(verificationCode);
+
+        // 验证旧的密码
+        User userLogin = new User();
+        userLogin.setUsername(username);
+        userLogin.setPassword(passwordRequest.getOldPassword());
+        User login = this.login(userLogin);
+        if (login == null) {
+            return 410;
+        }
+
+        // 验证新密码是否符合规则
+        PasswordData passwordData = new PasswordData(login.getUsername(), passwordRequest.getNewPassword());
+        //建立密码规则
+        List<Rule> rules = new ArrayList<>();
+        rules.add(new LengthRule(8, 32));
+        CharacterCharacteristicsRule characterCharacteristicsRule = new CharacterCharacteristicsRule(4, new CharacterRule(EnglishCharacterData.UpperCase, 1), new CharacterRule(EnglishCharacterData.LowerCase, 1), new CharacterRule(EnglishCharacterData.Digit, 1), new CharacterRule(EnglishCharacterData.Special, 1));
+        rules.add(characterCharacteristicsRule);
+        rules.add(new UsernameRule());
+        rules.add(new WhitespaceRule());
+        //驗證
+        //創建驗證器
+        PasswordValidator passwordValidator = new PasswordValidator(rules);
+
+        RuleResult passwordValidate = passwordValidator.validate(passwordData);
+
+        if (!passwordValidate.isValid()) {
+            // 新密码不符合规则
+            return 411;
+        }
+
+
+        // 修改密码
+        String password = passwordRequest.getNewPassword();
+        //加盐
+        password = password.concat(login.getSalt());
+        //杂凑
+        password = DigestUtils.sha256Hex(password);
+        //回寫
+
+        User user = new User();
+        user.setPassword(password);
+        user.setUpdateTime(LocalDateTime.now());
+        user.setId(login.getId());
+        userMapper.update(user);
+
+        return 200;
     }
 }

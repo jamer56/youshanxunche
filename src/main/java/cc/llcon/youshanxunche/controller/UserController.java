@@ -4,6 +4,7 @@ package cc.llcon.youshanxunche.controller;
 import cc.llcon.youshanxunche.anno.OperateLog;
 import cc.llcon.youshanxunche.anno.SecurityAuth;
 import cc.llcon.youshanxunche.anno.SelectLog;
+import cc.llcon.youshanxunche.controller.request.ModifyUserPasswordRequest;
 import cc.llcon.youshanxunche.controller.vo.UserInfoVo;
 import cc.llcon.youshanxunche.pojo.ListUser;
 import cc.llcon.youshanxunche.pojo.ListUserParam;
@@ -71,6 +72,22 @@ public class UserController {
             return Result.error("查無數據");
         }
         return Result.success(list);
+    }
+
+    @PutMapping("/password")
+    public Result modifyPassword(@RequestBody ModifyUserPasswordRequest passwordRequest) {
+        log.info("修改用戶密碼信息:{}", passwordRequest.toString());
+        Integer code = userService.modifyPassword(passwordRequest);
+        if (code.equals(200)) {
+            return Result.success();
+        } else if (code.equals(410)) {
+            return Result.error(code, "旧密码错误", null);
+        } else if (code.equals(411)) {
+            return Result.error(code, "新密码不符合规则", null);
+        } else if (code.equals(412)) {
+            return Result.error(code, "验证码无效", null);
+        }
+        return Result.error(400, "修改失败", null);
     }
 
 
