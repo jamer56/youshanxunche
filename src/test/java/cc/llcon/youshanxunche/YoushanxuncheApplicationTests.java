@@ -1,20 +1,14 @@
 package cc.llcon.youshanxunche;
 
 import cc.llcon.youshanxunche.constant.VerificationCodeType;
-import cc.llcon.youshanxunche.controller.VerifcationCodeController;
 import cc.llcon.youshanxunche.controller.request.VerificationCodeRequest;
-import cc.llcon.youshanxunche.service.MailService;
 import cc.llcon.youshanxunche.utils.JwtUtils;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
-import com.sanctionco.jmail.ValidationRules;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.junit.jupiter.api.Test;
 import org.passay.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -51,12 +45,7 @@ class YoushanxuncheApplicationTests {
 
         List<Rule> rules = new ArrayList<Rule>();
         rules.add(new LengthRule(8, 32));
-        CharacterCharacteristicsRule characterCharacteristicsRule = new CharacterCharacteristicsRule(4,
-                new CharacterRule(EnglishCharacterData.UpperCase, 1),
-                new CharacterRule(EnglishCharacterData.LowerCase, 1),
-                new CharacterRule(EnglishCharacterData.Digit, 1),
-                new CharacterRule(EnglishCharacterData.Special, 1)
-        );
+        CharacterCharacteristicsRule characterCharacteristicsRule = new CharacterCharacteristicsRule(4, new CharacterRule(EnglishCharacterData.UpperCase, 1), new CharacterRule(EnglishCharacterData.LowerCase, 1), new CharacterRule(EnglishCharacterData.Digit, 1), new CharacterRule(EnglishCharacterData.Special, 1));
         rules.add(characterCharacteristicsRule);
         rules.add(new UsernameRule());
         rules.add(new WhitespaceRule());
@@ -209,10 +198,4 @@ class YoushanxuncheApplicationTests {
 //        mailService.sendRegisterVerificationCode(receivers, "友善尋車系統 註冊驗證碼", mail);
     }
 
-
-    //    @Test
-    void testemailsend() {
-        VerificationCodeRequest request = new VerificationCodeRequest("l8898b@hotmail.com", "jamer56", VerificationCodeType.REGISTER);
-//        verifcationCodeController.generateVerificationCode(request);
-    }
 }
