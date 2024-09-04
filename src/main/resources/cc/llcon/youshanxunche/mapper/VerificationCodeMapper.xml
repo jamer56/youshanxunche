@@ -31,4 +31,11 @@
         order by create_time desc
         limit 1;
     </select>
+    <select id="getVerificationCodeByEmail" resultType="cc.llcon.youshanxunche.pojo.DAO.VerificationCodeDAO">
+        select id, user_id, type, email, verification_code, used, create_time
+        from verification_code
+        where email = #{email}
+          and create_time > NOW() - INTERVAL 2 MINUTE
+        limit 1;
+    </select>
 </mapper>

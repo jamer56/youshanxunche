@@ -18,12 +18,26 @@ public class VerifcationCodeController {
     }
 
     @PostMapping("/register")
+    public Result generateRegisterVerificationCode(@RequestBody VerificationCodeRequest request) {
+        Integer code = verificationCodeService.sendRegisterVerificationCode(request);
+        if (code.equals(200)) {
+            return Result.success();
+        } else if (code.equals(412)) {
+            return Result.error("发送过于频繁,请稍后再试");
+        } else {
+            return Result.error("验证码发送失败");
+        }
+    }
+
+    @PostMapping
     public Result generateVerificationCode(@RequestBody VerificationCodeRequest request) {
         Integer code = verificationCodeService.sendVerificationCode(request);
         if (code.equals(200)) {
             return Result.success();
+        } else if (code.equals(412)) {
+            return Result.error(code, "发送过于频繁,请稍后再试", null);
         } else {
-            return Result.error("验证码发送失败");
+            return Result.error(code, "验证码发送失败", null);
         }
     }
 }

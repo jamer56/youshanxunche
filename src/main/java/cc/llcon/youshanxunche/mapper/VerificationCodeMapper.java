@@ -11,4 +11,6 @@ public interface VerificationCodeMapper {
     VerificationCodeDAO getVerificationCode(String email, Integer code);
 
     void update_used(VerificationCodeDAO verificationCode);
+
+    VerificationCodeDAO getVerificationCodeByEmail(String email);
 }

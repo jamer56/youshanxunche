@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.service.impl;
 
+import cc.llcon.youshanxunche.constant.VerificationCodeType;
 import cc.llcon.youshanxunche.service.MailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -45,7 +46,6 @@ public class MailServiceImpl implements MailService {
     }
 
     public void sendRegisterVerificationCode(String receiver, String nickname, String code) {
-//        mailService.sendPlainText();
         File mailTemplate = null;
         StringBuilder mailContent = new StringBuilder();
 
@@ -68,6 +68,33 @@ public class MailServiceImpl implements MailService {
 
         Collection<String> receivers = Arrays.asList(receiver);
         this.sendMail(receivers, "友善尋車系統 註冊驗證碼", mail);
+    }
+
+    @Override
+    public void sendVerificationCodeByType(String email, String username, String verificationCode, VerificationCodeType codeType) {
+        File mailTemplate = null;
+        StringBuilder mailContent = new StringBuilder();
+
+        try {
+            mailTemplate = ResourceUtils.getFile(codeType.getTemplates());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            // 讀取信件模版
+            Scanner scanner = new Scanner(mailTemplate);
+            while (scanner.hasNext()) {
+                mailContent.append(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String mail = mailContent.toString().replace("{{username}}", username).replace("{{code}}", verificationCode);
+
+
+        Collection<String> receivers = Arrays.asList(email);
+        this.sendMail(receivers, "友善尋車系統 " + codeType.getDesc(), mail);
+
     }
 
 }

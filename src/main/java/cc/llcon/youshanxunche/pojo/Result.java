@@ -30,4 +30,9 @@ public class Result {
     public static Result error(String msg, Object data) {
         return new Result(0, msg, data);
     }
+
+    public static Result error(Integer code, String msg, Object data) {
+        return new Result(code, msg, data);
+    }
+
 }

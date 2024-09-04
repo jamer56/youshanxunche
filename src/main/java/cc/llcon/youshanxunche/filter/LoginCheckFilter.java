@@ -42,10 +42,10 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-        if (url.contains("verification")) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
+//        if (url.contains("verification")) {
+//            filterChain.doFilter(servletRequest, servletResponse);
+//            return;
+//        }
 
 
         //3.获取jwt令牌

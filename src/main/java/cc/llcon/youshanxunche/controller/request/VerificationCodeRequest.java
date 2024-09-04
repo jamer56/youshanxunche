@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 public class VerificationCodeRequest {
     private String email;
     private String nickname;
-    private VerificationCodeType type;
+    private Integer type;
+    private VerificationCodeType codeType;
 }
