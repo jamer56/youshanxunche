@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 public enum VerificationCodeType {
-    REGISTER(1, "注册验证码", null),
-    FORGET(2, "忘记密码验证码", "classpath:templates/forgetmailtemplate.html"),
-    MODIFY(3, "修改密码验证码", "classpath:templates/modifymailtemplate.html");
+    REGISTER(1, "註冊驗證碼", null),
+    FORGET(2, "忘記密碼驗證碼", "classpath:templates/forgetmailtemplate.html"),
+    MODIFY(3, "修改密碼驗證碼", "classpath:templates/modifymailtemplate.html");
 
     @Getter
     @Setter
