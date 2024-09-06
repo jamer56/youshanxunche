@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
      * 用户登入
      *
      * @param user
-     * @return
+     * @return 如果登入成功返回用户信息，失败返回null
      */
     @Override
     public User login(User user) {
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
 
             log.info("{}登入失败 次數{}", user.getUsername(), u.getFailCount());
 
-            return u;
+            return null;
         }
     }
 
@@ -369,6 +369,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         user.setUpdateTime(LocalDateTime.now());
         user.setId(login.getId());
+
+        log.info("寫入新密碼:{}", user);
         userMapper.update(user);
 
         return 200;

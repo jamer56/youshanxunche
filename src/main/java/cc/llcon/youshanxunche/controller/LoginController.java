@@ -40,7 +40,7 @@ public class LoginController {
                 log.info("生成的jwt:{}", u.getJwt());
                 return Result.success(u.getJwt());
             } else {
-                return Result.error("账号或密码错误", u.getFailCount());
+                return Result.error("账号或密码错误");
             }
         } else {
             return Result.error("账号或密码错误");
@@ -62,7 +62,7 @@ public class LoginController {
                 }
                 return Result.success(u.getJwt());
             } else {
-                return Result.error("账号或密码错误", u.getFailCount());
+                return Result.error("账号或密码错误");
             }
         } else {
             return Result.error("账号或密码错误");
