@@ -6,10 +6,10 @@ server:
 spring:
   #数据库连接
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/youshanxunche
-    username: root
-    password: 18898bbb
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.1.220:3306/youshanxunche
+    username: youshanxunche
+    password: Jcllcon2018@512
   #档案上传限制
   servlet:
     multipart:
