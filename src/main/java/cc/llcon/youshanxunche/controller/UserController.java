@@ -81,13 +81,13 @@ public class UserController {
         if (code.equals(200)) {
             return Result.success();
         } else if (code.equals(410)) {
-            return Result.error(code, "旧密码错误", null);
+            return Result.error(code, "舊密碼錯誤", null);
         } else if (code.equals(411)) {
-            return Result.error(code, "新密码不符合规则", null);
+            return Result.error(code, "新密碼不符合規則", null);
         } else if (code.equals(412)) {
-            return Result.error(code, "验证码无效", null);
+            return Result.error(code, "驗證碼無效", null);
         }
-        return Result.error(400, "修改失败", null);
+        return Result.error(400, "修改失敗", null);
     }
 
 

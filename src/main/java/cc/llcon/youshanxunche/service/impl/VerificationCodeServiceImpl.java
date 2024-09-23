@@ -12,6 +12,7 @@ import cc.llcon.youshanxunche.utils.JwtUtils;
 import com.sanctionco.jmail.EmailValidationResult;
 import com.sanctionco.jmail.JMail;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,12 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
                 throw new RuntimeException("邮箱不合法");
             }
         }
+        // 判断用户是否已存在
+        User byEmail = userMapper.getByEmail(request.getEmail());
+        if (byEmail != null) {
+            return 413;
+        }
+
         // 生成驗證碼
         Integer verificationCodeTmp = random.nextInt(0, 1000000);
         String verificationCode = String.format("%06d", verificationCodeTmp);
@@ -88,25 +95,61 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         Integer verificationCodeTmp = random.nextInt(0, 1000000);
         String verificationCode = String.format("%06d", verificationCodeTmp);
 
-        Claims claims = JwtUtils.parseJWT((httpServletRequest.getHeader("Authorization")));
-        String uid = (String) claims.get("id");
-        String username = (String) claims.get("username");
+        CreateVerificationCodeDTO verificationCodeDTO = new CreateVerificationCodeDTO();
+        verificationCodeDTO.setType(request.getCodeType().getCode());
+        verificationCodeDTO.setCode(verificationCodeTmp);
+        verificationCodeDTO.setUsed(false);
+        verificationCodeDTO.setCreateTime(LocalDateTime.now());
 
-        // 查询email
-        User userById = userMapper.getById(uid);
-        request.setEmail(userById.getEmail());
+        switch (request.getCodeType()) {
+            case MODIFY -> {
+                try {
+                    Claims claims = JwtUtils.parseJWT((httpServletRequest.getHeader("Authorization")));
+                    String uid = (String) claims.get("id");
+                    String username = (String) claims.get("username");
+                    request.setNickname(username);
 
+                    // 查询email
+                    User userById = userMapper.getById(uid);
+                    request.setEmail(userById.getEmail());
+                } catch (IllegalArgumentException | ExpiredJwtException illegalArgumentException) {
+                    return 430;
+                }
+            }
+            case FORGET -> {
+                // 判断参数是否合法
+                if (request.getEmail().isBlank()) {
+                    throw new RuntimeException("邮箱不能为空");
+                } else {
+                    EmailValidationResult validate = JMail.validate(request.getEmail());
+                    if (!validate.isSuccess()) {
+                        throw new RuntimeException("邮箱不合法");
+                    }
+                }
+                verificationCodeDTO.setEmail(request.getEmail());
+                User byEmail = userMapper.getByEmail(request.getEmail());
+                if (byEmail != null) {
+                    request.setNickname(byEmail.getName());
+                    verificationCodeDTO.setUid(byEmail.getId());
+                } else {
+                    throw new RuntimeException("用户不存在");
+                }
+            }
+        }
+
+
+        // 判断是否频繁
         if (verificationCodeMapper.getVerificationCodeByEmail(request.getEmail()) != null) {
             //操作频繁
             return 412;
         }
 
         // 記錄數據庫
-        CreateVerificationCodeDTO verificationCodeDTO = new CreateVerificationCodeDTO(uid, request.getEmail(), request.getCodeType().getCode(), verificationCodeTmp, false, LocalDateTime.now());
+//        CreateVerificationCodeDTO verificationCodeDTO = new CreateVerificationCodeDTO(uid, request.getEmail(), request.getCodeType().getCode(), verificationCodeTmp, false, LocalDateTime.now());
         verificationCodeMapper.createVerificationCode(verificationCodeDTO);
 
         // 发送验证码
-        mailService.sendVerificationCodeByType(request.getEmail(), username, verificationCode, request.getCodeType());
+        mailService.sendVerificationCodeByType(request.getEmail(), request.getNickname(), verificationCode, request.getCodeType());
 
 
         return 200;

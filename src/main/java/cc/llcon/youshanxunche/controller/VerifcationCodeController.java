@@ -24,6 +24,8 @@ public class VerifcationCodeController {
             return Result.success();
         } else if (code.equals(412)) {
             return Result.error("发送过于频繁,请稍后再试");
+        } else if (code.equals(413)) {
+            return Result.error("用户已存在");
         } else {
             return Result.error("验证码发送失败");
         }
@@ -36,6 +38,8 @@ public class VerifcationCodeController {
             return Result.success();
         } else if (code.equals(412)) {
             return Result.error(code, "发送过于频繁,请稍后再试", null);
+        } else if (code.equals(430)) {
+            return Result.error("NOT_LOGIN");
         } else {
             return Result.error(code, "验证码发送失败", null);
         }
