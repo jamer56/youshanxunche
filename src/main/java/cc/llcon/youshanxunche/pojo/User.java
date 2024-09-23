@@ -1,7 +1,9 @@
 package cc.llcon.youshanxunche.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -26,4 +28,7 @@ public class User {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private LocalDateTime lastLoginTime;
+    @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
+    private LocalDateTime ban;
+    private String banReason;
 }

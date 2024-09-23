@@ -1,5 +1,6 @@
 package cc.llcon.youshanxunche.service;
 
+import cc.llcon.youshanxunche.controller.request.BanUserRequest;
 import cc.llcon.youshanxunche.controller.request.ModifyUserPasswordRequest;
 import cc.llcon.youshanxunche.controller.request.UserRegisterRequest;
 import cc.llcon.youshanxunche.pojo.ListUser;
@@ -50,4 +51,6 @@ public interface UserService {
      * @since 0.21.0:
      */
     Integer modifyPassword(ModifyUserPasswordRequest passwordRequest);
+
+    boolean banUser(BanUserRequest banUserRequest);
 }

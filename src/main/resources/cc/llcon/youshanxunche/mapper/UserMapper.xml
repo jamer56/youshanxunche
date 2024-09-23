@@ -27,7 +27,9 @@
             <if test="gender!=null">gender=#{gender},</if>
             <if test="failCount!=null">fail_count=#{failCount},</if>
             <if test="updateTime!=null">update_time=#{updateTime},</if>
-            <if test="lastLoginTime!=null">last_login_time=#{lastLoginTime}</if>
+            <if test="lastLoginTime!=null">last_login_time=#{lastLoginTime},</if>
+            <if test="ban!=null">ban = #{ban},</if>
+            <if test="banReason!=null">ban_reason=#{banReason}</if>
         </set>
         where id= uuid_to_bin(#{id})
     </update>
@@ -44,7 +46,9 @@
                fail_count,
                create_time,
                update_time,
-               last_login_time
+               last_login_time,
+               ban,
+               ban_reason
         from tb_user
         where username = #{username}
     </select>
@@ -60,7 +64,9 @@
                fail_count,
                create_time,
                update_time,
-               last_login_time
+               last_login_time,
+               ban,
+               ban_reason
         from tb_user
         where email = #{email}
     </select>
@@ -76,7 +82,9 @@
                fail_count,
                create_time,
                update_time,
-               last_login_time
+               last_login_time,
+               ban,
+               ban_reason
         from tb_user
         where id = uuid_to_bin(#{uid})
     </select>
@@ -89,7 +97,9 @@
         permission,
         fail_count,
         create_time,
-        last_login_time
+        last_login_time,
+        ban,
+        ban_reason
         from tb_user
         <where>
             <if test="id != null">

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 @Slf4j
 @RestController
 public class LoginController {
@@ -40,6 +43,12 @@ public class LoginController {
                 log.info("生成的jwt:{}", u.getJwt());
                 return Result.success(u.getJwt());
             } else {
+                if (u.getBan().isAfter(LocalDateTime.now())) {
+                    ArrayList<String> data = new ArrayList<>();
+                    data.add(u.getBanReason());
+                    data.add(u.getBan().toString());
+                    return Result.error("賬號被封禁", data);
+                }
                 return Result.error("账号或密码错误");
             }
         } else {
@@ -57,11 +66,13 @@ public class LoginController {
             if (u.getJwt() != null) {
                 log.info("生成的jwt:{}", u.getJwt());
                 if (u.getPermission() != 2) {
-                    log.warn("没有权限");
                     throw new RuntimeException("使用者登入管理员页面 使用者:" + u.getUsername(), new RuntimeException("管理员接口越权"));
                 }
                 return Result.success(u.getJwt());
             } else {
+                if (u.getBan().isAfter(LocalDateTime.now())) {
+                    return Result.error("账号被封禁", u.getBanReason());
+                }
                 return Result.error("账号或密码错误");
             }
         } else {

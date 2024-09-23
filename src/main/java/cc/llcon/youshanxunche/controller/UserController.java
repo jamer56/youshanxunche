@@ -4,6 +4,7 @@ package cc.llcon.youshanxunche.controller;
 import cc.llcon.youshanxunche.anno.OperateLog;
 import cc.llcon.youshanxunche.anno.SecurityAuth;
 import cc.llcon.youshanxunche.anno.SelectLog;
+import cc.llcon.youshanxunche.controller.request.BanUserRequest;
 import cc.llcon.youshanxunche.controller.request.ModifyUserPasswordRequest;
 import cc.llcon.youshanxunche.controller.vo.UserInfoVo;
 import cc.llcon.youshanxunche.pojo.ListUser;
@@ -110,5 +111,17 @@ public class UserController {
         //包装
         UserInfoVo userInfoVo = new UserInfoVo(user);
         return Result.success(userInfoVo);
+    }
+
+    @SecurityAuth
+    @OperateLog
+    @PutMapping("/ban")
+    public Result banUser(@RequestBody BanUserRequest banUserRequest) {
+        log.info("管理員封禁用戶 參數:{}", JSON.toJSONString(banUserRequest));
+        if (userService.banUser(banUserRequest)) {
+            return Result.success();
+        } else {
+            return Result.error("封禁失敗");
+        }
     }
 }

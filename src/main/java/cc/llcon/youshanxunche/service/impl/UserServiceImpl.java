@@ -2,9 +2,9 @@ package cc.llcon.youshanxunche.service.impl;
 
 import cc.llcon.youshanxunche.anno.OperateLog;
 import cc.llcon.youshanxunche.constant.VerificationCodeType;
+import cc.llcon.youshanxunche.controller.request.BanUserRequest;
 import cc.llcon.youshanxunche.controller.request.ModifyUserPasswordRequest;
 import cc.llcon.youshanxunche.controller.request.UserRegisterRequest;
-import cc.llcon.youshanxunche.controller.vo.UserInfoVo;
 import cc.llcon.youshanxunche.mapper.UserMapper;
 import cc.llcon.youshanxunche.mapper.VerificationCodeMapper;
 import cc.llcon.youshanxunche.pojo.DAO.VerificationCodeDAO;
@@ -58,6 +58,17 @@ public class UserServiceImpl implements UserService {
         if (u == null) {
             return null;
         }
+        // 判斷用戶是否封禁中
+        log.info("封禁時間 {}", u.getBan());
+        log.info("是否封禁中 {}", u.getBan().isAfter(LocalDateTime.now()));
+
+        if (u.getBan() != null && u.getBan().isAfter(LocalDateTime.now())) {
+            User usertmp = new User();
+            usertmp.setBan(u.getBan());
+            usertmp.setBanReason(u.getBanReason());
+            return usertmp;
+        }
+
 
         //加盐杂凑
         String password = user.getPassword();
@@ -374,5 +385,29 @@ public class UserServiceImpl implements UserService {
         userMapper.update(user);
 
         return 200;
+    }
+
+    @Override
+    public boolean banUser(BanUserRequest banUserRequest) {
+        // 1.判斷參數
+        if (banUserRequest.getBanTime() == null || banUserRequest.getReason() == null || banUserRequest.getUid() == null) {
+            return false;
+        }
+
+        // 1.獲取用戶
+        User byId = userMapper.getById(banUserRequest.getUid());
+        if (byId == null) {
+            log.info("找不到封禁目標:{}", request);
+            return false;
+        }
+
+        // 修改封禁信息
+        byId.setBan(banUserRequest.getBanTime());
+        byId.setBanReason(banUserRequest.getReason());
+        byId.setUpdateTime(LocalDateTime.now());
+
+        userMapper.update(byId);
+        log.info("封禁成功:{}", request);
+        return true;
     }
 }
