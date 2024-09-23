@@ -59,16 +59,17 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         // 判斷用戶是否封禁中
-        log.info("封禁時間 {}", u.getBan());
-        log.info("是否封禁中 {}", u.getBan().isAfter(LocalDateTime.now()));
 
-        if (u.getBan() != null && u.getBan().isAfter(LocalDateTime.now())) {
-            User usertmp = new User();
-            usertmp.setBan(u.getBan());
-            usertmp.setBanReason(u.getBanReason());
-            return usertmp;
+        if (u.getBan() != null) {
+            log.info("封禁時間 {}", u.getBan());
+            log.info("是否封禁中 {}", u.getBan().isAfter(LocalDateTime.now()));
+            if (u.getBan() != null && u.getBan().isAfter(LocalDateTime.now())) {
+                User usertmp = new User();
+                usertmp.setBan(u.getBan());
+                usertmp.setBanReason(u.getBanReason());
+                return usertmp;
+            }
         }
-
 
         //加盐杂凑
         String password = user.getPassword();
