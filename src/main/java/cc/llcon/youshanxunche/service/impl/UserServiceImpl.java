@@ -58,18 +58,6 @@ public class UserServiceImpl implements UserService {
         if (u == null) {
             return null;
         }
-        // 判斷用戶是否封禁中
-
-        if (u.getBan() != null) {
-            log.info("封禁時間 {}", u.getBan());
-            log.info("是否封禁中 {}", u.getBan().isAfter(LocalDateTime.now()));
-            if (u.getBan() != null && u.getBan().isAfter(LocalDateTime.now())) {
-                User usertmp = new User();
-                usertmp.setBan(u.getBan());
-                usertmp.setBanReason(u.getBanReason());
-                return usertmp;
-            }
-        }
 
         //加盐杂凑
         String password = user.getPassword();
@@ -84,6 +72,20 @@ public class UserServiceImpl implements UserService {
         //验证
         if (password.equals(u.getPassword())) {
             //密码正确
+
+            // 判斷用戶是否封禁中
+
+            if (u.getBan() != null) {
+                log.info("封禁時間 {}", u.getBan());
+                log.info("是否封禁中 {}", u.getBan().isAfter(LocalDateTime.now()));
+                if (u.getBan() != null && u.getBan().isAfter(LocalDateTime.now())) {
+                    User usertmp = new User();
+                    usertmp.setBan(u.getBan());
+                    usertmp.setBanReason(u.getBanReason());
+                    return usertmp;
+                }
+            }
+
             //更新最后更新时间 清除失敗次數
             u.setLastLoginTime(LocalDateTime.now());
             u.setFailCount(0);

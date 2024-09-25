@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<table width="640" style="width:640px;" cellpadding="0" cellspacing="0" align="center">
+    <tr>
+        <td id="img">
+            <table style="width:640px;">
+                <tr>
+                    <td id="main" height="0" align="left">
+                        <h1>友善尋車 修改郵箱验证码</h1>
+                        <p>您好 {{username}}</p>
+                        <p>您的驗證碼為<code>{{code}}</code></p>
+                        <p></p>
+                        <p>五分鐘內有效</p>
+                        <p>請勿回覆此郵件</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+
+<style>
+    #main {
+        P {
+            font-size: 20px;
+            color: black;
+        }
+    }
+
+    #img {
+        width: 640px;
+        height: 480px;
+        vertical-align: top;
+        background: url('https://share.llcon.cc/61424301_p0.png') center / cover no-repeat;
+    }
+
+    table {
+        border: 0;
+        align-items: center;
+    }
+
+    code {
+        font-size: 32px;
+        background-color: black;
+        color: red;
+        text-shadow: none;
+    }
+
+    p {
+        text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+    }
+</style>
