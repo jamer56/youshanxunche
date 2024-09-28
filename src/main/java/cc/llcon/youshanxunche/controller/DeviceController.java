@@ -5,11 +5,13 @@ import cc.llcon.youshanxunche.anno.SecurityAuth;
 import cc.llcon.youshanxunche.anno.SelectLog;
 import cc.llcon.youshanxunche.controller.request.AddDeviceRequest;
 import cc.llcon.youshanxunche.controller.request.ModifyDeviceInfoRequest;
+import cc.llcon.youshanxunche.controller.request.UnLinkDeviceRequest;
 import cc.llcon.youshanxunche.pojo.Device;
 import cc.llcon.youshanxunche.pojo.ListDevice;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import cc.llcon.youshanxunche.pojo.Result;
 import cc.llcon.youshanxunche.service.DeviceService;
+import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,6 +86,18 @@ public class DeviceController {
             return Result.success();
         } else {
             return Result.error(status);
+        }
+    }
+
+    @OperateLog
+    @DeleteMapping
+    public Result unLinkDevice(@RequestBody UnLinkDeviceRequest unLinkDeviceRequest) {
+        log.info("解绑裝置:{}", unLinkDeviceRequest.getDId());
+        boolean status = deviceService.unLinkDevice(unLinkDeviceRequest.getDId());
+        if (status) {
+            return Result.success();
+        } else {
+            return Result.error("解绑裝置失敗");
         }
     }
 

@@ -10,6 +10,12 @@
                 #{createTime});
     </insert>
 
+    <delete id="delByDID">
+        delete
+        from tb_pos
+        where device_id = #{dId};
+    </delete>
+
     <select id="getLatestById" resultType="cc.llcon.youshanxunche.pojo.Pos">
         select id,
                latitude,

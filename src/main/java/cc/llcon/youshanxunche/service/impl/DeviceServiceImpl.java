@@ -5,13 +5,14 @@ import cc.llcon.youshanxunche.controller.request.DeviceLoginRequest;
 import cc.llcon.youshanxunche.controller.request.ModifyDeviceInfoRequest;
 import cc.llcon.youshanxunche.controller.vo.DeviceLoginVO;
 import cc.llcon.youshanxunche.mapper.DeviceMapper;
-import cc.llcon.youshanxunche.pojo.DTO.AddDeviceDTO;
+import cc.llcon.youshanxunche.mapper.PosMapper;
+import cc.llcon.youshanxunche.pojo.DTO.DeviceLoginDTO;
 import cc.llcon.youshanxunche.pojo.DTO.ModifyDeviceInfoDTO;
 import cc.llcon.youshanxunche.pojo.Device;
-import cc.llcon.youshanxunche.pojo.DTO.DeviceLoginDTO;
 import cc.llcon.youshanxunche.pojo.ListDevice;
 import cc.llcon.youshanxunche.pojo.ListDeviceParam;
 import cc.llcon.youshanxunche.service.DeviceService;
+import cc.llcon.youshanxunche.utils.AuthUtils;
 import cc.llcon.youshanxunche.utils.JwtUtils;
 import cc.llcon.youshanxunche.utils.MacAddressUtils;
 import cc.llcon.youshanxunche.utils.UUIDUtils;
@@ -21,23 +22,23 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
 public class DeviceServiceImpl implements DeviceService {
     final DeviceMapper deviceMapper;
     final HttpServletRequest request;
+    final PosMapper posMapper;
 
-    public DeviceServiceImpl(DeviceMapper deviceMapper, HttpServletRequest request) {
+    public DeviceServiceImpl(DeviceMapper deviceMapper, HttpServletRequest request, PosMapper posMapper) {
         this.deviceMapper = deviceMapper;
         this.request = request;
+        this.posMapper = posMapper;
     }
 
     @Override
@@ -153,6 +154,7 @@ public class DeviceServiceImpl implements DeviceService {
         //3.封装修改信息
         ModifyDeviceInfoDTO deviceDTO = new ModifyDeviceInfoDTO(null, null, device.getName(), device.getComment(), null);
         deviceDTO.setId(UUIDUtils.UUIDtoBytes(device.getId()));
+        deviceDTO.setUserId(UUIDUtils.UUIDtoBytes(deviceCheck.getUserId()));
         deviceDTO.setUpdateTime(LocalDateTime.now());
 
         //4.修改数据库
@@ -160,6 +162,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String addDevice(AddDeviceRequest device) {
         //获取用户id
         String jwt = request.getHeader("Authorization");
@@ -188,11 +191,16 @@ public class DeviceServiceImpl implements DeviceService {
 //        deviceDTO.setComment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " 添加的新裝置");
 
         ModifyDeviceInfoDTO modifyDeviceInfoDTO = new ModifyDeviceInfoDTO(UUIDUtils.UUIDtoBytes(device.getId()), UUIDUtils.UUIDtoBytes(uid), null, null, LocalDateTime.now());
-        modifyDeviceInfoDTO.setName(username + "的新設備");
+        modifyDeviceInfoDTO.setName("新設備");
         modifyDeviceInfoDTO.setComment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " 添加的新裝置");
 
-        //寫數據庫
-        if (deviceMapper.updateById(modifyDeviceInfoDTO)) {
+        // 清除定位資訊
+        posMapper.delByDID(device.getId());
+
+        // 添加設備
+        Boolean updateResult = deviceMapper.updateById(modifyDeviceInfoDTO);
+
+        if (updateResult) {
             return "success";
         } else {
             return "db error";
@@ -210,5 +218,33 @@ public class DeviceServiceImpl implements DeviceService {
         listDevice.setRows(page.getResult());
 
         return listDevice;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean unLinkDevice(String dId) {
+        String uid = AuthUtils.getUID(request);
+
+        Device deviceByID = deviceMapper.getById(dId);
+        // 判斷空
+        Optional.ofNullable(deviceByID).orElseThrow(() -> new RuntimeException("裝置不存在"));
+
+        // 判斷是否為擁有者
+        if (deviceByID.getUserId() == null || !deviceByID.getUserId().equals(uid)) {
+            log.warn("尝试解除他人装置 裝置id:{} 擁有者id:{}", dId, deviceByID.getUserId());
+            String rTEM = "尝试解除空裝置或他人装置";
+            throw new RuntimeException(rTEM, new RuntimeException("使用者接口越權"));
+        }
+
+        // 解除 用户---装置 绑定关系
+        deviceByID.setUserId(null);
+        deviceByID.setUpdateTime(LocalDateTime.now());
+        ModifyDeviceInfoDTO modifyDeviceInfoDTO = new ModifyDeviceInfoDTO(deviceByID);
+        deviceMapper.updateById(modifyDeviceInfoDTO);
+
+        // 移除 定位資訊
+        posMapper.delByDID(dId);
+
+        return true;
     }
 }

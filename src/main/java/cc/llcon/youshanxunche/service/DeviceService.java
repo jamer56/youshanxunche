@@ -64,4 +64,12 @@ public interface DeviceService {
      * @return
      */
     ListDevice listAllByParam(ListDeviceParam param);
+
+    /**
+     * 解绑设备
+     *
+     * @param dId 设备id
+     * @return true:解绑成功，false:解绑失败
+     */
+    boolean unLinkDevice(String dId);
 }

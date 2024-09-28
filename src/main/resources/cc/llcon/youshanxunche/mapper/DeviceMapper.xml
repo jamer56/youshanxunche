@@ -14,9 +14,7 @@
             name=#{name},
             comment=#{comment},
             update_time=#{updateTime},
-            <if test='userId != null'>
-                user_id=#{userId},
-            </if>
+            user_id=#{userId},
         </set>
         where id=#{id}
     </update>

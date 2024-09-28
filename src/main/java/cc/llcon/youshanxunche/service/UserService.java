@@ -48,9 +48,16 @@ public interface UserService {
      *
      * @param passwordRequest 修改密码请求
      * @return 1修改成功，0修改失败
-     * @since 0.21.0:
+     * @since 0.21.0
      */
     Integer modifyPassword(ModifyUserPasswordRequest passwordRequest);
 
+    /**
+     * 封禁用户
+     *
+     * @param banUserRequest 封禁用户请求
+     * @return true:封禁成功，false:封禁失败
+     * @since 0.24.0
+     */
     boolean banUser(BanUserRequest banUserRequest);
 }
