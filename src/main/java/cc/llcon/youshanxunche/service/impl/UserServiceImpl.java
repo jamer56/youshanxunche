@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User login(User user) {
-        log.info("用户登入{}", user);
+        log.info("用户登入{}", user.getUsername());
         //查询数据库
         User u = userMapper.getByUsername(user.getUsername());
         //判断用户是否存在
